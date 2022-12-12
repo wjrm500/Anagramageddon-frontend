@@ -14,6 +14,21 @@ const WebSocketContainer = ({phase}) => {
   const {gameId} = useParams()
   const ws = useRef(null);
   const dispatch = useDispatch()
+
+  const wscMessageHandlers = {
+    "setCountdownSeconds": (data) => {
+      const countdownSeconds = data.countdownSeconds
+      dispatch({type: SET_COUNTDOWN_SECONDS, countdownSeconds})
+    },
+    "setRequiredAction": (data) => {
+      const requiredAction = data.requiredAction
+      dispatch({type: SET_REQUIRED_ACTION, requiredAction})
+    },
+    "setPlayerCollection": (data) => {
+      const playerCollection = data.playerCollection
+      dispatch({type: SET_PLAYER_COLLECTION, playerCollection})
+    }
+  }
   
   useEffect(() => {
     ws.current = new WebSocket("ws://localhost:8080")
@@ -24,23 +39,13 @@ const WebSocketContainer = ({phase}) => {
 
     ws.current.onmessage = (message) => {
       const data = JSON.parse(message.data)
-      switch (data.type) {
-        case "setCountdownSeconds":
-          const countdownSeconds = data.data.countdownSeconds
-          debugger
-          dispatch({type: SET_COUNTDOWN_SECONDS, countdownSeconds})
-          break
-        case "setRequiredAction":
-          const requiredAction = data.data.requiredAction
-          dispatch({type: SET_REQUIRED_ACTION, requiredAction})
-          break
-        case "setPlayerCollection":
-          const playerCollection = data.data.playerCollection
-          dispatch({type: SET_PLAYER_COLLECTION, playerCollection})
-          break
-      }
+      wscMessageHandlers[data.type](data.data)
     }
-  }, [gameId])
+
+    return () => {
+      ws.current.close()
+    }
+  }, [])
 
   return (
     <WebSocketContext.Provider value={ws}>
@@ -48,8 +53,8 @@ const WebSocketContainer = ({phase}) => {
         <div>
           {
             phase == Lobby
-            ? <Lobby ws={ws} />
-            : <Game ws={ws} />
+            ? <Lobby ws={ws} wscMessageHandlers={wscMessageHandlers} />
+            : <Game ws={ws} wscMessageHandlers={wscMessageHandlers} />
           }
         </div>
       </GameIdContext.Provider>

@@ -28,6 +28,10 @@ class PlayerCollection {
     this.players.push(player)
   }
 
+  getPlayerNames() {
+    return this.players.map((player) => player.name)
+  }
+
   getActiveIndex() {
     return this.activeIndex
   }

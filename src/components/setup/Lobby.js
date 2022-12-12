@@ -6,7 +6,7 @@ import { SET_GRID_SIZE } from '../../reducers/gridSize';
 import { SET_PLAYER_COLLECTION } from '../../reducers/playerCollection';
 import { SET_WINNING_SCORE } from '../../reducers/winningScore';
 
-const Lobby = ({ws}) => {
+const Lobby = ({ws, wscMessageHandlers}) => {
   const navigate = useNavigate()
   const {gameId} = useParams()
   const [playerName, setPlayerName] = useState("")
@@ -16,44 +16,46 @@ const Lobby = ({ws}) => {
   const [playerLimitReached, setPlayerLimitReached] = useState(false)
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    ws.current = new WebSocket("ws://localhost:8080")
-
-    ws.current.onmessage = (message) => {
-      const data = JSON.parse(message.data)
-      switch (data.type) {
-        case "startGame":
-          if (playerNameSubmitted.current) {
-            const {gridSize, winningScore, maxCountdownSeconds, playerCollection} = data.data
-            dispatch({type: SET_GRID_SIZE, gridSize})
-            dispatch({type: SET_WINNING_SCORE, winningScore})
-            dispatch({type: SET_COUNTDOWN_SECONDS, countdownSeconds: maxCountdownSeconds})
-            dispatch({type: SET_PLAYER_COLLECTION, playerCollection})
-            navigate(`/game/${gameId}/play`)
-          } else {
-            setGameStarted(true)
-          }
-          break
-        case "playerLimitReached":
-          setPlayerLimitReached(true)
-          break
-        case "gameAlreadyStarted":
-          setGameStarted(true)
-          break
+  const lobbyMessageHandlers = {
+    "startGame": (data) => {
+      if (playerNameSubmitted.current) {
+        const {gridSize, winningScore, maxCountdownSeconds, playerCollection} = data
+        dispatch({type: SET_GRID_SIZE, gridSize})
+        dispatch({type: SET_WINNING_SCORE, winningScore})
+        dispatch({type: SET_COUNTDOWN_SECONDS, countdownSeconds: maxCountdownSeconds})
+        dispatch({type: SET_PLAYER_COLLECTION, playerCollection})
+        navigate(`/game/${gameId}/play`)
+      } else {
+        setGameStarted(true)
       }
+    },
+    "playerLimitReached": (data) => {
+      setPlayerLimitReached(true)
+    },
+    "gameAlreadyStarted": (data) => {
+      setGameStarted(true)
+    },
+    "playerAdded": (data) => {
+      playerNameSubmitted.current = true
+    },
+    "playerNameTaken": (data) => {
+      alert("This name has already been taken")
     }
-
-    return () => {
-      ws.current.close()
-    }
-  }, [gameId])
-
-  const inputDisabled = playerNameSubmitted.current || playerCollection.numPlayers() == 4
-
-  const onAddNameClick = () => {
-    ws.current.send(JSON.stringify({type: "ADD_PLAYER", data: {gameId, playerName}}))
-    playerNameSubmitted.current = true
   }
+
+  useEffect(() => {
+    if (ws.current == null) return
+    ws.current.onmessage = (message) => {
+      debugger
+      const data = JSON.parse(message.data)
+      const combinedMessageHandlers = {...wscMessageHandlers, ...lobbyMessageHandlers}
+      combinedMessageHandlers[data.type](data.data)
+    }
+  }, [ws.current])
+
+  const inputDisabled = playerNameSubmitted.current || playerCollection.numPlayers() >= 4
+
+  const onAddNameClick = () => ws.current.send(JSON.stringify({type: "ADD_PLAYER", data: {gameId, playerName}}))
 
   const onStartGameClick = () => ws.current.send(JSON.stringify({type: "START_GAME", data: {gameId}}))
 
@@ -63,12 +65,12 @@ const Lobby = ({ws}) => {
       Add name
     </button>
     {
-      playerCollection.getPlayers().map((player) => (
-        <p key={player.name}>{player.name}</p>
+      playerCollection.getPlayerNames().map((name) => (
+        <p key={name}>{name}</p>
       ))
     }
     {
-      playerCollection.numPlayers() >= 2
+      playerNameSubmitted.current && playerCollection.numPlayers() >= 2
       ? <button onClick={onStartGameClick}>
         Start game
       </button>
