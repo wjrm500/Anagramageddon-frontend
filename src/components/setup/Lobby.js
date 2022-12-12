@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const Lobby = () => {
+  const navigate = useNavigate()
   const {gameId} = useParams()
   const [playerName, setPlayerName] = useState("")
   const [playerNameSubmitted, setPlayerNameSubmitted] = useState(false)
@@ -12,14 +13,25 @@ const Lobby = () => {
     ws.current = new WebSocket("ws://localhost:8080")
 
     ws.current.onopen = () => {
-      ws.current.send(JSON.stringify({type: "JOIN_GAME", data: gameId}))
+      ws.current.send(JSON.stringify({type: "JOIN_GAME", data: {gameId}}))
     }
 
     ws.current.onmessage = (message) => {
-      console.log(message)
       const data = JSON.parse(message.data)
-      if (data.type === "playerNames") {
-        setPlayerNames(data.data)
+      switch (data.type) {
+        case "playerNames":
+          console.log(data)
+          setPlayerNames(data.data.playerNames)
+          break
+        case "startGame":
+          navigate(`/game/${gameId}/play`)
+          break
+        case "playerLimitReached":
+          alert("Player limit reached")
+          break
+        case "gameAlreadyStarted":
+          alert("Game already started")
+          break
       }
     }
 
@@ -28,20 +40,31 @@ const Lobby = () => {
     }
   }, [gameId])
 
-  const onClick = () => {
+  const inputDisabled = playerNameSubmitted || playerNames.length == 4
+
+  const onAddNameClick = () => {
     ws.current.send(JSON.stringify({type: "ADD_PLAYER", data: {gameId, playerName}}))
     setPlayerNameSubmitted(true)
   }
 
+  const onStartGameClick = () => ws.current.send(JSON.stringify({type: "START_GAME", data: {gameId}}))
+
   return (
     <div>
-      <input type="text" onChange={(e) => setPlayerName(e.target.value)} disabled={playerNameSubmitted} onKeyDown={(e) => e.key == "Enter" ? onClick() : ""} />
-      <button onClick={onClick} disabled={playerNameSubmitted}>
+      <input type="text" onChange={(e) => setPlayerName(e.target.value)} disabled={inputDisabled} onKeyDown={(e) => e.key == "Enter" ? onAddNameClick() : ""} />
+      <button onClick={onAddNameClick} disabled={inputDisabled}>
         Add name
       </button>
       {playerNames.map((name) => (
         <p key={name}>{name}</p>
       ))}
+      {
+        playerNames.length >= 2
+        ? <button onClick={onStartGameClick}>
+          Start game
+        </button>
+        : ""
+      }
     </div>
   );
 }
