@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useRef } from 'react'
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom'
+import { SET_CLIENT_ACTIVE } from '../reducers/clientActive';
 import { SET_COUNTDOWN_SECONDS } from '../reducers/countdownSeconds';
 import { SET_PLAYER_COLLECTION } from '../reducers/playerCollection';
 import { SET_REQUIRED_ACTION } from '../reducers/requiredAction';
@@ -16,6 +17,10 @@ const WebSocketContainer = ({phase}) => {
   const dispatch = useDispatch()
 
   const wscMessageHandlers = {
+    "setClientActive": (data) => {
+      const clientActive = data.clientActive
+      dispatch({type: SET_CLIENT_ACTIVE, clientActive})
+    },
     "setCountdownSeconds": (data) => {
       const countdownSeconds = data.countdownSeconds
       dispatch({type: SET_COUNTDOWN_SECONDS, countdownSeconds})

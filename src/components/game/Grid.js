@@ -5,6 +5,8 @@ import { SET_TEXT_FLASH } from '../../reducers/textFlash'
 import Box from './Box'
 
 const Grid = () => {
+  const clientActive = useSelector(state => state.clientActive)
+  const active = clientActive && requiredAction == ACTION_CLICK_BOX
   const gridSize = useSelector(state => state.gridSize)
   const playerCollection = useSelector(state => state.playerCollection)
   const activePlayer = playerCollection.getActivePlayer()
@@ -28,7 +30,7 @@ const Grid = () => {
       } else if (bottomLeft && playerCollection.getPlayers().length > 3) {
         player = playerCollection.getPlayerByIdx(3)
       }
-      const box = <Box defaultPlayer={player} rowIdx={rowIdx} colIdx={colIdx} activePlayer={activePlayer} active={requiredAction == ACTION_CLICK_BOX} postBoxClickHandler={postBoxClickHandler} setTextFlash={(textFlash) => dispatch({type: SET_TEXT_FLASH, textFlash})}/>
+      const box = <Box defaultPlayer={player} rowIdx={rowIdx} colIdx={colIdx} activePlayer={activePlayer} active={active} postBoxClickHandler={postBoxClickHandler} setTextFlash={(textFlash) => dispatch({type: SET_TEXT_FLASH, textFlash})}/>
       boxes.push(box)
       return box
     })

@@ -46,7 +46,6 @@ const Lobby = ({ws, wscMessageHandlers}) => {
   useEffect(() => {
     if (ws.current == null) return
     ws.current.onmessage = (message) => {
-      debugger
       const data = JSON.parse(message.data)
       const combinedMessageHandlers = {...wscMessageHandlers, ...lobbyMessageHandlers}
       combinedMessageHandlers[data.type](data.data)

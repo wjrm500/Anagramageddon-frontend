@@ -11,7 +11,8 @@ const WordEntry = () => {
   const ws = useContext(WebSocketContext)
   const gameId = useContext(GameIdContext)
   const requiredAction = useSelector(state => state.requiredAction)
-  const active = requiredAction == ACTION_ENTER_WORD
+  const clientActive = useSelector(state => state.clientActive)
+  const active = clientActive && requiredAction == ACTION_ENTER_WORD
   const activePlayer = useSelector(state => state.playerCollection).getActivePlayer()
   const dispatch = useDispatch()
   const [value, setValue] = useState("")

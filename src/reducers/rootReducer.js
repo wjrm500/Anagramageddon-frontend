@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux'
+import { clientActiveReducer } from './clientActive'
 import { countdownSecondsReducer } from './countdownSeconds'
 import { gridSizeReducer } from './gridSize'
 import { playerCollectionReducer } from './playerCollection'
@@ -8,6 +9,7 @@ import { winningPlayerReducer } from './winningPlayer'
 import { winningScoreReducer } from './winningScore'
 
 export const rootReducer = combineReducers({
+  clientActive: clientActiveReducer,
   countdownSeconds: countdownSecondsReducer,
   gridSize: gridSizeReducer,
   playerCollection: playerCollectionReducer,
