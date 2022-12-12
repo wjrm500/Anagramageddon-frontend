@@ -8,6 +8,7 @@ const Lobby = () => {
   const playerNameSubmitted = useRef(false)
   const [playerNames, setPlayerNames] = useState([])
   const [gameStarted, setGameStarted] = useState(false)
+  const [playerLimitReached, setPlayerLimitReached] = useState(false)
   const ws = useRef(null);
 
   useEffect(() => {
@@ -22,6 +23,9 @@ const Lobby = () => {
       switch (data.type) {
         case "playerNames":
           setPlayerNames(data.data.playerNames)
+          if (data.data.playerNames.length == 4 && !playerNameSubmitted.current) {
+            setPlayerLimitReached(true)
+          }
           break
         case "startGame":
           if (playerNameSubmitted.current) {
@@ -31,7 +35,7 @@ const Lobby = () => {
           }
           break
         case "playerLimitReached":
-          alert("Player limit reached")
+          setPlayerLimitReached(true)
           break
         case "gameAlreadyStarted":
           setGameStarted(true)
@@ -74,8 +78,12 @@ const Lobby = () => {
     <div>
       {
         !gameStarted
-        ? form
-        : 'Too late! This game has already started.'
+        ? (
+          !playerLimitReached
+          ? form
+          : "Too late! The player limit has been reached."
+        )
+        : "Too late! This game has already started."
       }
     </div>    
   )
