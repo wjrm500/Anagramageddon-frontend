@@ -6,7 +6,7 @@ import { rootReducer } from '../reducers/rootReducer'
 import Game from './game/Game'
 import Header from './Header'
 import Setup from './setup/Setup'
-import Lobby from './setup/Lobby';
+import Lobby from './setup/Lobby'
 
 const store = createStore(rootReducer)
 
