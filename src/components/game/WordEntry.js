@@ -1,12 +1,15 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { DECREMENT_COUNTDOWN, RESET_COUNTDOWN } from '../../reducers/countdownSeconds'
 import { ENTER_WORD, SWITCH_ACTIVE_PLAYER } from '../../reducers/playerCollection'
 import { ACTION_CLICK_BOX, ACTION_ENTER_WORD, SET_REQUIRED_ACTION } from '../../reducers/requiredAction'
 import { FLASH_ERROR, FLASH_SCORE, SET_TEXT_FLASH } from '../../reducers/textFlash'
 import { validateWord } from '../../utilities/validateWord'
+import { GameIdContext, WebSocketContext } from '../WebSocketContainer'
 
 const WordEntry = () => {
+  const ws = useContext(WebSocketContext)
+  const gameId = useContext(GameIdContext)
   const requiredAction = useSelector(state => state.requiredAction)
   const active = requiredAction == ACTION_ENTER_WORD
   const activePlayer = useSelector(state => state.playerCollection).getActivePlayer()
@@ -14,7 +17,7 @@ const WordEntry = () => {
   const [value, setValue] = useState("")
   const onClick = () => {
     if (!active) {
-      dispatch({type: SET_TEXT_FLASH, value: {content: "Click a box", status: FLASH_ERROR}})
+      dispatch({type: SET_TEXT_FLASH, textFlash: {content: "Click a box", status: FLASH_ERROR}})
     }
   }
   const onChange = (e) => {
@@ -25,15 +28,15 @@ const WordEntry = () => {
       const word = e.target.value.toUpperCase()
       validateWord(word, activePlayer)
         .then(() => {
-          dispatch({type: ENTER_WORD, value: word})
-          dispatch({type: SET_TEXT_FLASH, value: {content: "+" + word.length, status: FLASH_SCORE}})
-          dispatch({type: RESET_COUNTDOWN})
-          dispatch({type: SET_REQUIRED_ACTION, value: ACTION_CLICK_BOX})
-          dispatch({type: SWITCH_ACTIVE_PLAYER})
+          dispatch({type: SET_TEXT_FLASH, textFlash: {content: "+" + word.length, status: FLASH_SCORE}})
+          ws.send(JSON.stringify(({type: ENTER_WORD, data: {gameId, word}})))
+          ws.send(JSON.stringify({type: RESET_COUNTDOWN, data: {gameId}}))
+          ws.send(JSON.stringify({type: SET_REQUIRED_ACTION, data: {requiredAction: ACTION_CLICK_BOX}}))
+          ws.send(JSON.stringify({type: SWITCH_ACTIVE_PLAYER, data: {gameId}}))
         })
         .catch((error) => {
-          dispatch({type: DECREMENT_COUNTDOWN, decrementBy: 5})
-          dispatch({type: SET_TEXT_FLASH, value: {content: error, status: FLASH_ERROR}})
+          dispatch({type: SET_TEXT_FLASH, textFlash: {content: error, status: FLASH_ERROR}})
+          ws.send(JSON.stringify(({type: DECREMENT_COUNTDOWN, data: {gameId, decrementBy: 5}})))
         })
         .finally(() => setValue(""))
     }

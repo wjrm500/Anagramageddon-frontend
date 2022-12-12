@@ -1,34 +1,34 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import { SET_COUNTDOWN_SECONDS } from '../../reducers/countdownSeconds';
+import { SET_GRID_SIZE } from '../../reducers/gridSize';
+import { SET_PLAYER_COLLECTION } from '../../reducers/playerCollection';
+import { SET_WINNING_SCORE } from '../../reducers/winningScore';
 
-const Lobby = () => {
+const Lobby = ({ws}) => {
   const navigate = useNavigate()
   const {gameId} = useParams()
   const [playerName, setPlayerName] = useState("")
   const playerNameSubmitted = useRef(false)
-  const [playerNames, setPlayerNames] = useState([])
+  const playerCollection = useSelector(state => state.playerCollection)
   const [gameStarted, setGameStarted] = useState(false)
   const [playerLimitReached, setPlayerLimitReached] = useState(false)
-  const ws = useRef(null);
+  const dispatch = useDispatch()
 
   useEffect(() => {
     ws.current = new WebSocket("ws://localhost:8080")
 
-    ws.current.onopen = () => {
-      ws.current.send(JSON.stringify({type: "JOIN_GAME", data: {gameId}}))
-    }
-
     ws.current.onmessage = (message) => {
       const data = JSON.parse(message.data)
       switch (data.type) {
-        case "playerNames":
-          setPlayerNames(data.data.playerNames)
-          if (data.data.playerNames.length == 4 && !playerNameSubmitted.current) {
-            setPlayerLimitReached(true)
-          }
-          break
         case "startGame":
           if (playerNameSubmitted.current) {
+            const {gridSize, winningScore, maxCountdownSeconds, playerCollection} = data.data
+            dispatch({type: SET_GRID_SIZE, gridSize})
+            dispatch({type: SET_WINNING_SCORE, winningScore})
+            dispatch({type: SET_COUNTDOWN_SECONDS, countdownSeconds: maxCountdownSeconds})
+            dispatch({type: SET_PLAYER_COLLECTION, playerCollection})
             navigate(`/game/${gameId}/play`)
           } else {
             setGameStarted(true)
@@ -48,7 +48,7 @@ const Lobby = () => {
     }
   }, [gameId])
 
-  const inputDisabled = playerNameSubmitted.current || playerNames.length == 4
+  const inputDisabled = playerNameSubmitted.current || playerCollection.numPlayers() == 4
 
   const onAddNameClick = () => {
     ws.current.send(JSON.stringify({type: "ADD_PLAYER", data: {gameId, playerName}}))
@@ -62,11 +62,13 @@ const Lobby = () => {
     <button onClick={onAddNameClick} disabled={inputDisabled}>
       Add name
     </button>
-    {playerNames.map((name) => (
-      <p key={name}>{name}</p>
-    ))}
     {
-      playerNames.length >= 2
+      playerCollection.getPlayers().map((player) => (
+        <p key={player.name}>{player.name}</p>
+      ))
+    }
+    {
+      playerCollection.numPlayers() >= 2
       ? <button onClick={onStartGameClick}>
         Start game
       </button>

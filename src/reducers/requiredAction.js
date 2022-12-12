@@ -6,7 +6,7 @@ export const ACTION_ENTER_WORD = "Enter word"
 export const requiredActionReducer = (requiredAction = ACTION_CLICK_BOX, action) => {
   switch (action.type) {
     case SET_REQUIRED_ACTION:
-      return action.value
+      return action.requiredAction
     default:
       return requiredAction
   }

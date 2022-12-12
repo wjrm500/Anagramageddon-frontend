@@ -1,16 +1,11 @@
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { SET_MAX_COUNTDOWN } from '../../reducers/countdownSeconds'
-import { SET_GRID_SIZE } from '../../reducers/gridSize'
-import { SET_WINNING_SCORE } from '../../reducers/winningScore'
 
 const Setup = () => {
   const navigate = useNavigate()
-  const gridSize = useSelector(state => state.gridSize)
-  const winningScore = useSelector(state => state.winningScore)
-  const maxCountdownSeconds = useSelector(state => state.countdownSeconds.max)
-  const dispatch = useDispatch()
+  const [gridSize, setGridSize] = useState(5)
+  const [winningScore, setWinningScore] = useState(25)
+  const [maxCountdownSeconds, setMaxCountdownSeconds] = useState(15)
   const onSubmit = async (e) => {
     e.preventDefault()
 
@@ -39,7 +34,7 @@ const Setup = () => {
           <label>Grid size (5 - 15)</label>
           <input type="number"
                  value={!isNaN(gridSize) ? gridSize : ""}
-                 onChange={(e) => dispatch({type: SET_GRID_SIZE, value: parseInt(e.target.value)})}
+                 onChange={(e) => setGridSize(parseInt(e.target.value))}
                  min="5"
                  max="15" />
         </div>
@@ -47,7 +42,7 @@ const Setup = () => {
           <label>Winning score {!isNaN(gridSize) ? "(" + gridSize + " - " + gridSize * 10 + ")" : ""} </label>
           <input type="number"
                  value={!isNaN(winningScore) ? winningScore : ""}
-                 onChange={(e) => dispatch({type: SET_WINNING_SCORE, value: parseInt(e.target.value)})}
+                 onChange={(e) => setWinningScore(parseInt(e.target.value))}
                  min={!isNaN(gridSize) ? gridSize : ""}
                  max={!isNaN(gridSize) ? gridSize * 10 : ""} />
         </div>
@@ -55,7 +50,7 @@ const Setup = () => {
           <label>Turn time limit (5 - 30)</label>
           <input type="number"
                  value={!isNaN(maxCountdownSeconds) ? maxCountdownSeconds : ""}
-                 onChange={(e) => dispatch({type: SET_MAX_COUNTDOWN, maxCountdown: parseInt(e.target.value)})}
+                 onChange={(e) => setMaxCountdownSeconds(parseInt(e.target.value))}
                  min="5"
                  max="30" />
         </div>

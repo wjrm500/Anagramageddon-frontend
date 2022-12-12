@@ -8,7 +8,7 @@ export const FLASH_ERROR = "red"
 export const textFlashReducer = (textFlash = INIT_TEXT_FLASH, action) => {
   switch (action.type) {
     case SET_TEXT_FLASH:
-      return action.value
+      return action.textFlash
     default:
       return textFlash
   }

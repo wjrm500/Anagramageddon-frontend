@@ -9,7 +9,7 @@ import TextFlash from './TextFlash'
 import WinnerBanner from './WinnerBanner'
 import WordEntry from './WordEntry'
 
-const Game = () => {
+const Game = ({ws}) => {
   const winningScore = useSelector(state => state.winningScore)
   const playerCollection = useSelector(state => state.playerCollection)
   const dispatch = useDispatch()

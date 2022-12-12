@@ -1,33 +1,28 @@
-import { Player } from "../non-components/Player"
 import { PlayerCollection } from "../non-components/PlayerCollection"
 
-export const playerColors = ["red", "blue", "green", "gold"]
-export const ADD_PLAYERS = 'ADD_PLAYERS'
+// WebSocket actions
 export const ENTER_WORD = 'ENTER_WORD'
-export const SWITCH_ACTIVE_PLAYER = 'SWITCH_ACTIVE_PLAYERS'
+export const SWITCH_ACTIVE_PLAYER = 'SWITCH_ACTIVE_PLAYER'
 
-const getNewPlayerCollection = (playerCollection) => { // Otherwise components won't re-render owing to reference equality check
-  const players = playerCollection.getPlayers()
-  const activeIndex = playerCollection.getActiveIndex()
+// Redux actions
+export const SET_PLAYER_COLLECTION = 'SET_PLAYER_COLLECTION'
+
+const createPlayerCollection = (playerCollection) => { // Otherwise components won't re-render owing to reference equality check
+  const players = playerCollection.players
+  const activeIndex = playerCollection.activeIndex
   const newPlayerCollection = new PlayerCollection()
-  newPlayerCollection.addPlayers(players)
+  for (const player of players) {
+    newPlayerCollection.addPlayer(player)
+  }
   newPlayerCollection.setActiveIndex(activeIndex)
   return newPlayerCollection
 }
 
 export const playerCollectionReducer = (playerCollection = new PlayerCollection(), action) => {
   switch (action.type) {
-    case ADD_PLAYERS:
-      const players = action.value.map((playerName, idx) => new Player(playerName, playerColors[idx]))
-      playerCollection.addPlayers(players)
-      return getNewPlayerCollection(playerCollection)
-    case ENTER_WORD:
-      playerCollection.getActivePlayer().enterWord(action.value)
-      return getNewPlayerCollection(playerCollection)
-    case SWITCH_ACTIVE_PLAYER:
-      playerCollection.switchActivePlayer()
-      return getNewPlayerCollection(playerCollection)
+    case SET_PLAYER_COLLECTION:
+      return createPlayerCollection(action.playerCollection)
     default:
       return playerCollection
-}
+  }
 }

@@ -1,20 +1,14 @@
+// WebSocket actions
 export const DECREMENT_COUNTDOWN = "DECREMENT_COUNTDOWN"
 export const RESET_COUNTDOWN = "RESET_COUNTDOWN"
-export const SET_MAX_COUNTDOWN = "SET_MAX_COUNTDOWN"
 
-const INIT_COUNTDOWN_SECONDS = {current: 15, max: 15}
+// Redux actions
+export const SET_COUNTDOWN_SECONDS = "SET_COUNTDOWN_SECONDS"
 
-export const countdownSecondsReducer = (countdownSeconds = INIT_COUNTDOWN_SECONDS, action) => {
+export const countdownSecondsReducer = (countdownSeconds = null, action) => {
   switch (action.type) {
-    case DECREMENT_COUNTDOWN:
-      countdownSeconds.current -= action.decrementBy
-      return {...countdownSeconds}
-    case RESET_COUNTDOWN:
-      countdownSeconds.current = countdownSeconds.max
-      return {...countdownSeconds}
-    case SET_MAX_COUNTDOWN:
-      countdownSeconds.current = countdownSeconds.max = action.maxCountdown
-      return {...countdownSeconds}
+    case SET_COUNTDOWN_SECONDS:
+      return action.countdownSeconds
     default:
       return countdownSeconds
   }

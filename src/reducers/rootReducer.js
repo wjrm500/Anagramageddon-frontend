@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux'
 import { countdownSecondsReducer } from './countdownSeconds'
-import { gamePhaseReducer } from './gamePhase'
 import { gridSizeReducer } from './gridSize'
 import { playerCollectionReducer } from './playerCollection'
 import { requiredActionReducer } from './requiredAction'
@@ -10,7 +9,6 @@ import { winningScoreReducer } from './winningScore'
 
 export const rootReducer = combineReducers({
   countdownSeconds: countdownSecondsReducer,
-  gamePhase: gamePhaseReducer,
   gridSize: gridSizeReducer,
   playerCollection: playerCollectionReducer,
   requiredAction: requiredActionReducer,

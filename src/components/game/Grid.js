@@ -10,7 +10,7 @@ const Grid = () => {
   const activePlayer = playerCollection.getActivePlayer()
   const requiredAction = useSelector(state => state.requiredAction)
   const dispatch = useDispatch()
-  const postBoxClickHandler = () => dispatch({type: SET_REQUIRED_ACTION, value: ACTION_ENTER_WORD})
+  const postBoxClickHandler = () => dispatch({type: SET_REQUIRED_ACTION, requiredAction: ACTION_ENTER_WORD})
   let boxes = []
   const rows = Array(gridSize).fill().map((_, rowIdx) => {
     const row = Array(gridSize).fill().map((_, colIdx) => {
@@ -28,7 +28,7 @@ const Grid = () => {
       } else if (bottomLeft && playerCollection.getPlayers().length > 3) {
         player = playerCollection.getPlayerByIdx(3)
       }
-      const box = <Box defaultPlayer={player} rowIdx={rowIdx} colIdx={colIdx} activePlayer={activePlayer} active={requiredAction == ACTION_CLICK_BOX} postBoxClickHandler={postBoxClickHandler} setTextFlash={(value) => dispatch({type: SET_TEXT_FLASH, value: value})}/>
+      const box = <Box defaultPlayer={player} rowIdx={rowIdx} colIdx={colIdx} activePlayer={activePlayer} active={requiredAction == ACTION_CLICK_BOX} postBoxClickHandler={postBoxClickHandler} setTextFlash={(textFlash) => dispatch({type: SET_TEXT_FLASH, textFlash})}/>
       boxes.push(box)
       return box
     })

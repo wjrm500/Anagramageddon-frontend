@@ -5,7 +5,7 @@ import { FLASH_NEUTRAL, FLASH_SCORE, SET_TEXT_FLASH } from '../../reducers/textF
 const TextFlash = () => {
   const textFlash = useSelector(state => state.textFlash)
   const dispatch = useDispatch()
-  const onAnimationEnd = () => dispatch({type: SET_TEXT_FLASH, value: {content: "", status: FLASH_NEUTRAL}})
+  const onAnimationEnd = () => dispatch({type: SET_TEXT_FLASH, textFlash: {content: "", status: FLASH_NEUTRAL}})
   let classNames = []
   if (textFlash.content.length > 0) {
     classNames.push("fontGrow")
