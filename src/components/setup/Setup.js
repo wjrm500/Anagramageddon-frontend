@@ -1,57 +1,40 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { SET_MAX_COUNTDOWN } from '../../reducers/countdownSeconds'
 import { SET_GRID_SIZE } from '../../reducers/gridSize'
-import { ADD_PLAYERS, playerColors } from '../../reducers/playerCollection'
 import { SET_WINNING_SCORE } from '../../reducers/winningScore'
 
-const Setup = ({setSetupActive}) => {
+const Setup = () => {
+  const navigate = useNavigate()
   const gridSize = useSelector(state => state.gridSize)
   const winningScore = useSelector(state => state.winningScore)
   const maxCountdownSeconds = useSelector(state => state.countdownSeconds.max)
-  const [playerNames, ] = useState(["", ""])
   const dispatch = useDispatch()
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault()
-    if (new Set(playerNames).size != playerNames.length) {
-      alert("No duplicate player names")
-      return false
+
+    if (isNaN(gridSize) || gridSize < 5 || gridSize > 15) {
+      alert("Invalid grid size")
+    } else if (isNaN(winningScore) || winningScore < gridSize || winningScore > gridSize * 10) {
+      alert("Invalid winning score")
+    } else if (isNaN(maxCountdownSeconds) || maxCountdownSeconds < 5 || maxCountdownSeconds > 30) {
+      alert("Invalid turn time limit")
+    } else {
+        fetch("http://localhost:8080/create-game", {
+          method: "POST",
+          body: JSON.stringify({gridSize, winningScore, maxCountdownSeconds}),
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+        .then(response => response.json())
+        .then(data => navigate(`/game/${data.gameId}/lobby`))
     }
-    dispatch({type: ADD_PLAYERS, value: playerNames})
-    setSetupActive(false)
   }
-  const [numPlayers, setNumPlayers] = useState(2)
-  const playerNameInputs = numPlayers > 0 ? Array(Math.min(numPlayers, 4)).fill().map(
-    (_, idx) => {
-      let blockColor = playerColors[idx]
-      return (
-        <div className="formComponent" key={idx}>
-          <label><span style={{backgroundColor: blockColor, color: blockColor, marginRight: "5px"}}>000</span>Player {idx + 1} name</label>
-          <input type="text" onChange={(e) => playerNames[idx] = e.target.value} required />
-        </div>
-      )
-    }
-  ) : ""
   return (
     <div id="formContainer">
       <form id="setupForm" onSubmit={onSubmit}>
-        <div className="formComponent">
-          <label>Number of players (2 - 4)</label>
-          <input type="number" value={!isNaN(numPlayers) ? numPlayers : ""} onChange={(e) => {
-            const newNumPlayers = e.target.value != "" ? parseInt(e.target.value) : ""
-            if (newNumPlayers > numPlayers) {
-              for (let i = 0; i < newNumPlayers - numPlayers; i++) {
-                playerNames.push("")
-              }
-            } else if (newNumPlayers < numPlayers) {
-              for (let i = 0; i < numPlayers - newNumPlayers; i++) {
-                playerNames.pop()
-              }
-            }
-            setNumPlayers(newNumPlayers)
-          }} min="2" max="4" />
-        </div>
-        {playerNameInputs}
         <div className="formComponent">
           <label>Grid size (5 - 15)</label>
           <input type="number"

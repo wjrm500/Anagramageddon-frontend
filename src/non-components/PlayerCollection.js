@@ -12,10 +12,6 @@ export class PlayerCollection {
     return this.players
   }
 
-  setPlayers(players) {
-    this.players = players
-  } 
-
   addPlayers(players) {
     this.players = players
   }

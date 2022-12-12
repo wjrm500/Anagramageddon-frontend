@@ -1,24 +1,27 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { rootReducer } from '../reducers/rootReducer'
 import Game from './game/Game'
 import Header from './Header'
 import Setup from './setup/Setup'
+import Lobby from './setup/Lobby';
 
 const store = createStore(rootReducer)
 
 const Container = () => {
-  const [setupActive, setSetupActive] = useState(true)
   return (
     <Provider store={store}>
       <div id="container">
         <Header />
-        {
-          setupActive
-          ? <Setup setSetupActive={setSetupActive} />
-          : <Game />
-        }
+        <Router basename="/Anagramageddon">
+          <Routes>
+            <Route exact path="/" element={<Setup />} />
+            <Route path="/game/:gameId/lobby" element={<Lobby />} />
+            <Route path="/game/:gameId/play" element={<Game />} />
+          </Routes>
+        </Router>
       </div>
     </Provider>
   )

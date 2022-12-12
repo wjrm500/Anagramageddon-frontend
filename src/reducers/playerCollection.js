@@ -10,7 +10,7 @@ const getNewPlayerCollection = (playerCollection) => { // Otherwise components w
   const players = playerCollection.getPlayers()
   const activeIndex = playerCollection.getActiveIndex()
   const newPlayerCollection = new PlayerCollection()
-  newPlayerCollection.setPlayers(players)
+  newPlayerCollection.addPlayers(players)
   newPlayerCollection.setActiveIndex(activeIndex)
   return newPlayerCollection
 }
