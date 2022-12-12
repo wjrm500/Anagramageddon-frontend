@@ -29,10 +29,10 @@ const WordEntry = () => {
       const word = e.target.value.toUpperCase()
       validateWord(word, activePlayer)
         .then(() => {
+          dispatch({type: SET_REQUIRED_ACTION, requiredAction: ACTION_CLICK_BOX})
           dispatch({type: SET_TEXT_FLASH, textFlash: {content: "+" + word.length, status: FLASH_SCORE}})
           ws.send(JSON.stringify(({type: ENTER_WORD, data: {gameId, word}})))
           ws.send(JSON.stringify({type: RESET_COUNTDOWN, data: {gameId}}))
-          ws.send(JSON.stringify({type: SET_REQUIRED_ACTION, data: {requiredAction: ACTION_CLICK_BOX}}))
           ws.send(JSON.stringify({type: SWITCH_ACTIVE_PLAYER, data: {gameId}}))
         })
         .catch((error) => {

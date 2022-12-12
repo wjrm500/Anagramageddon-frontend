@@ -1,10 +1,10 @@
 import React, { createContext, useEffect, useRef } from 'react'
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom'
+import { SET_BOXES } from '../reducers/boxes';
 import { SET_CLIENT_ACTIVE } from '../reducers/clientActive';
 import { SET_COUNTDOWN_SECONDS } from '../reducers/countdownSeconds';
 import { SET_PLAYER_COLLECTION } from '../reducers/playerCollection';
-import { SET_REQUIRED_ACTION } from '../reducers/requiredAction';
 import Game from './game/Game';
 import Lobby from './setup/Lobby';
 
@@ -25,13 +25,13 @@ const WebSocketContainer = ({phase}) => {
       const countdownSeconds = data.countdownSeconds
       dispatch({type: SET_COUNTDOWN_SECONDS, countdownSeconds})
     },
-    "setRequiredAction": (data) => {
-      const requiredAction = data.requiredAction
-      dispatch({type: SET_REQUIRED_ACTION, requiredAction})
-    },
     "setPlayerCollection": (data) => {
       const playerCollection = data.playerCollection
       dispatch({type: SET_PLAYER_COLLECTION, playerCollection})
+    },
+    "setBoxes": (data) => {
+      const boxes = data.boxes
+      dispatch({type: SET_BOXES, boxes})
     }
   }
   

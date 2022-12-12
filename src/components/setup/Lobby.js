@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import { SET_BOXES } from '../../reducers/boxes';
 import { SET_COUNTDOWN_SECONDS } from '../../reducers/countdownSeconds';
 import { SET_GRID_SIZE } from '../../reducers/gridSize';
 import { SET_PLAYER_COLLECTION } from '../../reducers/playerCollection';
@@ -19,7 +20,8 @@ const Lobby = ({ws, wscMessageHandlers}) => {
   const lobbyMessageHandlers = {
     "startGame": (data) => {
       if (playerNameSubmitted.current) {
-        const {gridSize, winningScore, maxCountdownSeconds, playerCollection} = data
+        const {boxes, gridSize, winningScore, maxCountdownSeconds, playerCollection} = data
+        dispatch({type: SET_BOXES, boxes})
         dispatch({type: SET_GRID_SIZE, gridSize})
         dispatch({type: SET_WINNING_SCORE, winningScore})
         dispatch({type: SET_COUNTDOWN_SECONDS, countdownSeconds: maxCountdownSeconds})

@@ -1,4 +1,4 @@
-class PlayerCollection {
+export class PlayerCollection {
   static playerColors = ["red", "blue", "green", "gold"]
 
   static maxPlayers = 4
@@ -49,5 +49,3 @@ class PlayerCollection {
     this.activeIndex = this.activeIndex == this.players.length - 1 ? 0 : this.activeIndex + 1
   }
 }
-
-exports.PlayerCollection = PlayerCollection

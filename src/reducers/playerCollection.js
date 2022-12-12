@@ -1,3 +1,4 @@
+import { Player } from "../non-components/Player"
 import { PlayerCollection } from "../non-components/PlayerCollection"
 
 // WebSocket actions
@@ -12,7 +13,7 @@ const createPlayerCollection = (playerCollection) => { // Otherwise components w
   const activeIndex = playerCollection.activeIndex
   const newPlayerCollection = new PlayerCollection()
   for (const player of players) {
-    newPlayerCollection.addPlayer(player)
+    newPlayerCollection.addPlayer(new Player(player))
   }
   newPlayerCollection.setActiveIndex(activeIndex)
   return newPlayerCollection
