@@ -41,9 +41,7 @@ const Game = ({webSocketOpen, gameOpen}) => {
         )
         : ""
       }
-      
     </div>
-    
   )
 }
 

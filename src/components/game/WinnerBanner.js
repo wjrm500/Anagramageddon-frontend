@@ -1,11 +1,16 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { WebSocketContext } from '../WebSocketContainer'
 
 const WinnerBanner = () => {
+  const ws = useContext(WebSocketContext)
   const winningPlayer = useSelector(state => state.winningPlayer)
   const navigate = useNavigate()
-  const onButtonClick = () => navigate("/")
+  const onButtonClick = () => {
+    ws.current.close()
+    navigate("/")
+  }
   return (
     <div id="winnerBanner" class="fadeIn">
         <div id="winnerText">

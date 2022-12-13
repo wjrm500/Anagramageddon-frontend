@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { SET_BOXES } from '../reducers/boxes';
 import { SET_CLIENT_ACTIVE } from '../reducers/clientActive';
 import { SET_COUNTDOWN_SECONDS } from '../reducers/countdownSeconds';
@@ -12,6 +12,7 @@ export const WebSocketContext = createContext(null);
 export const GameIdContext = createContext(null);
 
 const WebSocketContainer = ({phase}) => {
+  const navigate = useNavigate()
   const {gameId} = useParams()
   const ws = useRef(null);
   const dispatch = useDispatch()
@@ -58,6 +59,7 @@ const WebSocketContainer = ({phase}) => {
     ws.current.onclose = () => {
       setWebSocketOpen(false)
       console.log("WebSocket connection closed. Did another player refresh their browser or navigate to a different URL?")
+      navigate("/")
     }
   }, [])
 
