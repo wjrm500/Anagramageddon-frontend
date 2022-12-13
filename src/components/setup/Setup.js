@@ -17,7 +17,7 @@ const Setup = () => {
     } else if (isNaN(maxCountdownSeconds) || maxCountdownSeconds < 5 || maxCountdownSeconds > 30) {
       alert("Invalid turn time limit")
     } else {
-      fetch(`http://${process.env.REACT_APP_API_URL}/create-game`, {
+      fetch(`${process.env.REACT_APP_API_HTTP_URL}/create-game`, {
         method: "POST",
         body: JSON.stringify({gridSize, winningScore, maxCountdownSeconds}),
         headers: {
