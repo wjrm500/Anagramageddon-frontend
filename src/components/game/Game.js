@@ -10,7 +10,7 @@ import TextFlash from './TextFlash'
 import WinnerBanner from './WinnerBanner'
 import WordEntry from './WordEntry'
 
-const Game = ({gameOpen}) => {
+const Game = ({webSocketOpen, gameOpen}) => {
   const winningScore = useSelector(state => state.winningScore)
   const playerCollection = useSelector(state => state.playerCollection)
   const dispatch = useDispatch()
@@ -20,7 +20,7 @@ const Game = ({gameOpen}) => {
     <div id="container">
       <Header />
       {
-        gameOpen != null
+        webSocketOpen && gameOpen != null
         ? (
           gameOpen ? (
             <div id="gameContainer">

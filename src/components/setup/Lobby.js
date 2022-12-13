@@ -10,7 +10,7 @@ import { SET_WINNING_SCORE } from '../../reducers/winningScore';
 import Header from '../Header';
 import { WebSocketContext } from '../WebSocketContainer';
 
-const Lobby = ({wscMessageHandlers, gameOpen}) => {
+const Lobby = ({wscMessageHandlers, webSocketOpen, gameOpen}) => {
   const navigate = useNavigate()
   const ws = useContext(WebSocketContext)
   const {gameId} = useParams()
@@ -119,7 +119,7 @@ const Lobby = ({wscMessageHandlers, gameOpen}) => {
     <div id="container">
       <Header />
       {
-        gameOpen != null
+        webSocketOpen && gameOpen != null
         ? (
           gameOpen ? (
             !playerLimitReached

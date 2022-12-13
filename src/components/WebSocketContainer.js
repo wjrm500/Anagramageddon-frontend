@@ -16,6 +16,7 @@ const WebSocketContainer = ({phase}) => {
   const ws = useRef(null);
   const dispatch = useDispatch()
   const [gameOpen, setGameOpen] = useState(null)
+  const [webSocketOpen, setWebSocketOpen] = useState(false)
 
   const wscMessageHandlers = {
     "setClientActive": (data) => {
@@ -43,6 +44,7 @@ const WebSocketContainer = ({phase}) => {
     ws.current = new WebSocket("ws://localhost:8080")
 
     ws.current.onopen = () => {
+      setWebSocketOpen(true)
       ws.current.send(JSON.stringify({type: "JOIN_GAME", data: {gameId}}))
     }
 
@@ -51,8 +53,11 @@ const WebSocketContainer = ({phase}) => {
       wscMessageHandlers[data.type](data.data)
     }
 
-    return () => {
-      ws.current.close()
+    window.onbeforeunload = () => ws.current.close()
+
+    ws.current.onclose = () => {
+      setWebSocketOpen(false)
+      console.log("WebSocket connection closed. Did another player refresh their browser or navigate to a different URL?")
     }
   }, [])
 
@@ -62,13 +67,12 @@ const WebSocketContainer = ({phase}) => {
         <div>
           {
             phase == Lobby
-            ? <Lobby wscMessageHandlers={wscMessageHandlers} gameOpen={gameOpen} setGameOpen={setGameOpen} />
-            : <Game gameOpen={gameOpen} />
+            ? <Lobby wscMessageHandlers={wscMessageHandlers} webSocketOpen={webSocketOpen} gameOpen={gameOpen} />
+            : <Game webSocketOpen={webSocketOpen} gameOpen={gameOpen} />
           }
         </div>
       </GameIdContext.Provider>
     </WebSocketContext.Provider>
-    
   )
 }
 
