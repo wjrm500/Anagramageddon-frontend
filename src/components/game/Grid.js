@@ -13,7 +13,8 @@ const Grid = () => {
   const playerCollection = useSelector(state => state.playerCollection)
   const activePlayer = playerCollection.getActivePlayer()
   const requiredAction = useSelector(state => state.requiredAction)
-  const active = clientActive && requiredAction == ACTION_CLICK_BOX
+  const winningPlayer = useSelector(state => state.winningPlayer)
+  const active = clientActive && requiredAction == ACTION_CLICK_BOX && winningPlayer == null
   const dispatch = useDispatch()
   const boxes = useSelector(state => state.boxes)
   const boxComponents = []
