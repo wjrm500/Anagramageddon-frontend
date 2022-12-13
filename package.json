@@ -1,7 +1,7 @@
 {
   "name": "anagramageddon",
   "version": "0.1.0",
-  "homepage": "https://wjrm500.github.io/Anagramageddon",
+  "homepage": "https://wjrm500.github.io/Anagramageddon-frontend",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
