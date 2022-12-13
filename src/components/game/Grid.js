@@ -22,7 +22,8 @@ const Grid = () => {
       const box = boxes[rowIdx][colIdx]
       const setTextFlash = (textFlash) => dispatch({type: SET_TEXT_FLASH, textFlash})
       const onClick = () => {
-        if (clientActive && requiredAction == ACTION_ENTER_WORD) {
+        if (!clientActive) return
+        if (requiredAction == ACTION_ENTER_WORD) {
           setTextFlash({content: "Enter a word", status: FLASH_ERROR})
           return
         }

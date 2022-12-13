@@ -19,7 +19,8 @@ const WordEntry = () => {
   const dispatch = useDispatch()
   const [value, setValue] = useState("")
   const onClick = () => {
-    if (!active) {
+    if (!clientActive) return
+    if (requiredAction == ACTION_CLICK_BOX) {
       dispatch({type: SET_TEXT_FLASH, textFlash: {content: "Click a box", status: FLASH_ERROR}})
     }
   }

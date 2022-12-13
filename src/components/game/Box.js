@@ -8,12 +8,21 @@ class Box extends React.Component {
       active: props.active,
       onClick: props.onClick
     }
+    this.getColor = this.getColor.bind(this)
   }
 
   componentWillReceiveProps(props) {
-    this.setState({
-      active: props.active
-    })
+    this.state = {
+      box: props.box,
+      active: props.active,
+      onClick: props.onClick
+    }
+  }
+
+  getColor() {
+    const colorTuple = this.state.box.player.color
+    const alpha = this.state.active ? 1 : 0.5
+    return `rgba(${colorTuple[0]}, ${colorTuple[1]}, ${colorTuple[2]}, ${alpha})`
   }
 
   render() {
@@ -22,7 +31,7 @@ class Box extends React.Component {
         <div
           className={"innerBox " + (!this.state.active ? "inactive" : "")}
           style={{
-            backgroundColor: this.state.box.player ? this.state.box.player.color : "",
+            backgroundColor: this.state.box.player ? this.getColor() : "",
             color: this.state.box.player ? "white" : ""
           }}
           onClick={this.state.onClick}

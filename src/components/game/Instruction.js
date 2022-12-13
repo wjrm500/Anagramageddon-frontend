@@ -14,8 +14,10 @@ const Instruction = () => {
     [ACTION_ENTER_WORD, "Enter a word that can be formed by your letters"]
   ])
   const prompt = promptMap.get(requiredAction)
+  const tup = activePlayer.color // activePlayerColorTuple
+  const playerNameColor = `rgb(${tup[0]}, ${tup[1]}, ${tup[2]})`
   const instruction = <div id="instruction">
-    It's <span id="activePlayer" style={{color: activePlayer.color}}>{activePlayer.name}</span>'s turn! {prompt}. You've got <Countdown /> seconds...
+    It's <span id="activePlayer" style={{color: playerNameColor}}>{activePlayer.name}</span>'s turn! {prompt}. You've got <Countdown /> seconds...
   </div>
   return (
     <div>

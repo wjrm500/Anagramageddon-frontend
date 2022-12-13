@@ -8,6 +8,7 @@ export function validateWord(word, player, boxes) {
   }
 
   // Check whether word can be formed from player's letters
+  debugger
   const wordLetters = word.split("")
   const playerLetters = player.boxData.map((boxDatum) => boxes[boxDatum[0]][boxDatum[1]].letter)
   for (let wordLetter of wordLetters) {
