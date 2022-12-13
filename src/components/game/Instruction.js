@@ -14,8 +14,11 @@ const Instruction = () => {
     [ACTION_ENTER_WORD, "Enter a word that can be formed by your letters"]
   ])
   const prompt = promptMap.get(requiredAction)
+  const whoseTurn = <span>
+    It's <span id="activePlayer" style={{color: activePlayer.getColor()}}>{activePlayer.name}</span>'s turn!
+  </span>
   const instruction = <div id="instruction">
-    It's <span id="activePlayer" style={{color: activePlayer.getColor()}}>{activePlayer.name}</span>'s turn! {prompt}. You've got <Countdown /> seconds...
+    {whoseTurn} {prompt}. You've got <Countdown /> seconds...
   </div>
   return (
     <div>
@@ -24,7 +27,7 @@ const Instruction = () => {
         ? (
           clientActive
           ? instruction
-          : "It'll be your turn soon!"
+          : whoseTurn
         )
         : <div id="announcement">{winningPlayer != null ? winningPlayer.name : ""} won!</div>
       }
