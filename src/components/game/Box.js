@@ -10,6 +10,12 @@ class Box extends React.Component {
     }
   }
 
+  componentWillReceiveProps(props) {
+    this.setState({
+      active: props.active
+    })
+  }
+
   render() {
     return (
       <div className="outerBox">

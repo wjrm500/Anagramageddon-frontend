@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { DECREMENT_COUNTDOWN, RESET_COUNTDOWN } from '../../reducers/countdownSeconds'
+import { RESET_COUNTDOWN, SET_COUNTDOWN_SECONDS } from '../../reducers/countdownSeconds'
 import { SWITCH_ACTIVE_PLAYER } from '../../reducers/playerCollection'
 import { ACTION_CLICK_BOX, SET_REQUIRED_ACTION } from '../../reducers/requiredAction'
 import { GameIdContext, WebSocketContext } from '../WebSocketContainer'
@@ -8,16 +8,16 @@ import { GameIdContext, WebSocketContext } from '../WebSocketContainer'
 const Countdown = () => {
   const ws = useContext(WebSocketContext)
   const gameId = useContext(GameIdContext)
-  const countdownSeconds = useSelector(state => state.countdownSeconds.current)
+  const countdownSeconds = useSelector(state => state.countdownSeconds)
   const dispatch = useDispatch()
   useEffect(() => {
     const interval = setInterval(() => {
       if (countdownSeconds > 0) {
-        ws.send(JSON.stringify(({type: DECREMENT_COUNTDOWN, data: {gameId, decrementBy: 1}})))
+        dispatch({type: SET_COUNTDOWN_SECONDS, countdownSeconds: countdownSeconds - 1})
       } else {
         dispatch({type: SET_REQUIRED_ACTION, requiredAction: ACTION_CLICK_BOX})
-        ws.send(JSON.stringify({type: RESET_COUNTDOWN, data: {gameId}}))
-        ws.send(JSON.stringify({type: SWITCH_ACTIVE_PLAYER, data: {gameId}}))
+        ws.current.send(JSON.stringify({type: RESET_COUNTDOWN, data: {gameId}}))
+        ws.current.send(JSON.stringify({type: SWITCH_ACTIVE_PLAYER, data: {gameId}}))
       }
     }, 1000)
     return () => clearInterval(interval)

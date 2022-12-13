@@ -1,7 +1,7 @@
 const dictionaryUrl = "https://api.dictionaryapi.dev/api/v2/entries/en/"
 const missingWords = ["BE", "FOR", "IS", "WAS", "NET", "DOSE"]
 
-export function validateWord(word, player) {
+export function validateWord(word, player, boxes) {
   // Check whether player has already used word
   if (player.wordsUsed.includes(word)) {
     return Promise.reject("Already used")
@@ -9,7 +9,7 @@ export function validateWord(word, player) {
 
   // Check whether word can be formed from player's letters
   const wordLetters = word.split("")
-  const playerLetters = player.boxes.map((box) => box.state.letter)
+  const playerLetters = player.boxData.map((boxDatum) => boxes[boxDatum[0]][boxDatum[1]].letter)
   for (let wordLetter of wordLetters) {
     const letterIndex = playerLetters.indexOf(wordLetter)
     if (letterIndex == -1) {

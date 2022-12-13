@@ -15,7 +15,6 @@ const createBoxMap = (boxData) => {
       map[x][y] = new Box(box)
     }
   }
-  debugger
   return map
 }
 

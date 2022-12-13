@@ -1,28 +1,28 @@
 export class Player {
   constructor(props) {
-    const {name, color, score, boxes, wordsUsed, turnsTaken} = props
+    const {name, color, score, boxData, wordsUsed, turnsTaken} = props
     this.name = name
     this.color = color
     this.score = score ?? 0
-    this.boxes = boxes ?? []
+    this.boxData = boxData ?? []
     this.wordsUsed = wordsUsed ?? []
     this.turnsTaken = turnsTaken ?? 0
   }
 
-  addBox(box) {
-    this.boxes.push(box)
+  addBox(boxDatum) {
+    this.boxData.push(boxDatum)
   }
 
-  removeBox(box) {
-    this.boxes = this.boxes.filter(x => x != box)
+  removeBox(boxDatum) {
+    this.boxData = this.boxData.filter(x => x != boxDatum)
   }
 
   canAddBox(box) {
-    if (this.boxes.includes(box)) {
+    if (box.player == this) {
       return false
     }
-    for (let playerBox of this.boxes) {
-      if (Math.abs(playerBox.getX() - box.getX()) <= 1 && Math.abs(playerBox.getY() - box.getY()) <= 1) {
+    for (let boxDatum of this.boxData) {
+      if (Math.abs(boxDatum[0] - box.getX()) <= 1 && Math.abs(boxDatum[1] - box.getY()) <= 1) {
         return true
       }
     }

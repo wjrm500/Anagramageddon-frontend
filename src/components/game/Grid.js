@@ -2,17 +2,18 @@ import React, { useContext } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { ACTION_CLICK_BOX, ACTION_ENTER_WORD, SET_REQUIRED_ACTION } from '../../reducers/requiredAction'
 import { FLASH_ERROR, SET_TEXT_FLASH } from '../../reducers/textFlash'
-import { WebSocketContext } from '../WebSocketContainer'
+import { GameIdContext, WebSocketContext } from '../WebSocketContainer'
 import Box from './Box'
 
 const Grid = () => {
   const ws = useContext(WebSocketContext)
+  const gameId = useContext(GameIdContext)
   const clientActive = useSelector(state => state.clientActive)
-  const active = clientActive && requiredAction == ACTION_CLICK_BOX
   const gridSize = useSelector(state => state.gridSize)
   const playerCollection = useSelector(state => state.playerCollection)
   const activePlayer = playerCollection.getActivePlayer()
   const requiredAction = useSelector(state => state.requiredAction)
+  const active = clientActive && requiredAction == ACTION_CLICK_BOX
   const dispatch = useDispatch()
   const boxes = useSelector(state => state.boxes)
   const boxComponents = []
@@ -27,7 +28,7 @@ const Grid = () => {
         }
         if (activePlayer.canAddBox(box)) {
           dispatch({type: SET_REQUIRED_ACTION, requiredAction: ACTION_ENTER_WORD})
-          ws.send(JSON.stringify({type: "CLICK_BOX", data: {x: rowIdx, y: colIdx}}))
+          ws.current.send(JSON.stringify({type: "CLICK_BOX", data: {gameId, x: rowIdx, y: colIdx}}))
         } else {
           setTextFlash({content: "Can't go here", status: FLASH_ERROR})
         }

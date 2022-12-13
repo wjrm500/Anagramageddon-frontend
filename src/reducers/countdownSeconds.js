@@ -1,5 +1,4 @@
 // WebSocket actions
-export const DECREMENT_COUNTDOWN = "DECREMENT_COUNTDOWN"
 export const RESET_COUNTDOWN = "RESET_COUNTDOWN"
 
 // Redux actions
