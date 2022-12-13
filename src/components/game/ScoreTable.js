@@ -6,7 +6,7 @@ const ScoreTable = () => {
   const players = playerCollection.getPlayers()
   const rows = players.map((player) => {
     return <tr key={player.name}>
-      <td style={{color: player.color}}>{player.name}</td>
+      <td style={{color: player.getColor()}}>{player.name}</td>
       <td>{player.score}</td>
     </tr>
   })

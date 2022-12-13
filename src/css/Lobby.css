@@ -1,0 +1,29 @@
+#formComponent input {
+  margin-right: 2.5px;
+}
+
+#formComponent button {
+  margin-left: 2.5px;
+}
+
+#playerListComponent {
+  margin-top: 20px;
+}
+
+#playerList {
+  list-style: none;
+  margin: 5px 0px;
+  padding: 0px;
+}
+
+.playerListItem {
+  margin: 5px 0px;
+}
+
+#startGameButton {
+  margin-top: 10px;
+}
+
+#startGameButton:hover {
+  cursor: pointer;
+}

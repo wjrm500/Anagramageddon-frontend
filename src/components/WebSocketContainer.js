@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useRef } from 'react'
+import React, { createContext, useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom'
 import { SET_BOXES } from '../reducers/boxes';
@@ -15,6 +15,7 @@ const WebSocketContainer = ({phase}) => {
   const {gameId} = useParams()
   const ws = useRef(null);
   const dispatch = useDispatch()
+  const [gameOpen, setGameOpen] = useState(null)
 
   const wscMessageHandlers = {
     "setClientActive": (data) => {
@@ -32,6 +33,9 @@ const WebSocketContainer = ({phase}) => {
     "setBoxes": (data) => {
       const boxes = data.boxes
       dispatch({type: SET_BOXES, boxes})
+    },
+    "setGameOpen": (data) => {
+      setGameOpen(data.gameOpen)
     }
   }
   
@@ -58,8 +62,8 @@ const WebSocketContainer = ({phase}) => {
         <div>
           {
             phase == Lobby
-            ? <Lobby ws={ws} wscMessageHandlers={wscMessageHandlers} />
-            : <Game ws={ws} wscMessageHandlers={wscMessageHandlers} />
+            ? <Lobby wscMessageHandlers={wscMessageHandlers} gameOpen={gameOpen} setGameOpen={setGameOpen} />
+            : <Game gameOpen={gameOpen} />
           }
         </div>
       </GameIdContext.Provider>

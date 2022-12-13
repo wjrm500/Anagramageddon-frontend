@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import Header from '../Header'
 
 const Setup = () => {
   const navigate = useNavigate()
@@ -28,36 +29,39 @@ const Setup = () => {
     }
   }
   return (
-    <div id="formContainer">
-      <form id="setupForm" onSubmit={onSubmit}>
-        <div className="formComponent">
-          <label>Grid size (5 - 15)</label>
-          <input type="number"
-                 value={!isNaN(gridSize) ? gridSize : ""}
-                 onChange={(e) => setGridSize(parseInt(e.target.value))}
-                 min="5"
-                 max="15" />
-        </div>
-        <div className="formComponent">
-          <label>Winning score {!isNaN(gridSize) ? "(" + gridSize + " - " + gridSize * 10 + ")" : ""} </label>
-          <input type="number"
-                 value={!isNaN(winningScore) ? winningScore : ""}
-                 onChange={(e) => setWinningScore(parseInt(e.target.value))}
-                 min={!isNaN(gridSize) ? gridSize : ""}
-                 max={!isNaN(gridSize) ? gridSize * 10 : ""} />
-        </div>
-        <div className="formComponent">
-          <label>Turn time limit (5 - 30)</label>
-          <input type="number"
-                 value={!isNaN(maxCountdownSeconds) ? maxCountdownSeconds : ""}
-                 onChange={(e) => setMaxCountdownSeconds(parseInt(e.target.value))}
-                 min="5"
-                 max="30" />
-        </div>
-        <div className="formComponent">
-          <input id="submitButton" type="submit" />
-        </div>
-      </form>
+    <div id="container">
+      <Header />
+      <div id="formContainer">
+        <form id="setupForm" onSubmit={onSubmit}>
+          <div className="formComponent">
+            <label>Grid size (5 - 15)</label>
+            <input type="number"
+                  value={!isNaN(gridSize) ? gridSize : ""}
+                  onChange={(e) => setGridSize(parseInt(e.target.value))}
+                  min="5"
+                  max="15" />
+          </div>
+          <div className="formComponent">
+            <label>Winning score {!isNaN(gridSize) ? "(" + gridSize + " - " + gridSize * 10 + ")" : ""} </label>
+            <input type="number"
+                  value={!isNaN(winningScore) ? winningScore : ""}
+                  onChange={(e) => setWinningScore(parseInt(e.target.value))}
+                  min={!isNaN(gridSize) ? gridSize : ""}
+                  max={!isNaN(gridSize) ? gridSize * 10 : ""} />
+          </div>
+          <div className="formComponent">
+            <label>Turn time limit (5 - 30)</label>
+            <input type="number"
+                  value={!isNaN(maxCountdownSeconds) ? maxCountdownSeconds : ""}
+                  onChange={(e) => setMaxCountdownSeconds(parseInt(e.target.value))}
+                  min="5"
+                  max="30" />
+          </div>
+          <div className="formComponent">
+            <input id="submitButton" type="submit" value="Create game" />
+          </div>
+        </form>
+      </div>
     </div>
   )
 }

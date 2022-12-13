@@ -1,6 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { CHECK_WINNING_PLAYER } from '../../reducers/winningPlayer'
+import Header from '../Header'
 import Grid from './Grid'
 import Instruction from './Instruction'
 import ScoreNotification from './ScoreNotification'
@@ -9,25 +10,40 @@ import TextFlash from './TextFlash'
 import WinnerBanner from './WinnerBanner'
 import WordEntry from './WordEntry'
 
-const Game = ({ws}) => {
+const Game = ({gameOpen}) => {
   const winningScore = useSelector(state => state.winningScore)
   const playerCollection = useSelector(state => state.playerCollection)
   const dispatch = useDispatch()
   dispatch({type: CHECK_WINNING_PLAYER, winningScore: winningScore, playerCollection: playerCollection})
+  const winningPlayer = useSelector(state => state.winningPlayer)
   return (
-    <div id="gameContainer">
-      <TextFlash />
+    <div id="container">
+      <Header />
       {
-        useSelector(state => state.winningPlayer) != null
-        ? <WinnerBanner />
+        gameOpen != null
+        ? (
+          gameOpen ? (
+            <div id="gameContainer">
+              <TextFlash />
+              {
+                winningPlayer != null
+                ? <WinnerBanner />
+                : ""
+              }
+              <Instruction />
+              <Grid />
+              <WordEntry />
+              <ScoreTable />
+              <ScoreNotification />
+            </div>
+          )
+          : "Too late! This game has already started."
+        )
         : ""
       }
-      <Instruction />
-      <Grid />
-      <WordEntry />
-      <ScoreTable />
-      <ScoreNotification />
+      
     </div>
+    
   )
 }
 

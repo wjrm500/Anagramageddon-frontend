@@ -9,6 +9,11 @@ export class Player {
     this.turnsTaken = turnsTaken ?? 0
   }
 
+  getColor() {
+    const tup = this.color
+    return `rgb(${tup[0]}, ${tup[1]}, ${tup[2]})`
+  }
+
   addBox(boxDatum) {
     this.boxData.push(boxDatum)
   }

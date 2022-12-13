@@ -1,6 +1,7 @@
 @import "Game.css";
 @import "Header.css";
 @import "Setup.css";
+@import "Lobby.css";
 
 #container {
   align-items: center;

@@ -1,41 +1,37 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import { PlayerCollection } from '../../non-components/PlayerCollection';
 import { SET_BOXES } from '../../reducers/boxes';
 import { SET_COUNTDOWN_SECONDS } from '../../reducers/countdownSeconds';
 import { SET_GRID_SIZE } from '../../reducers/gridSize';
 import { SET_PLAYER_COLLECTION } from '../../reducers/playerCollection';
 import { SET_WINNING_SCORE } from '../../reducers/winningScore';
+import Header from '../Header';
+import { WebSocketContext } from '../WebSocketContainer';
 
-const Lobby = ({ws, wscMessageHandlers}) => {
+const Lobby = ({wscMessageHandlers, gameOpen}) => {
   const navigate = useNavigate()
+  const ws = useContext(WebSocketContext)
   const {gameId} = useParams()
   const [playerName, setPlayerName] = useState("")
   const playerNameSubmitted = useRef(false)
   const playerCollection = useSelector(state => state.playerCollection)
-  const [gameStarted, setGameStarted] = useState(false)
   const [playerLimitReached, setPlayerLimitReached] = useState(false)
   const dispatch = useDispatch()
 
   const lobbyMessageHandlers = {
     "startGame": (data) => {
-      if (playerNameSubmitted.current) {
-        const {boxes, gridSize, winningScore, maxCountdownSeconds, playerCollection} = data
-        dispatch({type: SET_BOXES, boxes})
-        dispatch({type: SET_GRID_SIZE, gridSize})
-        dispatch({type: SET_WINNING_SCORE, winningScore})
-        dispatch({type: SET_COUNTDOWN_SECONDS, countdownSeconds: maxCountdownSeconds})
-        dispatch({type: SET_PLAYER_COLLECTION, playerCollection})
-        navigate(`/game/${gameId}/play`)
-      } else {
-        setGameStarted(true)
-      }
+      const {boxes, gridSize, winningScore, maxCountdownSeconds, playerCollection} = data
+      dispatch({type: SET_BOXES, boxes})
+      dispatch({type: SET_GRID_SIZE, gridSize})
+      dispatch({type: SET_WINNING_SCORE, winningScore})
+      dispatch({type: SET_COUNTDOWN_SECONDS, countdownSeconds: maxCountdownSeconds})
+      dispatch({type: SET_PLAYER_COLLECTION, playerCollection})
+      navigate(`/game/${gameId}/play`)
     },
     "playerLimitReached": (data) => {
       setPlayerLimitReached(true)
-    },
-    "gameAlreadyStarted": (data) => {
-      setGameStarted(true)
     },
     "playerAdded": (data) => {
       playerNameSubmitted.current = true
@@ -61,18 +57,35 @@ const Lobby = ({ws, wscMessageHandlers}) => {
   const onStartGameClick = () => ws.current.send(JSON.stringify({type: "START_GAME", data: {gameId}}))
 
   const form = <div>
-    <input type="text" onChange={(e) => setPlayerName(e.target.value)} disabled={inputDisabled} onKeyDown={(e) => e.key == "Enter" ? onAddNameClick() : ""} />
-    <button onClick={onAddNameClick} disabled={inputDisabled}>
-      Add name
-    </button>
-    {
-      playerCollection.getPlayerNames().map((name) => (
-        <p key={name}>{name}</p>
-      ))
-    }
+    <div id="formComponent">
+      <input type="text" onChange={(e) => setPlayerName(e.target.value)} disabled={inputDisabled} onKeyDown={(e) => e.key == "Enter" ? onAddNameClick() : ""} placeholder="Enter name here" />
+      <button onClick={onAddNameClick} disabled={inputDisabled}>
+        Join
+      </button>
+    </div>
+    <div id="playerListComponent">
+      {
+        playerCollection.numPlayers() > 0
+        ? <div id="playerListTitle">Players in game:</div>
+        : ""
+      }
+      
+      <ul id="playerList">
+        {
+          playerCollection.getPlayerNames().map((name, idx) => {
+            const color = PlayerCollection.playerColors[idx]
+            return (
+              <li key={name} className="playerListItem" style={{color}}>
+                {name}
+              </li>
+            )
+          })
+        }
+      </ul>
+    </div>
     {
       playerNameSubmitted.current && playerCollection.numPlayers() >= 2
-      ? <button onClick={onStartGameClick}>
+      ? <button id="startGameButton" onClick={onStartGameClick}>
         Start game
       </button>
       : ""
@@ -80,15 +93,19 @@ const Lobby = ({ws, wscMessageHandlers}) => {
   </div>
 
   return (
-    <div>
+    <div id="container">
+      <Header />
       {
-        !gameStarted
+        gameOpen != null
         ? (
-          !playerLimitReached
-          ? form
-          : "Too late! The player limit has been reached."
+          gameOpen ? (
+            !playerLimitReached
+            ? form
+            : "Too late! The player limit has been reached."
+          )
+          : "Too late! This game has already started."
         )
-        : "Too late! This game has already started."
+        : ""
       }
     </div>    
   )
