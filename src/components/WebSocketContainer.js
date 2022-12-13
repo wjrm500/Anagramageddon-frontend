@@ -42,7 +42,7 @@ const WebSocketContainer = ({phase}) => {
   }
   
   useEffect(() => {
-    ws.current = new WebSocket("ws://localhost:8080")
+    ws.current = new WebSocket(`ws://${process.env.REACT_APP_API_URL}`)
 
     ws.current.onopen = () => {
       setWebSocketOpen(true)

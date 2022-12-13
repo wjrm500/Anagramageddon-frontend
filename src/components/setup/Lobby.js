@@ -73,7 +73,7 @@ const Lobby = ({wscMessageHandlers, webSocketOpen, gameOpen}) => {
   const form = <div id="lobbyComponent">
     <div id="linkComponent">
       <a href={window.location.href} style={{color: "blue", fontWeight: "bold", textDecoration: "none"}} onClick={onCopyLinkClick}>
-        Copy shareable link
+        Click to copy lobby link
       </a>
       <span id="linkCopiedNotification" className={showLinkCopied ? "" : "alert-hidden"}>Link copied</span>
     </div>
