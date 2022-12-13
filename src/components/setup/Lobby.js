@@ -28,7 +28,7 @@ const Lobby = ({wscMessageHandlers, gameOpen}) => {
       dispatch({type: SET_WINNING_SCORE, winningScore})
       dispatch({type: SET_COUNTDOWN_SECONDS, countdownSeconds: maxCountdownSeconds})
       dispatch({type: SET_PLAYER_COLLECTION, playerCollection})
-      navigate(`/game/${gameId}/play`)
+      navigate(`/${gameId}/play`)
     },
     "playerLimitReached": (data) => {
       setPlayerLimitReached(true)
@@ -56,33 +56,56 @@ const Lobby = ({wscMessageHandlers, gameOpen}) => {
 
   const onStartGameClick = () => ws.current.send(JSON.stringify({type: "START_GAME", data: {gameId}}))
 
-  const form = <div>
+  const [showLinkCopied, setShowLinkCopied] = useState(false)
+
+  const onCopyLinkClick = (evt) => {
+    evt.preventDefault()
+    navigator.clipboard.writeText(evt.target.getAttribute('href')).then(
+      () => {
+        setShowLinkCopied(true)
+        setTimeout(() => {
+          setShowLinkCopied(false)
+        }, 50)
+      }
+    )
+  }
+
+  const form = <div id="lobbyComponent">
+    <div id="linkComponent">
+      <a href={window.location.href} style={{color: "blue", fontWeight: "bold", textDecoration: "none"}} onClick={onCopyLinkClick}>
+        Copy shareable link
+      </a>
+      <span id="linkCopiedNotification" className={showLinkCopied ? "" : "alert-hidden"}>Link copied</span>
+    </div>
     <div id="formComponent">
       <input type="text" onChange={(e) => setPlayerName(e.target.value)} disabled={inputDisabled} onKeyDown={(e) => e.key == "Enter" ? onAddNameClick() : ""} placeholder="Enter name here" />
       <button onClick={onAddNameClick} disabled={inputDisabled}>
         Join
       </button>
     </div>
-    <div id="playerListComponent">
-      {
+    {
         playerCollection.numPlayers() > 0
-        ? <div id="playerListTitle">Players in game:</div>
+        ? (
+          <div id="playerListComponent">
+            <div id="playerListTitle">
+              Players in game:
+            </div>
+            <ul id="playerList">
+              {
+                playerCollection.getPlayerNames().map((name, idx) => {
+                  const color = PlayerCollection.playerColors[idx]
+                  return (
+                    <li key={name} className="playerListItem" style={{color}}>
+                      {name}
+                    </li>
+                  )
+                })
+              }
+            </ul>
+          </div>
+        )
         : ""
-      }
-      
-      <ul id="playerList">
-        {
-          playerCollection.getPlayerNames().map((name, idx) => {
-            const color = PlayerCollection.playerColors[idx]
-            return (
-              <li key={name} className="playerListItem" style={{color}}>
-                {name}
-              </li>
-            )
-          })
-        }
-      </ul>
-    </div>
+    }
     {
       playerNameSubmitted.current && playerCollection.numPlayers() >= 2
       ? <button id="startGameButton" onClick={onStartGameClick}>

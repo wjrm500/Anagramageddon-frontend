@@ -25,7 +25,7 @@ const Setup = () => {
           }
         })
         .then(response => response.json())
-        .then(data => navigate(`/game/${data.gameId}/lobby`))
+        .then(data => navigate(`/${data.gameId}/lobby`))
     }
   }
   return (

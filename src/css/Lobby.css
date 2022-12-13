@@ -1,4 +1,41 @@
+#lobbyComponent {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+#lobbyComponent * {
+  font-size: 16px;
+}
+
+#linkComponent * {
+  margin: 0px 2.5px;
+}
+
+#linkCopiedNotification {
+  background-color: #222222;
+  border-radius: 5px;
+  color: white;
+  font-size: 0.7em;
+  height: 13px;
+  padding: 2px 5px;
+  position: absolute;
+}
+
+.alert-hidden {
+  opacity: 0;
+  transition: all 250ms linear 0.5s;
+}
+
+#formComponent {
+  display: flex;
+  font-size: 16px;
+  margin-top: 20px;
+  width: 250px;
+}
+
 #formComponent input {
+  flex: 1;
   margin-right: 2.5px;
 }
 
@@ -7,10 +44,19 @@
 }
 
 #playerListComponent {
-  margin-top: 20px;
+  margin-top: 15px;
+  padding: 5px;
+  text-align: center;
+  width: 250px;
+}
+
+#playerListTitle {
+  margin: 5px 0px;
 }
 
 #playerList {
+  border: 1px solid #dddddd;
+  border-radius: 5px;
   list-style: none;
   margin: 5px 0px;
   padding: 0px;
@@ -22,6 +68,7 @@
 
 #startGameButton {
   margin-top: 10px;
+  width: 250px;
 }
 
 #startGameButton:hover {

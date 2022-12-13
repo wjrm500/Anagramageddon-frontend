@@ -16,8 +16,8 @@ const Container = () => {
       <Router basename="/Anagramageddon">
         <Routes>
           <Route exact path="/" element={<Setup />} />
-          <Route path="/game/:gameId/lobby" element={<WebSocketContainer phase={Lobby} />} />
-          <Route path="/game/:gameId/play" element={<WebSocketContainer phase={Game} />} />
+          <Route path="/:gameId/lobby" element={<WebSocketContainer phase={Lobby} />} />
+          <Route path="/:gameId/play" element={<WebSocketContainer phase={Game} />} />
         </Routes>
       </Router>
     </Provider>
