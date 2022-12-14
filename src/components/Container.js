@@ -13,7 +13,7 @@ const store = createStore(rootReducer)
 const Container = () => {
   return (
     <Provider store={store}>
-      <Router basename="/Anagramageddon-frontend">
+      <Router>
         <Routes>
           <Route exact path="/" element={<Setup />} />
           <Route path="/:gameId/lobby" element={<WebSocketContainer phase={Lobby} />} />
