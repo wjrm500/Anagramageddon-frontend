@@ -1,6 +1,6 @@
 import { Box } from "../non-components/Box"
 
-// WebSocket actions
+// WebSocket / Redux actions
 export const CLICK_BOX = 'CLICK_BOX'
 
 // Redux actions
@@ -18,8 +18,14 @@ const createBoxMap = (boxData) => {
   return map
 }
 
-export const boxesReducer = (boxes = [], action) => {
+export const boxesReducer = (boxes = {}, action) => {
   switch (action.type) {
+    case CLICK_BOX:
+      // For fast local rendering of updated grid for active client, pre-empting server confirmation
+      // Makes box clicking feel more responsive when run in production
+      const clickedBox = boxes[action.coords.x][action.coords.y]
+      clickedBox.setPlayer(action.activePlayer)
+      return boxes
     case SET_BOXES:
       return createBoxMap(action.boxes)
     default:
