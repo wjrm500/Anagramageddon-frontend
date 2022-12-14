@@ -1,7 +1,7 @@
 import React from 'react'
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { rootReducer } from '../reducers/rootReducer'
 import Game from './game/Game'
 import Setup from './setup/Setup'
