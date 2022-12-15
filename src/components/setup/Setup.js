@@ -7,8 +7,8 @@ const Setup = () => {
   const [gridSize, setGridSize] = useState(5)
   const [winningScore, setWinningScore] = useState(25)
   const [maxCountdownSeconds, setMaxCountdownSeconds] = useState(15)
-  const onSubmit = async (e) => {
-    e.preventDefault()
+  const onSubmit = async (evt) => {
+    evt.preventDefault()
 
     if (isNaN(gridSize) || gridSize < 5 || gridSize > 15) {
       alert("Invalid grid size")
@@ -17,7 +17,7 @@ const Setup = () => {
     } else if (isNaN(maxCountdownSeconds) || maxCountdownSeconds < 5 || maxCountdownSeconds > 30) {
       alert("Invalid turn time limit")
     } else {
-      fetch(`${process.env.REACT_APP_API_HTTP_URL}/create-game`, {
+      await fetch(`${process.env.REACT_APP_API_HTTP_URL}/create-game`, {
         method: "POST",
         body: JSON.stringify({gridSize, winningScore, maxCountdownSeconds}),
         headers: {
