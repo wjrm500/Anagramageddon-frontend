@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/Anagramageddon-frontend/static/css/main.775eb718.css",
-    "main.js": "/Anagramageddon-frontend/static/js/main.0e1b4516.js",
+    "main.js": "/Anagramageddon-frontend/static/js/main.97605a03.js",
     "index.html": "/Anagramageddon-frontend/index.html",
     "main.775eb718.css.map": "/Anagramageddon-frontend/static/css/main.775eb718.css.map",
-    "main.0e1b4516.js.map": "/Anagramageddon-frontend/static/js/main.0e1b4516.js.map"
+    "main.97605a03.js.map": "/Anagramageddon-frontend/static/js/main.97605a03.js.map"
   },
   "entrypoints": [
     "static/css/main.775eb718.css",
-    "static/js/main.0e1b4516.js"
+    "static/js/main.97605a03.js"
   ]
 }
