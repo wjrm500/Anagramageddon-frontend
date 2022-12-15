@@ -1,7 +1,8 @@
 import React, { useContext, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { SET_CLIENT_ACTIVE } from '../../reducers/clientActive'
 import { RESET_COUNTDOWN, SET_COUNTDOWN_SECONDS } from '../../reducers/countdownSeconds'
-import { ENTER_WORD, SWITCH_ACTIVE_PLAYER } from '../../reducers/playerCollection'
+import { ENTER_WORD, SET_PLAYER_COLLECTION, SWITCH_ACTIVE_PLAYER } from '../../reducers/playerCollection'
 import { ACTION_CLICK_BOX, ACTION_ENTER_WORD, SET_REQUIRED_ACTION } from '../../reducers/requiredAction'
 import { FLASH_ERROR, FLASH_SCORE, SET_TEXT_FLASH } from '../../reducers/textFlash'
 import { validateWord } from '../../utilities/validateWord'
@@ -14,7 +15,8 @@ const WordEntry = () => {
   const requiredAction = useSelector(state => state.requiredAction)
   const clientActive = useSelector(state => state.clientActive)
   const active = clientActive && requiredAction == ACTION_ENTER_WORD
-  const activePlayer = useSelector(state => state.playerCollection).getActivePlayer()
+  const playerCollection = useSelector(state => state.playerCollection)
+  const activePlayer = playerCollection.getActivePlayer()
   const boxes = useSelector(state => state.boxes)
   const dispatch = useDispatch()
   const [value, setValue] = useState("")
@@ -34,6 +36,11 @@ const WordEntry = () => {
         .then(() => {
           dispatch({type: SET_REQUIRED_ACTION, requiredAction: ACTION_CLICK_BOX})
           dispatch({type: SET_TEXT_FLASH, textFlash: {content: "+" + word.length, status: FLASH_SCORE}})
+          // Dispatch locally to increases responsiveness
+          dispatch({type: ENTER_WORD, word})
+          playerCollection.switchActivePlayer()
+          dispatch({type: SET_PLAYER_COLLECTION, playerCollection})
+          dispatch({type: SET_CLIENT_ACTIVE, clientActive: false})
           ws.current.send(JSON.stringify(({type: ENTER_WORD, data: {gameId, word}})))
           ws.current.send(JSON.stringify({type: RESET_COUNTDOWN, data: {gameId}}))
           ws.current.send(JSON.stringify({type: SWITCH_ACTIVE_PLAYER, data: {gameId}}))
