@@ -1,11 +1,9 @@
 import { Player } from "../non-components/Player"
 import { PlayerCollection } from "../non-components/PlayerCollection"
 
-// WebSocket actions
-export const SWITCH_ACTIVE_PLAYER = 'SWITCH_ACTIVE_PLAYER'
-
 // WebSocket / Redux actions
 export const ENTER_WORD = 'ENTER_WORD'
+export const SWITCH_ACTIVE_PLAYER = 'SWITCH_ACTIVE_PLAYER'
 
 // Redux actions
 export const SET_PLAYER_COLLECTION = 'SET_PLAYER_COLLECTION'
@@ -30,6 +28,9 @@ export const playerCollectionReducer = (playerCollection = new PlayerCollection(
       return createPlayerCollection(playerCollection)
     case SET_PLAYER_COLLECTION:
       return createPlayerCollection(action.playerCollection)
+    case SWITCH_ACTIVE_PLAYER:
+      playerCollection.switchActivePlayer()
+      return createPlayerCollection(playerCollection)
     default:
       return playerCollection
   }
