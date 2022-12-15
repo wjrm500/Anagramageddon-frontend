@@ -38,12 +38,9 @@ const WordEntry = () => {
           dispatch({type: SET_TEXT_FLASH, textFlash: {content: "+" + word.length, status: FLASH_SCORE}})
           // Dispatch locally to increases responsiveness
           dispatch({type: ENTER_WORD, word})
-          playerCollection.switchActivePlayer()
-          dispatch({type: SET_PLAYER_COLLECTION, playerCollection})
           dispatch({type: SET_CLIENT_ACTIVE, clientActive: false})
           ws.current.send(JSON.stringify(({type: ENTER_WORD, data: {gameId, word}})))
           ws.current.send(JSON.stringify({type: RESET_COUNTDOWN, data: {gameId}}))
-          ws.current.send(JSON.stringify({type: SWITCH_ACTIVE_PLAYER, data: {gameId}}))
         })
         .catch((error) => {
           dispatch({type: SET_TEXT_FLASH, textFlash: {content: error, status: FLASH_ERROR}})

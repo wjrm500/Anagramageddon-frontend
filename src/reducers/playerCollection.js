@@ -26,6 +26,7 @@ export const playerCollectionReducer = (playerCollection = new PlayerCollection(
     case ENTER_WORD:
       const activePlayer = playerCollection.getActivePlayer()
       activePlayer.enterWord(action.word)
+      playerCollection.switchActivePlayer()
       return createPlayerCollection(playerCollection)
     case SET_PLAYER_COLLECTION:
       return createPlayerCollection(action.playerCollection)
