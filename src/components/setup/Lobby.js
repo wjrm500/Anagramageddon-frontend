@@ -6,6 +6,7 @@ import { SET_BOXES } from '../../reducers/boxes';
 import { SET_COUNTDOWN_SECONDS } from '../../reducers/countdownSeconds';
 import { SET_GRID_SIZE } from '../../reducers/gridSize';
 import { SET_PLAYER_COLLECTION } from '../../reducers/playerCollection';
+import { SET_PLAYER_INDEX } from '../../reducers/playerIndex';
 import { SET_WINNING_SCORE } from '../../reducers/winningScore';
 import Header from '../Header';
 import { WebSocketContext } from '../WebSocketContainer';
@@ -21,6 +22,17 @@ const Lobby = ({wscMessageHandlers, webSocketOpen, gameOpen}) => {
   const dispatch = useDispatch()
 
   const lobbyMessageHandlers = {
+    "playerAdded": (data) => {
+      playerNameSubmitted.current = true
+      const playerIndex = data.playerIndex
+      dispatch({type: SET_PLAYER_INDEX, playerIndex})
+    },
+    "playerLimitReached": (data) => {
+      setPlayerLimitReached(true)
+    },
+    "playerNameTaken": (data) => {
+      alert("This name has already been taken")
+    },
     "startGame": (data) => {
       const {boxes, gridSize, winningScore, maxCountdownSeconds, playerCollection} = data
       dispatch({type: SET_BOXES, boxes})
@@ -29,15 +41,6 @@ const Lobby = ({wscMessageHandlers, webSocketOpen, gameOpen}) => {
       dispatch({type: SET_COUNTDOWN_SECONDS, countdownSeconds: maxCountdownSeconds})
       dispatch({type: SET_PLAYER_COLLECTION, playerCollection})
       navigate(`/${gameId}/play`)
-    },
-    "playerLimitReached": (data) => {
-      setPlayerLimitReached(true)
-    },
-    "playerAdded": (data) => {
-      playerNameSubmitted.current = true
-    },
-    "playerNameTaken": (data) => {
-      alert("This name has already been taken")
     }
   }
 

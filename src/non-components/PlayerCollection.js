@@ -48,4 +48,8 @@ export class PlayerCollection {
     this.players[this.activeIndex].turnsTaken += 1
     this.activeIndex = this.activeIndex == this.players.length - 1 ? 0 : this.activeIndex + 1
   }
+
+  isActiveIndex(playerIndex) {
+    return playerIndex == this.activeIndex
+  }
 }

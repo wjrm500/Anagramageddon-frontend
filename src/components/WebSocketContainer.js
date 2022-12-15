@@ -2,7 +2,7 @@ import React, { createContext, useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom'
 import { SET_BOXES } from '../reducers/boxes';
-import { SET_CLIENT_ACTIVE } from '../reducers/clientActive';
+import { SET_PLAYER_INDEX } from '../reducers/playerIndex';
 import { SET_COUNTDOWN_SECONDS } from '../reducers/countdownSeconds';
 import { SET_PLAYER_COLLECTION } from '../reducers/playerCollection';
 import Game from './game/Game';
@@ -20,24 +20,20 @@ const WebSocketContainer = ({phase}) => {
   const [webSocketOpen, setWebSocketOpen] = useState(false)
 
   const wscMessageHandlers = {
-    "setClientActive": (data) => {
-      const clientActive = data.clientActive
-      dispatch({type: SET_CLIENT_ACTIVE, clientActive})
+    "setBoxes": (data) => {
+      const boxes = data.boxes
+      dispatch({type: SET_BOXES, boxes})
     },
     "setCountdownSeconds": (data) => {
       const countdownSeconds = data.countdownSeconds
       dispatch({type: SET_COUNTDOWN_SECONDS, countdownSeconds})
     },
+    "setGameOpen": (data) => {
+      setGameOpen(data.gameOpen)
+    },
     "setPlayerCollection": (data) => {
       const playerCollection = data.playerCollection
       dispatch({type: SET_PLAYER_COLLECTION, playerCollection})
-    },
-    "setBoxes": (data) => {
-      const boxes = data.boxes
-      dispatch({type: SET_BOXES, boxes})
-    },
-    "setGameOpen": (data) => {
-      setGameOpen(data.gameOpen)
     }
   }
   

@@ -9,13 +9,14 @@ import Box from './Box'
 const Grid = () => {
   const ws = useContext(WebSocketContext)
   const gameId = useContext(GameIdContext)
-  const clientActive = useSelector(state => state.clientActive)
-  const gridSize = useSelector(state => state.gridSize)
+  const playerIndex = useSelector(state => state.playerIndex)
   const playerCollection = useSelector(state => state.playerCollection)
+  const playerActive = playerCollection.isActiveIndex(playerIndex)
+  const gridSize = useSelector(state => state.gridSize)
   const activePlayer = playerCollection.getActivePlayer()
   const requiredAction = useSelector(state => state.requiredAction)
   const winningPlayer = useSelector(state => state.winningPlayer)
-  const active = clientActive && requiredAction == ACTION_CLICK_BOX && winningPlayer == null
+  const active = playerActive && requiredAction == ACTION_CLICK_BOX && winningPlayer == null
   const dispatch = useDispatch()
   const boxes = useSelector(state => state.boxes)
   const boxComponents = []
@@ -24,7 +25,7 @@ const Grid = () => {
       const box = boxes[rowIdx][colIdx]
       const setTextFlash = (textFlash) => dispatch({type: SET_TEXT_FLASH, textFlash})
       const onClick = () => {
-        if (!clientActive) return
+        if (!playerActive) return
         if (requiredAction == ACTION_ENTER_WORD) {
           setTextFlash({content: "Enter a word", status: FLASH_ERROR})
           return

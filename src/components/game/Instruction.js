@@ -5,8 +5,9 @@ import Countdown from './Countdown'
 
 const Instruction = () => {
   const winningPlayer = useSelector(state => state.winningPlayer)
+  const playerIndex = useSelector(state => state.playerIndex)
   const playerCollection = useSelector(state => state.playerCollection)
-  const clientActive = useSelector(state => state.clientActive)
+  const playerActive = playerCollection.isActiveIndex(playerIndex)
   const activePlayer = playerCollection.getActivePlayer()
   const requiredAction = useSelector(state => state.requiredAction)
   const promptMap = new Map([
@@ -25,7 +26,7 @@ const Instruction = () => {
       {
         winningPlayer == null
         ? (
-          clientActive
+          playerActive
           ? instruction
           : whoseTurn
         )
