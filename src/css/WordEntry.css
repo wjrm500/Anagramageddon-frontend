@@ -43,3 +43,13 @@
   border-color: limegreen;
   outline: none !important;
 }
+
+@media only screen and (max-width: 400px) {
+  #wordEntryContainer {
+    width: 80vw;
+  }
+
+  .inputContainer {
+    flex: 1;
+  }
+}

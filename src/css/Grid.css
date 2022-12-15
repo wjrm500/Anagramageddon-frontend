@@ -9,6 +9,13 @@
   width: 400px;
 }
 
+@media only screen and (max-width: 400px) {
+  #grid {
+    height: 80vw;
+    width: 80vw;
+  }
+}
+
 .row {
   display: grid;
   grid-auto-columns: 1fr;

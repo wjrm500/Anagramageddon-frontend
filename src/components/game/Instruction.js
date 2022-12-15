@@ -22,7 +22,7 @@ const Instruction = () => {
     {whoseTurn} {prompt}. You've got <Countdown /> seconds...
   </div>
   return (
-    <div>
+    <div style={{textAlign: "center", width: "80vw"}}>
       {
         winningPlayer == null
         ? (
