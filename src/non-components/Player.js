@@ -18,10 +18,6 @@ export class Player {
     this.boxData.push(boxDatum)
   }
 
-  removeBox(boxDatum) {
-    this.boxData = this.boxData.filter(x => x != boxDatum)
-  }
-
   canAddBox(box) {
     if (box.player == this) {
       return false

@@ -13,7 +13,7 @@ export class Box {
   setPlayer = (player) => {
     const boxDatum = Object.values(this.coords)
     if (this.player) {
-      this.player.removeBox(boxDatum)
+      this.player.boxData = this.player.boxData.filter(x => x != boxDatum)
     }
     this.player = player
     player.addBox(boxDatum)
