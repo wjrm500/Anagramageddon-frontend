@@ -1,14 +1,16 @@
 import React from 'react'
-import { createStore } from 'redux'
+import { applyMiddleware, createStore } from 'redux'
 import { Provider } from 'react-redux'
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import thunk from 'redux-thunk'
+
 import { rootReducer } from '../reducers/rootReducer'
 import Game from './game/Game'
 import Setup from './setup/Setup'
 import Lobby from './setup/Lobby'
 import WebSocketContainer from './WebSocketContainer';
 
-const store = createStore(rootReducer)
+const store = createStore(rootReducer, applyMiddleware(thunk))
 
 const Container = () => {
   return (
