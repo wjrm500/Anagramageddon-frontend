@@ -2,8 +2,6 @@ import React, { createContext, useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom'
 import { SET_BOXES } from '../reducers/boxes';
-import { SET_PLAYER_INDEX } from '../reducers/playerIndex';
-import { SET_COUNTDOWN_SECONDS } from '../reducers/countdownSeconds';
 import { SET_PLAYER_COLLECTION } from '../reducers/playerCollection';
 import Game from './game/Game';
 import Lobby from './setup/Lobby';
@@ -23,10 +21,6 @@ const WebSocketContainer = ({phase}) => {
     "setBoxes": (data) => {
       const boxes = data.boxes
       dispatch({type: SET_BOXES, boxes})
-    },
-    "setCountdownSeconds": (data) => {
-      const countdownSeconds = data.countdownSeconds
-      dispatch({type: SET_COUNTDOWN_SECONDS, countdownSeconds})
     },
     "setGameOpen": (data) => {
       setGameOpen(data.gameOpen)

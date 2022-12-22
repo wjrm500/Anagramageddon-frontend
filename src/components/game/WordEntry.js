@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { RESET_COUNTDOWN, SET_COUNTDOWN_SECONDS } from '../../reducers/countdownSeconds'
+import { APPLY_COUNTDOWN_PENALTY, RESET_COUNTDOWN } from '../../reducers/countdownSeconds'
 import { ENTER_WORD } from '../../reducers/playerCollection'
 import { ACTION_CLICK_BOX, ACTION_ENTER_WORD, SET_REQUIRED_ACTION } from '../../reducers/requiredAction'
 import { FLASH_ERROR, FLASH_SCORE, SET_TEXT_FLASH } from '../../reducers/textFlash'
@@ -10,7 +10,6 @@ import { GameIdContext, WebSocketContext } from '../WebSocketContainer'
 const WordEntry = () => {
   const ws = useContext(WebSocketContext)
   const gameId = useContext(GameIdContext)
-  const countdownSeconds = useSelector(state => state.countdownSeconds)
   const requiredAction = useSelector(state => state.requiredAction)
   const playerIndex = useSelector(state => state.playerIndex)
   const playerCollection = useSelector(state => state.playerCollection)
@@ -38,12 +37,12 @@ const WordEntry = () => {
           dispatch({type: SET_TEXT_FLASH, textFlash: {content: "+" + word.length, status: FLASH_SCORE}})
           // Dispatch locally to increases responsiveness
           dispatch({type: ENTER_WORD, word})
+          dispatch({type: RESET_COUNTDOWN})
           ws.current.send(JSON.stringify(({type: ENTER_WORD, data: {gameId, word}})))
-          ws.current.send(JSON.stringify({type: RESET_COUNTDOWN, data: {gameId}}))
         })
         .catch((error) => {
           dispatch({type: SET_TEXT_FLASH, textFlash: {content: error, status: FLASH_ERROR}})
-          dispatch({type: SET_COUNTDOWN_SECONDS, countdownSeconds: countdownSeconds - 5})
+          dispatch({type: APPLY_COUNTDOWN_PENALTY})
         })
         .finally(() => setValue(""))
     }
