@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Header from '../Header'
+import SpinningLoader from '../SpinningLoader'
 
-const Setup = () => {
-  const spinningLoader = require("../../images/spinner-cropped.gif")
+const Setup = () => {  
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
   const [gridSize, setGridSize] = useState(5)
@@ -19,7 +19,7 @@ const Setup = () => {
     } else if (isNaN(maxCountdownSeconds) || maxCountdownSeconds < 5 || maxCountdownSeconds > 30) {
       alert("Invalid turn time limit")
     } else {
-      await fetch(`${process.env.REACT_APP_API_HTTP_URL}/create-game`, {
+      fetch(`${process.env.REACT_APP_API_HTTP_URL}/create-game`, {
         method: "POST",
         body: JSON.stringify({gridSize, winningScore, maxCountdownSeconds}),
         headers: {
@@ -27,9 +27,7 @@ const Setup = () => {
         }
       })
       .then(response => response.json())
-      .then(data => {
-        navigate(`/${data.gameId}/lobby`)
-      })
+      .then(data => navigate(`/${data.gameId}/lobby`))
       .finally(() => setIsLoading(false))
     }
   }
@@ -65,7 +63,7 @@ const Setup = () => {
           <div className="formComponent">
             {
               isLoading
-              ? <button id="submitButton"><img id="spinningLoader" src={spinningLoader} height="12px" width="12px" /></button>
+              ? <button id="submitButton"><SpinningLoader /></button>
               : <button id="submitButton" class="clickable" onClick={onSubmit}>Create game</button>
             }
             
