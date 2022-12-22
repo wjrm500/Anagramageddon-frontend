@@ -12,7 +12,14 @@
   width: 50%;
 }
 
-#submitButton:hover {
+#submitButton {
+  align-items: center;
+  display: flex;
+  height: 21px;
+  justify-content: center;
+}
+
+#submitButton.clickable:hover {
   cursor: pointer;
 }
 

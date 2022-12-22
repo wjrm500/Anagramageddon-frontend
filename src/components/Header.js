@@ -6,7 +6,9 @@ const Header = () => {
   const ws = useContext(WebSocketContext)
   const navigate = useNavigate()
   const onClick = () => {
-    ws.current.close()
+    if (ws != null) {
+      ws.current.close()
+    }
     navigate("/")
   }
   return (

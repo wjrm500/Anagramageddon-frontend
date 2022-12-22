@@ -3,13 +3,15 @@ import { useNavigate } from 'react-router-dom'
 import Header from '../Header'
 
 const Setup = () => {
+  const spinningLoader = require("../../images/spinner-cropped.gif")
   const navigate = useNavigate()
+  const [isLoading, setIsLoading] = useState(false)
   const [gridSize, setGridSize] = useState(5)
   const [winningScore, setWinningScore] = useState(25)
   const [maxCountdownSeconds, setMaxCountdownSeconds] = useState(15)
   const onSubmit = async (evt) => {
     evt.preventDefault()
-
+    setIsLoading(true)
     if (isNaN(gridSize) || gridSize < 5 || gridSize > 15) {
       alert("Invalid grid size")
     } else if (isNaN(winningScore) || winningScore < gridSize || winningScore > gridSize * 10) {
@@ -25,7 +27,10 @@ const Setup = () => {
         }
       })
       .then(response => response.json())
-      .then(data => navigate(`/${data.gameId}/lobby`))
+      .then(data => {
+        navigate(`/${data.gameId}/lobby`)
+      })
+      .finally(() => setIsLoading(false))
     }
   }
   return (
@@ -58,7 +63,12 @@ const Setup = () => {
                   max="30" />
           </div>
           <div className="formComponent">
-            <input id="submitButton" type="submit" value="Create game" />
+            {
+              isLoading
+              ? <button id="submitButton"><img id="spinningLoader" src={spinningLoader} height="12px" width="12px" /></button>
+              : <button id="submitButton" class="clickable" onClick={onSubmit}>Create game</button>
+            }
+            
           </div>
         </form>
       </div>
