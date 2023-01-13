@@ -19,7 +19,7 @@ export class Player {
   }
 
   canAddBox(box) {
-    if (box.player == this) {
+    if (box.player && box.player.name == this.name) {
       return false
     }
     for (let boxDatum of this.boxData) {
