@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { APPLY_COUNTDOWN_PENALTY, RESET_COUNTDOWN } from '../../reducers/countdownSeconds'
 import { ENTER_WORD } from '../../reducers/playerCollection'
@@ -16,6 +16,10 @@ const WordEntry = () => {
   const playerActive = playerCollection.isActiveIndex(playerIndex)
   const active = playerActive && requiredAction == ACTION_ENTER_WORD
   const activePlayer = playerCollection.getActivePlayer()
+  const activePlayerRef = useRef(activePlayer)
+  useEffect(() => {
+    activePlayerRef.current = activePlayer
+  }, [activePlayer])
   const boxes = useSelector(state => state.boxes)
   const dispatch = useDispatch()
   const [value, setValue] = useState("")
@@ -31,14 +35,18 @@ const WordEntry = () => {
   const onKeyDown = (e) => {
     if (e.key == "Enter") {
       const word = e.target.value.toUpperCase()
-      validateWord(word, activePlayer, boxes)
+      validateWord(word, activePlayerRef.current, boxes)
         .then(() => {
-          dispatch({type: SET_REQUIRED_ACTION, requiredAction: ACTION_CLICK_BOX})
-          dispatch({type: SET_TEXT_FLASH, textFlash: {content: "+" + word.length, status: FLASH_SCORE}})
-          // Dispatch locally to increases responsiveness
-          dispatch({type: ENTER_WORD, word})
-          dispatch({type: RESET_COUNTDOWN})
-          ws.current.send(JSON.stringify(({type: ENTER_WORD, data: {gameId, word}})))
+          if (activePlayer == activePlayerRef.current) { // Prevents issue whereby Countdown sends "Switch active player" event to server after keydown event but before this callback is run
+            dispatch({type: SET_REQUIRED_ACTION, requiredAction: ACTION_CLICK_BOX})
+            dispatch({type: SET_TEXT_FLASH, textFlash: {content: "+" + word.length, status: FLASH_SCORE}})
+            // Dispatch locally to increases responsiveness
+            dispatch({type: ENTER_WORD, word})
+            dispatch({type: RESET_COUNTDOWN})
+            ws.current.send(JSON.stringify(({type: ENTER_WORD, data: {gameId, word}})))
+          } else {
+            dispatch({type: SET_TEXT_FLASH, textFlash: {content: "Too late!", status: FLASH_ERROR}})
+          }
         })
         .catch((error) => {
           dispatch({type: SET_TEXT_FLASH, textFlash: {content: error, status: FLASH_ERROR}})
