@@ -64,7 +64,7 @@ const Setup = () => {
             {
               isLoading
               ? <button id="submitButton"><SpinningLoader /></button>
-              : <button id="submitButton" class="clickable" onClick={onSubmit}>Create game</button>
+              : <button id="submitButton" className="clickable" onClick={onSubmit}>Create game</button>
             }
             
           </div>

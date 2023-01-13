@@ -12,7 +12,7 @@ const WinnerBanner = () => {
     navigate("/")
   }
   return (
-    <div id="winnerBanner" class="fadeIn">
+    <div id="winnerBanner" className="fadeIn">
         <div id="winnerText">
           <span id="winningPlayer">{winningPlayer.name}</span> won the game!
         </div>
