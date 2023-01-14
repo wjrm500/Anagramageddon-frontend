@@ -9,7 +9,7 @@ const Setup = () => {
   const [gridSize, setGridSize] = useState(5)
   const [winningScore, setWinningScore] = useState(25)
   const [maxCountdownSeconds, setMaxCountdownSeconds] = useState(15)
-  const [volatileBoxes, setVolatileBoxes] = useState(true)
+  const [volatileBoxes, setVolatileBoxes] = useState(1)
   const onSubmit = async (evt) => {
     evt.preventDefault()
     setIsLoading(true)
@@ -63,9 +63,9 @@ const Setup = () => {
           </div>
           <div className="formComponent">
             <label>Volatile boxes</label>
-            <select value={volatileBoxes} onChange={(e) => setVolatileBoxes(e.target.value)}>
-              <option value="true">Yes</option>
-              <option value="false">No</option>
+            <select value={volatileBoxes} onChange={(e) => setVolatileBoxes(parseInt(e.target.value))}>
+              <option value="1">Yes</option>
+              <option value="0">No</option>
             </select>
           </div>
           <div className="formComponent">
