@@ -26,10 +26,13 @@ class Box extends React.Component {
   }
 
   render() {
+    const innerBoxClasses = ["innerBox"]
+    if (!this.state.active) innerBoxClasses.push("inactive")
+    if (this.state.box.volatile) innerBoxClasses.push("shaking")
     return (
       <div className="outerBox">
         <div
-          className={"innerBox " + (!this.state.active ? "inactive " : " ") + (this.state.box.volatile ? "shaking": "")}
+          className={innerBoxClasses.join(" ")}
           style={{
             backgroundColor: this.state.box.player ? this.getColor() : "",
             color: this.state.box.player ? "white" : ""
