@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/Anagramageddon-frontend/static/css/main.14ba2ce1.css",
-    "main.js": "/Anagramageddon-frontend/static/js/main.1dbcc40e.js",
+    "main.css": "/Anagramageddon-frontend/static/css/main.02a60f5c.css",
+    "main.js": "/Anagramageddon-frontend/static/js/main.85ed591c.js",
     "static/media/spinner-cropped.gif": "/Anagramageddon-frontend/static/media/spinner-cropped.c62fe977666a2ce93275.gif",
     "index.html": "/Anagramageddon-frontend/index.html",
-    "main.14ba2ce1.css.map": "/Anagramageddon-frontend/static/css/main.14ba2ce1.css.map",
-    "main.1dbcc40e.js.map": "/Anagramageddon-frontend/static/js/main.1dbcc40e.js.map"
+    "main.02a60f5c.css.map": "/Anagramageddon-frontend/static/css/main.02a60f5c.css.map",
+    "main.85ed591c.js.map": "/Anagramageddon-frontend/static/js/main.85ed591c.js.map"
   },
   "entrypoints": [
-    "static/css/main.14ba2ce1.css",
-    "static/js/main.1dbcc40e.js"
+    "static/css/main.02a60f5c.css",
+    "static/js/main.85ed591c.js"
   ]
 }
