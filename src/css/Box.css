@@ -24,7 +24,7 @@
   cursor: auto;
 }
 
-.shaking {
+.innerBox.shaking {
   animation: tiltShaking 0.3s infinite;
 }
 
