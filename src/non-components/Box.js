@@ -1,9 +1,10 @@
 export class Box {
   constructor(props) {
-    const {coords, letter, player} = props
+    const {coords, letter, player, volatile} = props
     this.coords = {x: coords.x, y: coords.y}
     this.letter = letter
     this.player = player
+    this.volatile = volatile
   }
 
   getX = () => this.coords.x
@@ -17,5 +18,9 @@ export class Box {
     }
     this.player = player
     player.addBox(boxDatum)
+  }
+
+  makeVolatile = () => {
+    this.volatile = true
   }
 }

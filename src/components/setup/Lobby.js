@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PlayerCollection } from '../../non-components/PlayerCollection';
-import { SET_BOXES } from '../../reducers/boxes';
+import { SET_BOXES, SET_VOLATILE_BOX } from '../../reducers/boxes';
 import { INIT_COUNTDOWN } from '../../reducers/countdownSeconds';
 import { SET_GRID_SIZE } from '../../reducers/gridSize';
 import { SET_PLAYER_COLLECTION } from '../../reducers/playerCollection';
@@ -32,6 +32,11 @@ const Lobby = ({wscMessageHandlers, webSocketOpen, gameOpen}) => {
     },
     "playerNameTaken": (data) => {
       alert("This name has already been taken")
+    },
+    "setVolatileBox": (data) => {
+      console.log("Received setVolatileBox")
+      const coords = data.coords
+      dispatch({type: SET_VOLATILE_BOX, coords})
     },
     "startGame": (data) => {
       const {boxes, gridSize, winningScore, maxCountdownSeconds, playerCollection} = data
