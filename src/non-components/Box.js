@@ -19,8 +19,4 @@ export class Box {
     this.player = player
     player.addBox(boxDatum)
   }
-
-  makeVolatile = () => {
-    this.volatile = true
-  }
 }

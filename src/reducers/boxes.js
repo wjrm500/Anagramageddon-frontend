@@ -5,7 +5,6 @@ export const CLICK_BOX = 'CLICK_BOX'
 
 // Redux actions
 export const SET_BOXES = 'SET_BOXES'
-export const SET_VOLATILE_BOX = 'SET_VOLATILE_BOX'
 
 const createBoxMap = (boxData) => {
   const map = {}
@@ -29,13 +28,6 @@ export const boxesReducer = (boxes = {}, action) => {
       return boxes
     case SET_BOXES:
       return createBoxMap(action.boxes)
-    case SET_VOLATILE_BOX:
-      console.log("Making box volatile")
-      const volatileBox = boxes[action.coords.x][action.coords.y]
-      volatileBox.makeVolatile()
-      console.log("volatileBox.volatile: ", volatileBox.volatile)
-      console.log("boxes[action.coords.x][action.coords.y].volatile: ", boxes[action.coords.x][action.coords.y].volatile)
-      return createBoxMap(boxes)
     default:
       return boxes
   }
