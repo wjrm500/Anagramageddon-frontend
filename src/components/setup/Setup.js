@@ -9,6 +9,7 @@ const Setup = () => {
   const [gridSize, setGridSize] = useState(5)
   const [winningScore, setWinningScore] = useState(25)
   const [maxCountdownSeconds, setMaxCountdownSeconds] = useState(15)
+  const [volatileBoxes, setVolatileBoxes] = useState(true)
   const onSubmit = async (evt) => {
     evt.preventDefault()
     setIsLoading(true)
@@ -21,7 +22,7 @@ const Setup = () => {
     } else {
       fetch(`${process.env.REACT_APP_API_HTTP_URL}/create-game`, {
         method: "POST",
-        body: JSON.stringify({gridSize, winningScore, maxCountdownSeconds}),
+        body: JSON.stringify({gridSize, winningScore, maxCountdownSeconds, volatileBoxes}),
         headers: {
           "Content-Type": "application/json"
         }
@@ -59,6 +60,13 @@ const Setup = () => {
                   onChange={(e) => setMaxCountdownSeconds(parseInt(e.target.value))}
                   min="5"
                   max="30" />
+          </div>
+          <div className="formComponent">
+            <label>Volatile boxes</label>
+            <select value={volatileBoxes} onChange={(e) => setVolatileBoxes(e.target.value)}>
+              <option value="true">Yes</option>
+              <option value="false">No</option>
+            </select>
           </div>
           <div className="formComponent">
             {

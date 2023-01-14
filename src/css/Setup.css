@@ -7,7 +7,6 @@
 }
 
 .formComponent > * {
-  flex: 1;
   margin: 5px;
   width: 50%;
 }
@@ -17,6 +16,7 @@
   display: flex;
   height: 21px;
   justify-content: center;
+  width: 100%;
 }
 
 #submitButton.clickable:hover {
@@ -27,4 +27,8 @@
   #formContainer {
     width: 80vw;
   }
+}
+
+#setupForm input[type="number"], #setupForm select {
+  box-sizing: border-box;
 }
