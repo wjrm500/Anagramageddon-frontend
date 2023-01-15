@@ -10,19 +10,22 @@ const Setup = () => {
   const [winningScore, setWinningScore] = useState(25)
   const [maxCountdownSeconds, setMaxCountdownSeconds] = useState(15)
   const [volatileBoxes, setVolatileBoxes] = useState(1)
+  const [volatility, setVolatility] = useState(50)
   const onSubmit = async (evt) => {
     evt.preventDefault()
-    setIsLoading(true)
     if (isNaN(gridSize) || gridSize < 5 || gridSize > 15) {
       alert("Invalid grid size")
     } else if (isNaN(winningScore) || winningScore < gridSize || winningScore > gridSize * 10) {
       alert("Invalid winning score")
     } else if (isNaN(maxCountdownSeconds) || maxCountdownSeconds < 5 || maxCountdownSeconds > 30) {
       alert("Invalid turn time limit")
+    } else if (isNaN(volatility) || volatility < 1 || volatility > 100) {
+      alert("Invalid volatility %")
     } else {
+      setIsLoading(true)
       fetch(`${process.env.REACT_APP_API_HTTP_URL}/create-game`, {
         method: "POST",
-        body: JSON.stringify({gridSize, winningScore, maxCountdownSeconds, volatileBoxes}),
+        body: JSON.stringify({gridSize, winningScore, maxCountdownSeconds, volatileBoxes, volatility}),
         headers: {
           "Content-Type": "application/json"
         }
@@ -68,6 +71,19 @@ const Setup = () => {
               <option value="0">No</option>
             </select>
           </div>
+          {
+            volatileBoxes ?
+            (
+              <div className="formComponent">
+                <label>Volatility %</label>
+                <input type="number"
+                       value={!isNaN(volatility) ? volatility : ""}
+                       onChange={(e) => setVolatility(parseInt(e.target.value))}
+                       min="1"
+                       max="100" />
+              </div>
+            ) : ""
+          }
           <div className="formComponent">
             {
               isLoading
