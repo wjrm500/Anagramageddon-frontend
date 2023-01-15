@@ -1,6 +1,5 @@
 .innerBox {
   align-items: center;
-  background-color: #eeeeee;
   border: 1px solid black;
   border-radius: 5px;
   display: flex;
@@ -12,16 +11,6 @@
 .innerBox.inactive {
   border: 1px solid darkgray;
   color: darkgray;
-}
-
-.innerBox:hover {
-  background-color: #dddddd;
-  cursor: pointer;
-}
-
-.innerBox.inactive:hover {
-  background-color: #eeeeee;
-  cursor: auto;
 }
 
 .innerBox.shaking {
