@@ -22,6 +22,9 @@ const Lobby = ({wscMessageHandlers, webSocketOpen, gameOpen}) => {
   const dispatch = useDispatch()
 
   const lobbyMessageHandlers = {
+    "connectionClosed": (data) => {
+      alert("Connection closed unexpectedly by another client")
+    },
     "playerAdded": (data) => {
       playerNameSubmitted.current = true
       const playerIndex = data.playerIndex

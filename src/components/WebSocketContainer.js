@@ -48,7 +48,6 @@ const WebSocketContainer = ({phase}) => {
 
     ws.current.onclose = () => {
       setWebSocketOpen(false)
-      console.log("WebSocket connection closed. Did another player refresh their browser or navigate to a different URL?")
       navigate("/")
     }
   }, [])
