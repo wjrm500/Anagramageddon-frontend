@@ -13,8 +13,26 @@
   color: darkgray;
 }
 
+.innerBox:not(.playerBox):hover {
+  background-color: rgb(214, 214, 214);
+  cursor: pointer;
+}
+
+.innerBox.inactive:hover {
+  background-color: white;
+  cursor: default;
+}
+
 .innerBox.shaking {
   animation: tiltShaking 0.3s infinite;
+}
+
+.innerBox.shaking:not(.playerBox) {
+  background-color: rgb(190, 190, 190);
+}
+
+.innerBox:not(.inactive).shaking:not(.playerBox):hover {
+  background-color: rgb(171, 171, 171);
 }
 
 @keyframes tiltShaking {
