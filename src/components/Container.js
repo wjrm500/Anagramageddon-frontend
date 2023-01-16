@@ -10,6 +10,7 @@ import Setup from './setup/Setup'
 import Lobby from './setup/Lobby'
 import WebSocketContainer from './WebSocketContainer';
 import Home from './setup/Home';
+import Help from './setup/Help';
 
 const store = createStore(rootReducer, applyMiddleware(thunk))
 
@@ -20,6 +21,7 @@ const Container = () => {
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route exact path="/setup" element={<Setup />} />
+          <Route exact path="/help" element={<Help />} />
           <Route path="/:gameId/lobby" element={<WebSocketContainer phase={Lobby} />} />
           <Route path="/:gameId/play" element={<WebSocketContainer phase={Game} />} />
         </Routes>

@@ -7,7 +7,8 @@ const Home = () => {
   return (
     <div id="container">
       <Header />
-      <button className="menuButton" onClick={() => navigate("/setup")}>New Game</button>
+      <button className="menuButton" onClick={() => navigate("/setup")}>New game</button>
+      <button className="menuButton" onClick={() => navigate("/help")}>How to play</button>
     </div>
   )
 }
