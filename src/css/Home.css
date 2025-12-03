@@ -1,5 +1,61 @@
 .menuButton {
   cursor: pointer;
-  margin: 5px;
-  width: 100px;
+  margin: 10px;
+  width: 250px;
+  max-width: 85vw;
+  padding: 14px 24px;
+  font-size: clamp(1rem, 4vw, 1.2rem);
+  font-weight: 600;
+  border: 2px solid #333;
+  border-radius: 8px;
+  background-color: #f0f0f0;
+  min-height: 50px;
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Desktop hover effects */
+@media (hover: hover) and (pointer: fine) {
+  .menuButton:hover {
+    cursor: pointer;
+    background-color: #e0e0e0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* Touch devices - active state */
+.menuButton:active {
+  background-color: #d0d0d0;
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Mobile devices */
+@media only screen and (max-width: 480px) {
+  .menuButton {
+    width: 280px;
+    padding: 16px 28px;
+    font-size: 1.15rem;
+    min-height: 56px;
+    margin: 12px;
+  }
+}
+
+/* Small mobile */
+@media only screen and (max-width: 360px) {
+  .menuButton {
+    width: 90vw;
+  }
+}
+
+/* Landscape mobile */
+@media only screen and (max-height: 600px) and (orientation: landscape) {
+  .menuButton {
+    padding: 10px 20px;
+    font-size: 1rem;
+    min-height: 40px;
+    margin: 8px;
+  }
 }

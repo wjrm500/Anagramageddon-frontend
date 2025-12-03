@@ -6,6 +6,11 @@
   height: 100%;
   justify-content: center;
   width: 100%;
+  font-size: clamp(1rem, 4vw, 1.5rem);
+  font-weight: 600;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .innerBox.inactive {
@@ -13,14 +18,28 @@
   color: darkgray;
 }
 
-.innerBox:not(.playerBox):hover {
-  background-color: rgb(214, 214, 214);
-  cursor: pointer;
+/* Desktop hover effects */
+@media (hover: hover) and (pointer: fine) {
+  .innerBox:not(.playerBox):hover {
+    background-color: rgb(214, 214, 214);
+    cursor: pointer;
+  }
+
+  .innerBox.inactive:hover {
+    background-color: white;
+    cursor: default;
+  }
 }
 
-.innerBox.inactive:hover {
+/* Touch devices - active state for feedback */
+.innerBox:not(.playerBox):not(.inactive):active {
+  background-color: rgb(190, 190, 190);
+  transform: scale(0.95);
+  transition: transform 0.1s ease;
+}
+
+.innerBox.inactive:active {
   background-color: white;
-  cursor: default;
 }
 
 .innerBox.shaking {
@@ -31,8 +50,16 @@
   background-color: rgb(190, 190, 190);
 }
 
-.innerBox:not(.inactive).shaking:not(.playerBox):hover {
-  background-color: rgb(171, 171, 171);
+/* Desktop hover for shaking boxes */
+@media (hover: hover) and (pointer: fine) {
+  .innerBox:not(.inactive).shaking:not(.playerBox):hover {
+    background-color: rgb(171, 171, 171);
+  }
+}
+
+/* Touch active state for shaking boxes */
+.innerBox:not(.inactive).shaking:not(.playerBox):active {
+  background-color: rgb(160, 160, 160);
 }
 
 @keyframes tiltShaking {

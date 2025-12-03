@@ -6,8 +6,7 @@ class Box extends React.Component {
     this.state = {
       box: props.box,
       active: props.active,
-      onClick: props.onClick,
-      hovered: false
+      onClick: props.onClick
     }
     this.getColor = this.getColor.bind(this)
   }
@@ -52,14 +51,6 @@ class Box extends React.Component {
             color: this.state.box.player ? "white" : ""
           }}
           onClick={this.state.onClick}
-          onMouseEnter={() => {
-            this.state.hovered = true
-            this.forceUpdate()
-          }}
-          onMouseLeave={() => {
-            this.state.hovered = false
-            this.forceUpdate()
-          }}
           >
           {this.state.box.letter}
         </div>

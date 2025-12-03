@@ -1,5 +1,8 @@
 #instruction {
   text-align: center;
+  font-size: clamp(0.85rem, 3.5vw, 1rem);
+  line-height: 1.4;
+  padding: 0 8px;
 }
 
 #activePlayer {
@@ -9,4 +12,49 @@
 
 #timer {
   font-weight: bold;
+}
+
+#announcement {
+  text-align: center;
+  font-size: clamp(1.2rem, 5vw, 1.8rem);
+  font-weight: bold;
+  padding: 10px;
+}
+
+/* Mobile adjustments */
+@media only screen and (max-width: 480px) {
+  #instruction {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    padding: 0 10px;
+  }
+
+  #announcement {
+    font-size: 1.4rem;
+  }
+}
+
+/* Small mobile */
+@media only screen and (max-width: 360px) {
+  #instruction {
+    font-size: 0.85rem;
+  }
+
+  #announcement {
+    font-size: 1.2rem;
+  }
+}
+
+/* Landscape mobile */
+@media only screen and (max-height: 600px) and (orientation: landscape) {
+  #instruction {
+    font-size: 0.8rem;
+    line-height: 1.3;
+    padding: 0 6px;
+  }
+
+  #announcement {
+    font-size: 1.1rem;
+    padding: 5px;
+  }
 }

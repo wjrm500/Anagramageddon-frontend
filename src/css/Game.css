@@ -10,4 +10,20 @@
   align-items: center;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  padding: 0 10px;
+}
+
+/* Mobile devices */
+@media only screen and (max-width: 480px) {
+  #gameContainer {
+    padding: 0 5px;
+  }
+}
+
+/* Landscape mobile */
+@media only screen and (max-height: 600px) and (orientation: landscape) {
+  #gameContainer {
+    padding: 0 8px;
+  }
 }

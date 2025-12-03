@@ -2,24 +2,57 @@
   align-items: center;
   display: flex;
   flex-direction: column;
+  padding: 0 15px;
+  max-width: 95vw;
 }
 
 #lobbyComponent * {
-  font-size: 16px;
+  font-size: clamp(0.95rem, 4vw, 1rem);
+}
+
+#linkComponent {
+  text-align: center;
+  position: relative;
+  padding: 10px;
+}
+
+#linkComponent a {
+  display: inline-block;
+  padding: 10px 15px;
+  border-radius: 5px;
+  transition: background-color 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Desktop hover effects */
+@media (hover: hover) and (pointer: fine) {
+  #linkComponent a:hover {
+    background-color: rgba(0, 0, 255, 0.05);
+  }
+}
+
+/* Touch devices - active state */
+#linkComponent a:active {
+  background-color: rgba(0, 0, 255, 0.1);
 }
 
 #linkComponent * {
-  margin: 0px 2.5px;
+  margin: 0px 5px;
 }
 
 #linkCopiedNotification {
   background-color: #222222;
   border-radius: 5px;
   color: white;
-  font-size: 0.7em;
-  height: 13px;
-  padding: 2px 5px;
+  font-size: 0.85rem;
+  padding: 6px 12px;
   position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  margin-top: 5px;
 }
 
 .alert-hidden {
@@ -31,46 +64,189 @@
   display: flex;
   font-size: 16px;
   margin-top: 20px;
-  width: 250px;
+  width: 350px;
+  max-width: 90vw;
+  gap: 8px;
 }
 
 #formComponent input {
   flex: 1;
-  margin-right: 2.5px;
+  padding: 10px 12px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  font-size: clamp(0.95rem, 4vw, 1rem);
+  min-height: 44px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#formComponent input:focus {
+  border-color: #4CAF50;
+  outline: none;
+}
+
+#formComponent input:disabled {
+  background-color: #f0f0f0;
+  color: #999;
 }
 
 #formComponent button {
-  margin-left: 2.5px;
+  padding: 10px 20px;
+  border: 2px solid #333;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+  font-weight: 600;
+  min-height: 44px;
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Desktop hover effects */
+@media (hover: hover) and (pointer: fine) {
+  #formComponent button:not(:disabled):hover {
+    cursor: pointer;
+    background-color: #e0e0e0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+}
+
+/* Touch devices - active state */
+#formComponent button:not(:disabled):active {
+  background-color: #d0d0d0;
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#formComponent button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 #playerListComponent {
-  margin-top: 15px;
-  padding: 5px;
+  margin-top: 20px;
+  padding: 10px;
   text-align: center;
-  width: 250px;
+  width: 350px;
+  max-width: 90vw;
 }
 
 #playerListTitle {
-  margin: 5px 0px;
+  margin: 10px 0px;
+  font-weight: 600;
+  font-size: clamp(1rem, 4vw, 1.1rem);
 }
 
 #playerList {
-  border: 1px solid #dddddd;
-  border-radius: 5px;
+  border: 2px solid #dddddd;
+  border-radius: 8px;
   list-style: none;
-  margin: 5px 0px;
-  padding: 0px;
+  margin: 10px 0px;
+  padding: 10px 5px;
 }
 
 .playerListItem {
-  margin: 5px 0px;
+  margin: 10px 0px;
+  font-weight: 600;
+  font-size: clamp(1rem, 4vw, 1.1rem);
+  padding: 5px;
 }
 
 #startGameButton {
-  margin-top: 10px;
-  width: 250px;
+  margin-top: 15px;
+  width: 350px;
+  max-width: 90vw;
+  padding: 12px 24px;
+  border: 2px solid #333;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+  font-weight: 600;
+  font-size: clamp(1rem, 4vw, 1.1rem);
+  min-height: 48px;
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
-#startGameButton:hover {
-  cursor: pointer;
+/* Desktop hover effects */
+@media (hover: hover) and (pointer: fine) {
+  #startGameButton:hover {
+    cursor: pointer;
+    background-color: #e0e0e0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+}
+
+/* Touch devices - active state */
+#startGameButton:active {
+  background-color: #d0d0d0;
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Mobile devices */
+@media only screen and (max-width: 480px) {
+  #formComponent {
+    width: 90vw;
+  }
+
+  #formComponent input {
+    padding: 12px 14px;
+    font-size: 1rem;
+  }
+
+  #formComponent button {
+    padding: 12px 18px;
+    font-size: 1rem;
+  }
+
+  #playerListComponent {
+    width: 90vw;
+  }
+
+  #startGameButton {
+    width: 90vw;
+    font-size: 1.1rem;
+  }
+}
+
+/* Landscape mobile */
+@media only screen and (max-height: 600px) and (orientation: landscape) {
+  #lobbyComponent {
+    padding: 0 10px;
+  }
+
+  #formComponent {
+    margin-top: 10px;
+  }
+
+  #formComponent input, #formComponent button {
+    padding: 8px 12px;
+    min-height: 36px;
+    font-size: 0.9rem;
+  }
+
+  #playerListComponent {
+    margin-top: 10px;
+    padding: 5px;
+  }
+
+  #playerListTitle {
+    margin: 5px 0px;
+  }
+
+  #playerList {
+    padding: 5px;
+  }
+
+  .playerListItem {
+    margin: 5px 0px;
+  }
+
+  #startGameButton {
+    margin-top: 10px;
+    padding: 8px 16px;
+    min-height: 36px;
+  }
 }

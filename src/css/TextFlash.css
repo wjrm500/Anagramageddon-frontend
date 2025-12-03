@@ -8,8 +8,11 @@
   visibility: hidden;
   white-space: nowrap;
   z-index: 2;
+  max-width: 90vw;
+  text-align: center;
 }
 
+/* Desktop animations */
 @keyframes fontGrowBig {
   0% { font-size: 36px; opacity: 1.0; visibility: visible; }
   30% { font-size: 72px; opacity: 0.9; visibility: visible; }
@@ -28,4 +31,78 @@
 
 .fontGrow.notFlashScore {
   animation: fontGrowSmall 0.75s linear;
+}
+
+/* Mobile animations - smaller font sizes */
+@media only screen and (max-width: 480px) {
+  #textFlash {
+    max-width: 85vw;
+    text-shadow: -0.5px -0.5px 0 #000, 0.5px -0.5px 0 #000, -0.5px 0.5px 0 #000, 0.5px 0.5px 0 #000;
+  }
+
+  @keyframes fontGrowBigMobile {
+    0% { font-size: 24px; opacity: 1.0; visibility: visible; }
+    30% { font-size: 48px; opacity: 0.9; visibility: visible; }
+    100% { font-size: 100px; opacity: 0; visibility: visible; }
+  }
+
+  .fontGrow.flashScore {
+    animation: fontGrowBigMobile 0.75s linear;
+  }
+
+  @keyframes fontGrowSmallMobile {
+    0% { font-size: 10px; opacity: 1.0; visibility: visible; }
+    30% { font-size: 18px; opacity: 0.9; visibility: visible; }
+    100% { font-size: 40px; opacity: 0; visibility: visible; }
+  }
+
+  .fontGrow.notFlashScore {
+    animation: fontGrowSmallMobile 0.75s linear;
+  }
+}
+
+/* Small mobile - even smaller animations */
+@media only screen and (max-width: 360px) {
+  @keyframes fontGrowBigSmallMobile {
+    0% { font-size: 20px; opacity: 1.0; visibility: visible; }
+    30% { font-size: 40px; opacity: 0.9; visibility: visible; }
+    100% { font-size: 80px; opacity: 0; visibility: visible; }
+  }
+
+  .fontGrow.flashScore {
+    animation: fontGrowBigSmallMobile 0.75s linear;
+  }
+
+  @keyframes fontGrowSmallSmallMobile {
+    0% { font-size: 8px; opacity: 1.0; visibility: visible; }
+    30% { font-size: 16px; opacity: 0.9; visibility: visible; }
+    100% { font-size: 32px; opacity: 0; visibility: visible; }
+  }
+
+  .fontGrow.notFlashScore {
+    animation: fontGrowSmallSmallMobile 0.75s linear;
+  }
+}
+
+/* Landscape mobile - compact animations */
+@media only screen and (max-height: 600px) and (orientation: landscape) {
+  @keyframes fontGrowBigLandscape {
+    0% { font-size: 20px; opacity: 1.0; visibility: visible; }
+    30% { font-size: 40px; opacity: 0.9; visibility: visible; }
+    100% { font-size: 80px; opacity: 0; visibility: visible; }
+  }
+
+  .fontGrow.flashScore {
+    animation: fontGrowBigLandscape 0.75s linear;
+  }
+
+  @keyframes fontGrowSmallLandscape {
+    0% { font-size: 10px; opacity: 1.0; visibility: visible; }
+    30% { font-size: 18px; opacity: 0.9; visibility: visible; }
+    100% { font-size: 36px; opacity: 0; visibility: visible; }
+  }
+
+  .fontGrow.notFlashScore {
+    animation: fontGrowSmallLandscape 0.75s linear;
+  }
 }

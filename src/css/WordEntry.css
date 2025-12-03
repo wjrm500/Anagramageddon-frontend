@@ -7,6 +7,8 @@
   margin-top: 20px;
   padding: 5px;
   width: 500px;
+  max-width: 95vw;
+  gap: 8px;
 }
 
 #wordEntryContainer.inactive {
@@ -26,6 +28,8 @@
   flex: 1;
   justify-content: center;
   text-align: center;
+  font-size: clamp(0.9rem, 3.5vw, 1rem);
+  min-width: fit-content;
 }
 
 .inputContainer {
@@ -37,6 +41,11 @@
   box-sizing: border-box;
   text-transform: uppercase;
   width: 100%;
+  padding: 8px 12px;
+  font-size: clamp(0.9rem, 4vw, 1.1rem);
+  border: 2px solid #ccc;
+  transition: border-color 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .inputContainer input:focus {
@@ -44,12 +53,67 @@
   outline: none !important;
 }
 
-@media only screen and (max-width: 400px) {
+/* Tablet */
+@media only screen and (max-width: 768px) {
   #wordEntryContainer {
-    width: 80vw;
+    width: 90vw;
+    margin-top: 15px;
+    padding: 8px;
+  }
+
+  .inputContainer input {
+    padding: 10px 14px;
+  }
+}
+
+/* Mobile */
+@media only screen and (max-width: 480px) {
+  #wordEntryContainer {
+    width: 90vw;
+    margin-top: 12px;
+    padding: 10px;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .labelContainer {
+    flex: none;
+    font-size: 1rem;
   }
 
   .inputContainer {
-    flex: 1;
+    flex: none;
+    width: 100%;
+  }
+
+  .inputContainer input {
+    padding: 12px 14px;
+    font-size: 1.1rem;
+  }
+}
+
+/* Small mobile */
+@media only screen and (max-width: 360px) {
+  #wordEntryContainer {
+    width: 95vw;
+    padding: 8px;
+  }
+}
+
+/* Landscape mobile */
+@media only screen and (max-height: 600px) and (orientation: landscape) {
+  #wordEntryContainer {
+    margin-top: 8px;
+    padding: 6px;
+    flex-direction: row;
+  }
+
+  .labelContainer {
+    font-size: 0.85rem;
+  }
+
+  .inputContainer input {
+    padding: 6px 10px;
+    font-size: 0.95rem;
   }
 }

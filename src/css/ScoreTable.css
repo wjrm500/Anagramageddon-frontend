@@ -5,6 +5,8 @@
   color: black;
   margin-top: 20px;
   width: 500px;
+  max-width: 95vw;
+  font-size: clamp(0.9rem, 3.5vw, 1rem);
 }
 
 #scoreTable tr:first {
@@ -12,12 +14,67 @@
 }
 
 #scoreTable th, #scoreTable td {
-  padding: 5px 0px;
+  padding: 8px 12px;
   text-align: center;
 }
 
-@media only screen and (max-width: 400px) {
+#scoreTable th {
+  font-weight: bold;
+  border-bottom: 2px solid lightgray;
+}
+
+#scoreTable tbody tr {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+#scoreTable tbody tr:last-child {
+  border-bottom: none;
+}
+
+/* Tablet */
+@media only screen and (max-width: 768px) {
   #scoreTable {
-    width: 80vw;
+    width: 90vw;
+    margin-top: 15px;
+  }
+
+  #scoreTable th, #scoreTable td {
+    padding: 10px 14px;
+  }
+}
+
+/* Mobile */
+@media only screen and (max-width: 480px) {
+  #scoreTable {
+    width: 90vw;
+    margin-top: 12px;
+    font-size: 1rem;
+  }
+
+  #scoreTable th, #scoreTable td {
+    padding: 12px 16px;
+  }
+}
+
+/* Small mobile */
+@media only screen and (max-width: 360px) {
+  #scoreTable {
+    width: 95vw;
+  }
+
+  #scoreTable th, #scoreTable td {
+    padding: 10px 12px;
+  }
+}
+
+/* Landscape mobile */
+@media only screen and (max-height: 600px) and (orientation: landscape) {
+  #scoreTable {
+    margin-top: 8px;
+    font-size: 0.85rem;
+  }
+
+  #scoreTable th, #scoreTable td {
+    padding: 6px 10px;
   }
 }

@@ -1,8 +1,41 @@
 #headerText {
     font-family: fantasy;
     text-shadow: 0 0 15px yellow;
+    font-size: clamp(1.5rem, 8vw, 2.5rem);
+    margin: 0.5rem auto;
+    padding: 0 1rem;
+    text-align: center;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.2s ease;
 }
 
-#headerText:hover {
-    cursor: pointer;
+/* Desktop hover effects */
+@media (hover: hover) and (pointer: fine) {
+    #headerText:hover {
+        cursor: pointer;
+        transform: scale(1.05);
+    }
+}
+
+/* Touch devices - active state for feedback */
+#headerText:active {
+    transform: scale(0.98);
+}
+
+/* Mobile adjustments */
+@media only screen and (max-width: 480px) {
+    #headerText {
+        text-shadow: 0 0 10px yellow;
+        margin: 0.3rem auto;
+    }
+}
+
+/* Landscape mobile */
+@media only screen and (max-height: 600px) and (orientation: landscape) {
+    #headerText {
+        font-size: clamp(1.2rem, 6vw, 1.8rem);
+        margin: 0.2rem auto;
+        text-shadow: 0 0 8px yellow;
+    }
 }
