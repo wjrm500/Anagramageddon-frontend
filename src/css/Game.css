@@ -1,3 +1,7 @@
+/* ==========================================================================
+   Game Container & Layout
+   ========================================================================== */
+
 @import "TextFlash.css";
 @import "WinnerBanner.css";
 @import "Instruction.css";
@@ -7,7 +11,23 @@
 @import "ScoreNotification.css";
 
 #gameContainer {
-  align-items: center;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: var(--container-max);
+  gap: var(--space-md);
+  padding-bottom: var(--space-xl);
+}
+
+/* Game status message for when game not available */
+#gameContainer + div,
+#container > div:not(#gameContainer):not(#headerText):not(.helpContent):not(#formContainer):not(#lobbyComponent) {
+  padding: var(--space-lg);
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  text-align: center;
+  background: var(--color-bg-elevated);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }

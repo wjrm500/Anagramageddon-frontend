@@ -1,76 +1,197 @@
+/* ==========================================================================
+   Lobby Page - Player Join & Game Start
+   ========================================================================== */
+
 #lobbyComponent {
-  align-items: center;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+  padding: var(--space-lg);
+  background: var(--color-bg-elevated);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
 }
 
-#lobbyComponent * {
-  font-size: 16px;
+/* Link copy section */
+#linkComponent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-lg);
+  position: relative;
 }
 
-#linkComponent * {
-  margin: 0px 2.5px;
+#linkComponent a {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-accent);
+  background: rgba(0, 212, 170, 0.1);
+  border: 1px solid rgba(0, 212, 170, 0.3);
+  border-radius: var(--radius-full);
+  transition: all var(--transition-fast);
+}
+
+#linkComponent a:hover {
+  background: rgba(0, 212, 170, 0.2);
+  border-color: var(--color-accent);
+}
+
+#linkComponent a::before {
+  content: '🔗';
+  font-size: var(--font-size-base);
 }
 
 #linkCopiedNotification {
-  background-color: #222222;
-  border-radius: 5px;
-  color: white;
-  font-size: 0.7em;
-  height: 13px;
-  padding: 2px 5px;
   position: absolute;
+  bottom: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--color-text-primary);
+  background: var(--color-accent);
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+  opacity: 1;
+  transition: opacity var(--transition-base);
 }
 
 .alert-hidden {
-  opacity: 0;
-  transition: all 250ms linear 0.5s;
+  opacity: 0 !important;
 }
 
+/* Player name form */
 #formComponent {
   display: flex;
-  font-size: 16px;
-  margin-top: 20px;
-  width: 250px;
+  gap: var(--space-sm);
+  width: 100%;
+  margin-bottom: var(--space-lg);
 }
 
 #formComponent input {
   flex: 1;
-  margin-right: 2.5px;
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  background: var(--color-bg-card);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+#formComponent input::placeholder {
+  color: var(--color-text-muted);
+}
+
+#formComponent input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-glow);
+}
+
+#formComponent input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 #formComponent button {
-  margin-left: 2.5px;
+  padding: var(--space-sm) var(--space-lg);
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--color-bg);
+  background: linear-gradient(135deg, var(--color-accent) 0%, #4ecdc4 100%);
+  border: none;
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+  touch-action: manipulation;
+  white-space: nowrap;
 }
 
+#formComponent button:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--color-accent-hover) 0%, #5fd4cc 100%);
+  box-shadow: 0 0 15px var(--color-accent-glow);
+}
+
+#formComponent button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Player list */
 #playerListComponent {
-  margin-top: 15px;
-  padding: 5px;
+  width: 100%;
   text-align: center;
-  width: 250px;
 }
 
 #playerListTitle {
-  margin: 5px 0px;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-sm);
 }
 
 #playerList {
-  border: 1px solid #dddddd;
-  border-radius: 5px;
-  list-style: none;
-  margin: 5px 0px;
-  padding: 0px;
+  background: var(--color-bg-card);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm);
+  min-height: 60px;
 }
 
 .playerListItem {
-  margin: 5px 0px;
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-fast);
 }
 
+.playerListItem:not(:last-child) {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Start game button */
 #startGameButton {
-  margin-top: 10px;
-  width: 250px;
+  width: 100%;
+  min-height: 48px;
+  margin-top: var(--space-lg);
+  padding: var(--space-md) var(--space-lg);
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-bg);
+  background: linear-gradient(135deg, var(--color-accent) 0%, #4ecdc4 100%);
+  border: none;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-base);
+  touch-action: manipulation;
 }
 
 #startGameButton:hover {
   cursor: pointer;
+  background: linear-gradient(135deg, var(--color-accent-hover) 0%, #5fd4cc 100%);
+  box-shadow: 0 0 25px var(--color-accent-glow);
+  transform: translateY(-1px);
+}
+
+#startGameButton:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Tablet and up */
+@media (min-width: 640px) {
+  #lobbyComponent {
+    max-width: 450px;
+    padding: var(--space-xl);
+  }
 }

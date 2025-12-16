@@ -1,5 +1,56 @@
+/* ==========================================================================
+   Home Page
+   ========================================================================== */
+
 .menuButton {
-  cursor: pointer;
-  margin: 5px;
-  width: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 280px;
+  padding: var(--space-md) var(--space-xl);
+  margin: var(--space-sm) 0;
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  background: linear-gradient(135deg, var(--color-bg-card) 0%, var(--color-surface) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-base);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.menuButton:hover {
+  background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-bg-card) 100%);
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-glow);
+  transform: translateY(-2px);
+}
+
+.menuButton:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Primary action button (New Game) */
+.menuButton:first-of-type {
+  background: linear-gradient(135deg, var(--color-accent) 0%, #4ecdc4 100%);
+  color: var(--color-bg);
+  border-color: transparent;
+}
+
+.menuButton:first-of-type:hover {
+  background: linear-gradient(135deg, var(--color-accent-hover) 0%, #5fd4cc 100%);
+  box-shadow: 0 0 30px var(--color-accent-glow);
+}
+
+/* Tablet and up: slightly larger buttons */
+@media (min-width: 640px) {
+  .menuButton {
+    max-width: 320px;
+    padding: var(--space-lg) var(--space-2xl);
+    font-size: var(--font-size-xl);
+  }
 }

@@ -1,23 +1,69 @@
+/* ==========================================================================
+   Score Table - Player Leaderboard
+   ========================================================================== */
+
 #scoreTable {
-  border-collapse: collapse;
-  border-radius: 5px;
-  box-shadow: 0 0 10px lightgray;
-  color: black;
-  margin-top: 20px;
-  width: 500px;
+  width: 100%;
+  max-width: var(--grid-max-size);
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--color-bg-elevated);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
 }
 
-#scoreTable tr:first {
-  border-bottom: 1px solid lightblue;
+#scoreTable thead {
+  background: var(--color-bg-card);
 }
 
-#scoreTable th, #scoreTable td {
-  padding: 5px 0px;
+#scoreTable th {
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
   text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-@media only screen and (max-width: 400px) {
-  #scoreTable {
-    width: 80vw;
+#scoreTable td {
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--font-size-base);
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+#scoreTable tbody tr:last-child td {
+  border-bottom: none;
+}
+
+#scoreTable tbody tr {
+  transition: background var(--transition-fast);
+}
+
+#scoreTable tbody tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Player name column */
+#scoreTable td:first-child {
+  font-weight: 600;
+}
+
+/* Score column */
+#scoreTable td:last-child {
+  font-weight: 700;
+  font-size: var(--font-size-lg);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Tablet and up */
+@media (min-width: 640px) {
+  #scoreTable th,
+  #scoreTable td {
+    padding: var(--space-md) var(--space-lg);
   }
 }

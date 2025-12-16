@@ -1,44 +1,106 @@
-.innerBox {
-  align-items: center;
-  border: 1px solid black;
-  border-radius: 5px;
-  display: flex;
-  height: 100%;
-  justify-content: center;
+/* ==========================================================================
+   Box - Individual Letter Tile
+   ========================================================================== */
+
+.outerBox {
+  aspect-ratio: 1;
   width: 100%;
 }
 
-.innerBox.inactive {
-  border: 1px solid darkgray;
-  color: darkgray;
+.innerBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: clamp(0.75rem, 3vw, 1.25rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-text-primary);
+  background: var(--color-bg-card);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.innerBox:not(.playerBox):hover {
-  background-color: rgb(214, 214, 214);
+/* Unclaimed box - available to click */
+.innerBox:not(.playerBox):not(.inactive) {
   cursor: pointer;
 }
 
-.innerBox.inactive:hover {
-  background-color: white;
+.innerBox:not(.playerBox):not(.inactive):hover {
+  background: var(--color-surface);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 10px var(--color-accent-glow);
+}
+
+.innerBox:not(.playerBox):not(.inactive):active {
+  transform: scale(0.95);
+}
+
+/* Inactive state - not your turn */
+.innerBox.inactive {
+  color: var(--color-text-muted);
+  border-color: rgba(255, 255, 255, 0.08);
   cursor: default;
 }
 
+.innerBox.inactive:hover {
+  background: var(--color-bg-card);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: none;
+}
+
+/* Player claimed box */
+.innerBox.playerBox {
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  border-color: transparent;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Volatile boxes - can be stolen back */
 .innerBox.shaking {
-  animation: tiltShaking 0.3s infinite;
+  animation: volatileShake 0.4s ease-in-out infinite;
 }
 
 .innerBox.shaking:not(.playerBox) {
-  background-color: rgb(190, 190, 190);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 107, 107, 0.3);
 }
 
 .innerBox:not(.inactive).shaking:not(.playerBox):hover {
-  background-color: rgb(171, 171, 171);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 107, 107, 0.5);
 }
 
-@keyframes tiltShaking {
-  0% { transform: rotate(0deg); }
-  25% { transform: rotate(2.5deg); }
-  50% { transform: rotate(0eg); }
-  75% { transform: rotate(-2.5deg); }
-  100% { transform: rotate(0deg); }
+/* Volatile shake animation - subtle and smooth */
+@keyframes volatileShake {
+  0%, 100% {
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    transform: rotate(1.5deg) scale(1.02);
+  }
+  75% {
+    transform: rotate(-1.5deg) scale(1.02);
+  }
+}
+
+/* Larger text on bigger screens */
+@media (min-width: 640px) {
+  .innerBox {
+    font-size: clamp(0.875rem, 2.5vw, 1.5rem);
+    border-radius: var(--radius-md);
+  }
+}
+
+@media (min-width: 1024px) {
+  .innerBox {
+    font-size: 1.25rem;
+  }
 }
