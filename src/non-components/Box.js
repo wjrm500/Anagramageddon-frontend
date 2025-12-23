@@ -14,7 +14,7 @@ export class Box {
   setPlayer = (player) => {
     const boxDatum = Object.values(this.coords)
     if (this.player) {
-      this.player.boxData = this.player.boxData.filter(x => x != boxDatum)
+      this.player.boxData = this.player.boxData.filter(x => !(x[0] === boxDatum[0] && x[1] === boxDatum[1]))
     }
     this.player = player
     player.addBox(boxDatum)

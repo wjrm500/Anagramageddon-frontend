@@ -18,6 +18,7 @@ const Lobby = ({wscMessageHandlers, webSocketOpen, gameOpen}) => {
   const ws = useContext(WebSocketContext)
   const {gameId} = useParams()
   const [playerName, setPlayerName] = useState("")
+  const [nameError, setNameError] = useState("")
   const playerNameSubmitted = useRef(false)
   const playerCollection = useSelector(state => state.playerCollection)
   const [playerLimitReached, setPlayerLimitReached] = useState(false)
@@ -36,7 +37,10 @@ const Lobby = ({wscMessageHandlers, webSocketOpen, gameOpen}) => {
       setPlayerLimitReached(true)
     },
     "playerNameTaken": (data) => {
-      alert("This name has already been taken")
+      setNameError("This name has already been taken")
+    },
+    "invalidPlayerName": (data) => {
+      setNameError(data.message)
     },
     "startGame": (data) => {
       const {boxes, gridSize, winningScore, maxCountdownSeconds, playerCollection} = data
@@ -62,7 +66,26 @@ const Lobby = ({wscMessageHandlers, webSocketOpen, gameOpen}) => {
 
   const inputDisabled = playerNameSubmitted.current || playerCollection.numPlayers() >= 4
 
-  const onAddNameClick = () => ws.current.send(JSON.stringify({type: "ADD_PLAYER", data: {gameId, playerName}}))
+  const validatePlayerName = (name) => {
+    const trimmedName = name.trim()
+    if (trimmedName.length < 2) {
+      return "Name must be at least 2 characters"
+    }
+    if (trimmedName.length > 12) {
+      return "Name must be no more than 12 characters"
+    }
+    return null
+  }
+
+  const onAddNameClick = () => {
+    const error = validatePlayerName(playerName)
+    if (error) {
+      setNameError(error)
+      return
+    }
+    setNameError("")
+    ws.current.send(JSON.stringify({type: "ADD_PLAYER", data: {gameId, playerName: playerName.trim()}}))
+  }
 
   const onStartGameClick = () => ws.current.send(JSON.stringify({type: "START_GAME", data: {gameId}}))
 
@@ -87,11 +110,27 @@ const Lobby = ({wscMessageHandlers, webSocketOpen, gameOpen}) => {
       </a>
       <span id="linkCopiedNotification" className={showLinkCopied ? "" : "alert-hidden"}>Link copied</span>
     </div>
-    <div id="formComponent">
-      <input type="text" onChange={(e) => setPlayerName(e.target.value)} disabled={inputDisabled} onKeyDown={(e) => e.key == "Enter" ? onAddNameClick() : ""} placeholder="Enter name here" />
-      <button onClick={onAddNameClick} disabled={inputDisabled}>
-        Join
-      </button>
+    <div style={{width: "100%", marginBottom: "var(--space-lg)"}}>
+      <div id="formComponent" style={{marginBottom: "0"}}>
+        <input type="text" onChange={(e) => setPlayerName(e.target.value)} disabled={inputDisabled} onKeyDown={(e) => e.key == "Enter" ? onAddNameClick() : ""} placeholder="Enter name here" />
+        <button onClick={onAddNameClick} disabled={inputDisabled}>
+          Join
+        </button>
+      </div>
+      {nameError && (
+        <div style={{
+          backgroundColor: "#fee2e2",
+          border: "1px solid #dc2626",
+          borderRadius: "var(--radius-md)",
+          padding: "var(--space-sm) var(--space-md)",
+          marginTop: "var(--space-sm)",
+          color: "#dc2626",
+          fontSize: "var(--font-size-sm)",
+          fontWeight: "500"
+        }}>
+          {nameError}
+        </div>
+      )}
     </div>
     {
         playerCollection.numPlayers() > 0
