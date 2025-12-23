@@ -47,12 +47,21 @@
   color: var(--color-text-muted);
   border-color: rgba(255, 255, 255, 0.08);
   cursor: default;
+  pointer-events: none;
 }
 
 .innerBox.inactive:hover {
   background: var(--color-bg-card);
   border-color: rgba(255, 255, 255, 0.08);
   box-shadow: none;
+  transform: none;
+}
+
+/* Ensure playerBox inactive state overrides all hover effects */
+.innerBox.playerBox.inactive:hover {
+  border-color: transparent;
+  box-shadow: var(--shadow-sm);
+  transform: none;
 }
 
 /* Player claimed box */

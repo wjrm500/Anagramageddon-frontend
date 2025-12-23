@@ -24,7 +24,7 @@ const Grid = () => {
   const rows = Array(gridSize).fill().map((_, rowIdx) => {
     const row = Array(gridSize).fill().map((_, colIdx) => {
       const box = boxes[rowIdx][colIdx]
-      const isOpponent = box.player && box.player !== currentPlayer
+      const isOpponent = box.player && box.player.name !== currentPlayer.name
       const setTextFlash = (textFlash) => dispatch({type: SET_TEXT_FLASH, textFlash})
       const onClick = () => {
         if (!playerActive) return
