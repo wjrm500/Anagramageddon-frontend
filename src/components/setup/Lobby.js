@@ -140,7 +140,7 @@ const Lobby = ({wscMessageHandlers, webSocketOpen, gameOpen}) => {
         ? (
           <div id="playerListComponent">
             <div id="playerListTitle">
-              Players in game:
+              Players in game ({playerCollection.numPlayers()}/4):
             </div>
             <ul id="playerList">
               {
