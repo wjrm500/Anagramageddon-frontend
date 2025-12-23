@@ -1,0 +1,78 @@
+/* ==========================================================================
+   Letter Bank - Mini Letter Tiles Display
+   ========================================================================== */
+
+#letterBank {
+  width: 100%;
+  max-width: var(--grid-max-size);
+  flex-shrink: 0;
+  margin-bottom: 10px;
+  padding: var(--space-sm);
+  background: var(--color-bg-elevated);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+#letterBank.inactive {
+  opacity: 0.6;
+}
+
+
+.letterBankTiles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 28px;
+}
+
+.letterBankTile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Tablet - slightly larger tiles */
+@media (min-width: 640px) {
+  #letterBank {
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .letterBankTiles {
+    gap: 5px;
+    min-height: 32px;
+  }
+
+  .letterBankTile {
+    width: 32px;
+    height: 32px;
+    font-size: 0.75rem;
+  }
+}
+
+/* Desktop - larger tiles */
+@media (min-width: 1024px) {
+  .letterBankTiles {
+    gap: 6px;
+    min-height: 36px;
+  }
+
+  .letterBankTile {
+    width: 36px;
+    height: 36px;
+    font-size: 0.8rem;
+  }
+}

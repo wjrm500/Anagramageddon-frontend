@@ -4,6 +4,7 @@ import { CHECK_WINNING_PLAYER } from '../../reducers/winningPlayer'
 import Header from '../Header'
 import Grid from './Grid'
 import Instruction from './Instruction'
+import LetterBank from './LetterBank'
 import ScoreTable from './ScoreTable'
 import TextFlash from './TextFlash'
 import WinnerBanner from './WinnerBanner'
@@ -31,6 +32,7 @@ const Game = ({webSocketOpen, gameOpen}) => {
               }
               <Instruction />
               <Grid />
+              <LetterBank />
               <WordEntry />
               <ScoreTable />
             </div>

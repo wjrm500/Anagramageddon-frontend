@@ -8,7 +8,7 @@
   width: 100%;
   max-width: var(--grid-max-size);
   flex-shrink: 0;
-  margin-bottom: var(--space-sm);
+  margin-bottom: 10px;
 }
 
 /* 2 players: single row */

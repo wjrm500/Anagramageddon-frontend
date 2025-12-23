@@ -47,8 +47,14 @@ const Grid = () => {
     })
     return <div className="row">{row}</div>
   })
+  const collapsed = playerActive && requiredAction == ACTION_ENTER_WORD && winningPlayer == null
+  const gridClasses = [
+    active ? "active" : "inactive",
+    collapsed ? "collapsed" : ""
+  ].filter(Boolean).join(" ")
+
   return (
-    <div id="grid" className={active ? "active" : "inactive"}>
+    <div id="grid" className={gridClasses}>
       {rows}
     </div>
   )
