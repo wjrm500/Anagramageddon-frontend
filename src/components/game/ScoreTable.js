@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 
-const truncateName = (name, maxLength = 7) => {
+const truncateName = (name, maxLength = 10) => {
   if (name.length <= maxLength) return name
   return name.slice(0, maxLength - 1) + '…'
 }
@@ -11,6 +11,7 @@ const ScoreTable = () => {
   const playerIndex = useSelector(state => state.playerIndex)
   const players = playerCollection.getPlayers()
   const activePlayerIndex = playerCollection.getActiveIndex()
+  const playerCount = players.length
 
   const cells = players.map((player, index) => {
     const isActive = index === activePlayerIndex
@@ -29,7 +30,7 @@ const ScoreTable = () => {
   })
 
   return (
-    <div id="scoreTable">
+    <div id="scoreTable" className={`players-${playerCount}`}>
       {cells}
     </div>
   )
