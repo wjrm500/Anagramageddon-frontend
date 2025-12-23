@@ -101,6 +101,110 @@
   cursor: not-allowed;
 }
 
+/* ==========================================================================
+   Help Tooltip Component
+   ========================================================================== */
+
+.help-tooltip-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  margin-left: var(--space-sm);
+}
+
+.help-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 17px;
+  height: 17px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.help-icon:hover {
+  color: var(--color-accent);
+  background: rgba(0, 212, 170, 0.1);
+  border-color: var(--color-accent);
+}
+
+.help-tooltip-content {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 250px;
+  padding: var(--space-sm) var(--space-md);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--color-text-primary);
+  background: var(--color-bg-elevated);
+  border: 1px solid rgba(0, 212, 170, 0.3);
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5),
+              0 0 0 1px rgba(255, 255, 255, 0.1),
+              0 0 20px rgba(0, 212, 170, 0.15);
+  z-index: 1000;
+  pointer-events: none;
+  animation: tooltipFadeIn var(--transition-fast) ease;
+}
+
+/* Tooltip arrow border (goes behind the fill arrow) */
+.help-tooltip-content::before {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 7px solid rgba(0, 212, 170, 0.3); /* matches your border color */
+}
+
+/* Tooltip arrow fill */
+.help-tooltip-content::after {
+  content: '';
+  position: absolute;
+  top: calc(100% - 1px); /* Pull it up 1px to overlap the border */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid var(--color-bg-elevated);
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.3));
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Adjust label to accommodate tooltip */
+.formComponent label {
+  display: flex;
+  align-items: center;
+}
+
 /* Tablet and up: side-by-side layout */
 @media (min-width: 640px) {
   #formContainer {
@@ -132,5 +236,10 @@
 
   .formComponent:last-child #submitButton {
     max-width: 100%;
+  }
+
+  /* Wider tooltips on larger screens */
+  .help-tooltip-content {
+    max-width: 280px;
   }
 }

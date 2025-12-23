@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Header from '../Header'
 import SpinningLoader from '../SpinningLoader'
+import HelpTooltip from '../HelpTooltip'
 
 const Setup = () => {  
   const navigate = useNavigate()
@@ -41,7 +42,10 @@ const Setup = () => {
       <div id="formContainer">
         <form id="setupForm" onSubmit={onSubmit}>
           <div className="formComponent">
-            <label>Grid size (5 - 15)</label>
+            <label>
+              Grid size (5 - 15)
+              <HelpTooltip text="The number of rows and columns on the board (e.g., 5 means a 5×5 grid)." />
+            </label>
             <input type="number"
                   value={!isNaN(gridSize) ? gridSize : ""}
                   onChange={(e) => setGridSize(parseInt(e.target.value))}
@@ -49,7 +53,10 @@ const Setup = () => {
                   max="15" />
           </div>
           <div className="formComponent">
-            <label>Winning score {!isNaN(gridSize) ? "(" + gridSize + " - " + gridSize * 10 + ")" : ""} </label>
+            <label>
+              Winning score {!isNaN(gridSize) ? "(" + gridSize + " - " + gridSize * 10 + ")" : ""}
+              <HelpTooltip text="The number of points needed to win the game. Each word you enter earns points based on its length." />
+            </label>
             <input type="number"
                   value={!isNaN(winningScore) ? winningScore : ""}
                   onChange={(e) => setWinningScore(parseInt(e.target.value))}
@@ -57,7 +64,10 @@ const Setup = () => {
                   max={!isNaN(gridSize) ? gridSize * 10 : ""} />
           </div>
           <div className="formComponent">
-            <label>Turn time limit (5 - 30)</label>
+            <label>
+              Turn time limit (5 - 30)
+              <HelpTooltip text="Seconds you have to submit a word before your turn is skipped." />
+            </label>
             <input type="number"
                   value={!isNaN(maxCountdownSeconds) ? maxCountdownSeconds : ""}
                   onChange={(e) => setMaxCountdownSeconds(parseInt(e.target.value))}
@@ -65,7 +75,10 @@ const Setup = () => {
                   max="30" />
           </div>
           <div className="formComponent">
-            <label>Volatile boxes</label>
+            <label>
+              Volatile boxes
+              <HelpTooltip text="When enabled, random boxes will periodically shake and then change their letter." />
+            </label>
             <select value={volatileBoxes} onChange={(e) => setVolatileBoxes(parseInt(e.target.value))}>
               <option value="1">Yes</option>
               <option value="0">No</option>
@@ -75,7 +88,10 @@ const Setup = () => {
             volatileBoxes ?
             (
               <div className="formComponent">
-                <label>Volatility %</label>
+                <label>
+                  Volatility %
+                  <HelpTooltip text="How frequently boxes change letters. Higher = more chaos." />
+                </label>
                 <input type="number"
                        value={!isNaN(volatility) ? volatility : ""}
                        onChange={(e) => setVolatility(parseInt(e.target.value))}
