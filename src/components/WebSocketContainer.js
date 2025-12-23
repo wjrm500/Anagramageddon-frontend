@@ -8,6 +8,7 @@ import Lobby from './setup/Lobby';
 
 export const WebSocketContext = createContext(null);
 export const GameIdContext = createContext(null);
+export const ConnectionStatusContext = createContext('disconnected');
 
 const WebSocketContainer = ({phase}) => {
   const navigate = useNavigate()
@@ -16,6 +17,11 @@ const WebSocketContainer = ({phase}) => {
   const dispatch = useDispatch()
   const [gameOpen, setGameOpen] = useState(null)
   const [webSocketOpen, setWebSocketOpen] = useState(false)
+  const [connectionStatus, setConnectionStatus] = useState('connecting')
+  const [reconnectAttempts, setReconnectAttempts] = useState(0)
+  const playerIndexRef = useRef(null)
+  const intentionalCloseRef = useRef(false)
+  const reconnectTimeoutRef = useRef(null)
 
   const wscMessageHandlers = {
     "setBoxes": (data) => {
@@ -28,15 +34,37 @@ const WebSocketContainer = ({phase}) => {
     "setPlayerCollection": (data) => {
       const playerCollection = data.playerCollection
       dispatch({type: SET_PLAYER_COLLECTION, playerCollection})
+    },
+    "playerAdded": (data) => {
+      // Store playerIndex for reconnection
+      playerIndexRef.current = data.playerIndex
     }
   }
-  
-  useEffect(() => {
+
+  const connect = () => {
+    // Clear any existing reconnection timeout
+    if (reconnectTimeoutRef.current) {
+      clearTimeout(reconnectTimeoutRef.current)
+      reconnectTimeoutRef.current = null
+    }
+
     ws.current = new WebSocket(`${process.env.REACT_APP_API_WS_URL}`)
 
     ws.current.onopen = () => {
       setWebSocketOpen(true)
-      ws.current.send(JSON.stringify({type: "JOIN_GAME", data: {gameId}}))
+      setConnectionStatus('connected')
+      setReconnectAttempts(0)
+
+      // If we have a playerIndex, this is a reconnection - send REJOIN_GAME
+      if (playerIndexRef.current !== null) {
+        ws.current.send(JSON.stringify({
+          type: "REJOIN_GAME",
+          data: {gameId, playerIndex: playerIndexRef.current}
+        }))
+      } else {
+        // Initial connection - send JOIN_GAME
+        ws.current.send(JSON.stringify({type: "JOIN_GAME", data: {gameId}}))
+      }
     }
 
     ws.current.onmessage = (message) => {
@@ -44,24 +72,69 @@ const WebSocketContainer = ({phase}) => {
       wscMessageHandlers[data.type](data.data)
     }
 
-    window.onbeforeunload = () => ws.current.close()
-
     ws.current.onclose = () => {
       setWebSocketOpen(false)
-      navigate("/")
+
+      // Check if this was an intentional close
+      if (intentionalCloseRef.current) {
+        setConnectionStatus('disconnected')
+        navigate("/")
+        return
+      }
+
+      // Unintentional close - attempt reconnection
+      if (reconnectAttempts >= 5) {
+        // Max reconnection attempts reached
+        setConnectionStatus('disconnected')
+        alert("Unable to reconnect to the game. Please try joining again.")
+        navigate("/")
+        return
+      }
+
+      // Set status to reconnecting
+      setConnectionStatus('reconnecting')
+
+      // Calculate exponential backoff delay (capped at 30 seconds)
+      const delay = Math.min(1000 * Math.pow(2, reconnectAttempts), 30000)
+
+      // Schedule reconnection
+      reconnectTimeoutRef.current = setTimeout(() => {
+        setReconnectAttempts(prev => prev + 1)
+        connect()
+      }, delay)
+    }
+  }
+
+  useEffect(() => {
+    connect()
+
+    window.onbeforeunload = () => {
+      intentionalCloseRef.current = true
+      ws.current?.close()
+    }
+
+    return () => {
+      // Cleanup on unmount
+      intentionalCloseRef.current = true
+      if (reconnectTimeoutRef.current) {
+        clearTimeout(reconnectTimeoutRef.current)
+      }
+      ws.current?.close()
     }
   }, [])
 
   return (
     <WebSocketContext.Provider value={ws}>
       <GameIdContext.Provider value={gameId}>
-        <div>
-          {
-            phase == Lobby
-            ? <Lobby wscMessageHandlers={wscMessageHandlers} webSocketOpen={webSocketOpen} gameOpen={gameOpen} />
-            : <Game webSocketOpen={webSocketOpen} gameOpen={gameOpen} />
-          }
-        </div>
+        <ConnectionStatusContext.Provider value={connectionStatus}>
+          <div>
+            {
+              phase == Lobby
+              ? <Lobby wscMessageHandlers={wscMessageHandlers} webSocketOpen={webSocketOpen} gameOpen={gameOpen} />
+              : <Game webSocketOpen={webSocketOpen} gameOpen={gameOpen} />
+            }
+          </div>
+        </ConnectionStatusContext.Provider>
       </GameIdContext.Provider>
     </WebSocketContext.Provider>
   )
