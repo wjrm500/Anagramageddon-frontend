@@ -41,8 +41,8 @@ const Help = () => {
         <section className="helpSection">
           <h2 className="helpTitle">Volatile Boxes</h2>
           <p className="helpText">
-            When enabled, some claimed boxes become "volatile" (shown shaking). These can be stolen back by opponents,
-            adding an extra layer of strategy to the game.
+            When enabled, some claimed boxes become "volatile" (shown shaking). The letters in these boxes
+            change randomly throughout the game, adding an extra layer of strategy and unpredictability.
           </p>
         </section>
       </div>
