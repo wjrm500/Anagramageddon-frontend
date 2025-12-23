@@ -1,5 +1,6 @@
 export class PlayerCollection {
-  static playerColors = ["red", "blue", "green", "gold"]
+  // Vibrant colors that match the dark theme design system
+  static playerColors = ["#ff6b6b", "#4ecdc4", "#a66cff", "#ffd93d"]
 
   static maxPlayers = 4
 

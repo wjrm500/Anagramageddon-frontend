@@ -10,30 +10,44 @@ const Instruction = () => {
   const playerActive = playerCollection.isActiveIndex(playerIndex)
   const activePlayer = playerCollection.getActivePlayer()
   const requiredAction = useSelector(state => state.requiredAction)
+
   const promptMap = new Map([
-    [ACTION_CLICK_BOX, "Click a square next to one of your squares"],
-    [ACTION_ENTER_WORD, "Enter a word that can be formed by your letters"]
+    [ACTION_CLICK_BOX, "Tap a square next to yours"],
+    [ACTION_ENTER_WORD, "Enter a word using your letters"]
   ])
   const prompt = promptMap.get(requiredAction)
-  const whoseTurn = <span>
-    It's <span id="activePlayer" style={{color: activePlayer.getColor()}}>{activePlayer.name}</span>'s turn!
-  </span>
-  const instruction = <div id="instruction">
-    {whoseTurn} {prompt}. You've got <Countdown /> seconds...
-  </div>
-  return (
-    <div style={{textAlign: "center", width: "80vw"}}>
-      {
-        winningPlayer == null
-        ? (
-          playerActive
-          ? instruction
-          : whoseTurn
-        )
-        : <div id="announcement">{winningPlayer != null ? winningPlayer.name : ""} won!</div>
-      }
+
+  const whoseTurn = (
+    <span className="turnIndicator">
+      <span id="activePlayer" style={{color: activePlayer.getColor()}}>{activePlayer.name}</span>'s turn
+    </span>
+  )
+
+  const instruction = (
+    <div id="instruction">
+      <div className="turnLine">{whoseTurn}</div>
+      <div className="promptLine">{prompt}</div>
+      <div className="timerLine">
+        <Countdown /> seconds remaining
+      </div>
     </div>
-      
+  )
+
+  return (
+    <>
+      {winningPlayer == null ? (
+        playerActive ? instruction : (
+          <div id="instruction">
+            <div className="turnLine">{whoseTurn}</div>
+            <div className="promptLine waitingText">Waiting for their move...</div>
+          </div>
+        )
+      ) : (
+        <div id="announcement">
+          <span style={{color: winningPlayer.getColor()}}>{winningPlayer.name}</span> won!
+        </div>
+      )}
+    </>
   )
 }
 

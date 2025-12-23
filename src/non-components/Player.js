@@ -10,6 +10,10 @@ export class Player {
   }
 
   getColor() {
+    // Handle both hex strings and RGB tuples for backwards compatibility
+    if (typeof this.color === 'string') {
+      return this.color
+    }
     const tup = this.color
     return `rgb(${tup[0]}, ${tup[1]}, ${tup[2]})`
   }

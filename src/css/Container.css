@@ -1,11 +1,6 @@
-@import "Game.css";
-@import "Header.css";
-@import "Home.css";
-@import "Setup.css";
-@import "Lobby.css";
+/* ==========================================================================
+   Container - Legacy file, styles now in index.css
+   Game styles import maintained for backwards compatibility
+   ========================================================================== */
 
-#container {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-}
+@import "Game.css";

@@ -1,8 +1,53 @@
+/* ==========================================================================
+   Header Component
+   ========================================================================== */
+
 #headerText {
-    font-family: fantasy;
-    text-shadow: 0 0 15px yellow;
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-3xl);
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, var(--color-accent) 0%, #4ecdc4 50%, var(--color-accent-hover) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: none;
+  margin: var(--space-lg) 0;
+  padding: var(--space-sm) var(--space-md);
+  position: relative;
+  transition: transform var(--transition-fast);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+#headerText::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+  opacity: 0.6;
 }
 
 #headerText:hover {
-    cursor: pointer;
+  cursor: pointer;
+  transform: scale(1.02);
+}
+
+#headerText:active {
+  transform: scale(0.98);
+}
+
+/* Smaller screens: reduce header size */
+@media (max-width: 400px) {
+  #headerText {
+    font-size: var(--font-size-2xl);
+    letter-spacing: 0.02em;
+    margin: var(--space-md) 0;
+  }
 }

@@ -1,12 +1,115 @@
+/* ==========================================================================
+   Instruction - Turn Indicator & Timer
+   ========================================================================== */
+
 #instruction {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
   text-align: center;
+  padding: var(--space-md);
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+  background: var(--color-bg-elevated);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  max-width: var(--grid-max-size);
+  width: 100%;
+}
+
+.turnLine {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.turnIndicator {
+  display: inline;
 }
 
 #activePlayer {
-  color: red;
-  font-weight: bold;
+  font-weight: 700;
+  /* Color is set dynamically via inline style */
+}
+
+.promptLine {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.promptLine.waitingText {
+  font-style: italic;
+  color: var(--color-text-muted);
+}
+
+.timerLine {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
 }
 
 #timer {
-  font-weight: bold;
+  display: inline-block;
+  min-width: 2ch;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-accent);
+}
+
+/* Warning state when time is low */
+#timer.warning {
+  color: var(--color-warning);
+  animation: timerPulse 0.5s ease-in-out infinite;
+}
+
+@keyframes timerPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+#announcement {
+  text-align: center;
+  padding: var(--space-md);
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  background: var(--color-bg-elevated);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  max-width: var(--grid-max-size);
+  width: 100%;
+}
+
+/* Tablet and up */
+@media (min-width: 640px) {
+  #instruction {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-md);
+    font-size: var(--font-size-base);
+    padding: var(--space-md) var(--space-lg);
+  }
+
+  .turnLine,
+  .promptLine,
+  .timerLine {
+    font-size: var(--font-size-base);
+  }
+
+  .turnLine::after {
+    content: '·';
+    margin-left: var(--space-md);
+    color: var(--color-text-muted);
+  }
+
+  .promptLine::after {
+    content: '·';
+    margin-left: var(--space-md);
+    color: var(--color-text-muted);
+  }
+
+  .promptLine.waitingText::after {
+    content: none;
+  }
 }

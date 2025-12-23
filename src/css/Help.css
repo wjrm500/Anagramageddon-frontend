@@ -1,0 +1,76 @@
+/* ==========================================================================
+   Help Page - How to Play
+   ========================================================================== */
+
+.helpContent {
+  width: 100%;
+  max-width: 500px;
+  padding: var(--space-lg);
+  background: var(--color-bg-elevated);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+}
+
+.helpSection {
+  margin-bottom: var(--space-xl);
+}
+
+.helpSection:last-child {
+  margin-bottom: 0;
+}
+
+.helpTitle {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--color-accent);
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.helpText {
+  font-size: var(--font-size-base);
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+}
+
+.helpText strong {
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+.helpList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.helpList li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: var(--color-bg-card);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+}
+
+.helpIcon {
+  font-size: var(--font-size-xl);
+  flex-shrink: 0;
+}
+
+/* Tablet and up */
+@media (min-width: 640px) {
+  .helpContent {
+    max-width: 600px;
+    padding: var(--space-xl);
+  }
+
+  .helpList li {
+    font-size: var(--font-size-base);
+  }
+}

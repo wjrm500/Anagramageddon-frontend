@@ -1,71 +1,65 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 
-class Box extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      box: props.box,
-      active: props.active,
-      onClick: props.onClick,
-      hovered: false
+// Helper to parse color (handles both hex and rgb tuple formats)
+const parseColor = (color) => {
+  if (typeof color === 'string') {
+    // Hex color
+    if (color.startsWith('#')) {
+      const hex = color.slice(1)
+      const r = parseInt(hex.slice(0, 2), 16)
+      const g = parseInt(hex.slice(2, 4), 16)
+      const b = parseInt(hex.slice(4, 6), 16)
+      return [r, g, b]
     }
-    this.getColor = this.getColor.bind(this)
-  }
-
-  componentWillReceiveProps(props) {
-    this.state = {
-      box: props.box,
-      active: props.active,
-      onClick: props.onClick,
+    // Already rgb/rgba string - extract values
+    const match = color.match(/\(([^)]+)\)/)
+    if (match) {
+      return match[1].split(',').map(x => parseInt(x.trim()))
     }
   }
+  // RGB tuple [r, g, b]
+  return color
+}
 
-  darkenColor(colorString, factor) { // Factor between 0 and 1 - a lower number gives a darker colour
-    const colorValues = colorString.match(/\(([^)]+)\)/)[1].split(",").map(x => x.trim())
-    if (colorValues.length == 3) {
-      return `rgb(${colorValues.map(x => parseInt(x * factor)).join(', ')})`
-    } else if (colorValues.length == 4) {
-      const rgbValues = colorValues.slice(0, 3)
-      const alpha = colorValues[3]
-      return `rgba(${rgbValues.map(x => parseInt(x * factor)).join(', ')}, ${alpha})`
-    }
-  }
+const Box = ({ box, active, onClick }) => {
+  const getBackgroundColor = useMemo(() => {
+    if (!box.player) return ''
 
-  getColor() {
-    const colorTuple = this.state.box.player.color
-    const alpha = this.state.active ? 1 : 0.5
-    const colorString = `rgba(${colorTuple[0]}, ${colorTuple[1]}, ${colorTuple[2]}, ${alpha})`
-    return this.state.box.volatile ? this.darkenColor(colorString, 0.8) : colorString
-  }
+    const color = box.player.color
+    const [r, g, b] = parseColor(color)
+    const alpha = active ? 1 : 0.5
 
-  render() {
-    const innerBoxClasses = ["innerBox"]
-    if (this.state.box.player) innerBoxClasses.push("playerBox")
-    if (!this.state.active) innerBoxClasses.push("inactive")
-    if (this.state.box.volatile) innerBoxClasses.push("shaking")
-    return (
-      <div className="outerBox">
-        <div
-          className={innerBoxClasses.join(" ")}
-          style={{
-            backgroundColor: this.state.box.player ? this.getColor() : "",
-            color: this.state.box.player ? "white" : ""
-          }}
-          onClick={this.state.onClick}
-          onMouseEnter={() => {
-            this.state.hovered = true
-            this.forceUpdate()
-          }}
-          onMouseLeave={() => {
-            this.state.hovered = false
-            this.forceUpdate()
-          }}
-          >
-          {this.state.box.letter}
-        </div>
+    // Darken if volatile
+    const factor = box.volatile ? 0.7 : 1
+    const adjustedR = Math.round(r * factor)
+    const adjustedG = Math.round(g * factor)
+    const adjustedB = Math.round(b * factor)
+
+    return `rgba(${adjustedR}, ${adjustedG}, ${adjustedB}, ${alpha})`
+  }, [box.player, box.volatile, active])
+
+  const innerBoxClasses = useMemo(() => {
+    const classes = ['innerBox']
+    if (box.player) classes.push('playerBox')
+    if (!active) classes.push('inactive')
+    if (box.volatile) classes.push('shaking')
+    return classes.join(' ')
+  }, [box.player, box.volatile, active])
+
+  return (
+    <div className="outerBox">
+      <div
+        className={innerBoxClasses}
+        style={{
+          backgroundColor: getBackgroundColor,
+          color: box.player ? 'white' : ''
+        }}
+        onClick={onClick}
+      >
+        {box.letter}
       </div>
-    )
-  }
+    </div>
+  )
 }
 
 export default Box
