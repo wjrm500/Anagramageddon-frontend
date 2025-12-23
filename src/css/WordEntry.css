@@ -1,101 +1,62 @@
 /* ==========================================================================
-   Word Entry - Text Input Component
+   Word Entry - Compact Text Input
    ========================================================================== */
 
 #wordEntryContainer {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
   width: 100%;
   max-width: var(--grid-max-size);
-  padding: var(--space-md);
-  background: var(--color-bg-elevated);
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
-  transition: all var(--transition-base);
+  flex-shrink: 0;
+  margin-bottom: 10px;
 }
 
 #wordEntryContainer.inactive {
   opacity: 0.6;
 }
 
-#wordEntryContainer.inactive .labelContainer {
-  color: var(--color-text-muted);
-}
-
-#wordEntryContainer.active {
-  background: linear-gradient(135deg, rgba(0, 212, 170, 0.15) 0%, rgba(78, 205, 196, 0.1) 100%);
+#wordEntryContainer.active #wordEntry {
+  background: linear-gradient(135deg, rgba(0, 212, 170, 0.1) 0%, rgba(78, 205, 196, 0.05) 100%);
   border-color: var(--color-accent);
-  box-shadow: 0 0 20px var(--color-accent-glow);
+  box-shadow: 0 0 12px var(--color-accent-glow);
 }
 
-#wordEntryContainer.active .labelContainer {
-  color: var(--color-accent);
-  font-weight: 600;
-}
-
-.labelContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
-  transition: color var(--transition-fast);
-}
-
-.inputContainer {
+#wordEntry {
   width: 100%;
-}
-
-.inputContainer input {
-  width: 100%;
-  padding: var(--space-md);
-  font-size: var(--font-size-xl);
+  padding: var(--space-xs) var(--space-md);
+  font-size: var(--font-size-base);
   font-weight: 600;
   text-align: center;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   color: var(--color-text-primary);
-  background: var(--color-bg-card);
-  border: 2px solid rgba(255, 255, 255, 0.15);
+  background: var(--color-bg-elevated);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-md);
   transition: all var(--transition-fast);
 }
 
-.inputContainer input::placeholder {
+#wordEntry::placeholder {
   color: var(--color-text-muted);
   text-transform: none;
   letter-spacing: normal;
   font-weight: 400;
+  font-size: var(--font-size-base);
 }
 
-.inputContainer input:focus {
+#wordEntry:focus {
   outline: none;
   border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px var(--color-accent-glow);
+  box-shadow: 0 0 0 2px var(--color-accent-glow);
 }
 
-.inputContainer input:disabled {
+#wordEntry:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-/* Larger on tablet and up */
+/* Slightly larger on tablet and up */
 @media (min-width: 640px) {
-  #wordEntryContainer {
-    flex-direction: row;
-    align-items: center;
-    padding: var(--space-sm) var(--space-md);
-  }
-
-  .labelContainer {
-    flex-shrink: 0;
-    padding-right: var(--space-md);
-  }
-
-  .inputContainer input {
-    text-align: left;
-    padding: var(--space-sm) var(--space-md);
+  #wordEntry {
+    padding: var(--space-xs) var(--space-lg);
+    font-size: var(--font-size-lg);
   }
 }

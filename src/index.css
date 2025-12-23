@@ -180,6 +180,18 @@ ul, ol {
   padding-bottom: env(safe-area-inset-bottom, var(--space-md));
 }
 
+/* Fixed viewport game container - no scrolling */
+#container.game-view {
+  height: 100vh;
+  height: 100dvh;
+  max-height: 100vh;
+  max-height: 100dvh;
+  min-height: 0;
+  overflow: hidden;
+  padding: var(--space-xs);
+  padding-bottom: env(safe-area-inset-bottom, var(--space-xs));
+}
+
 /* --------------------------------------------------------------------------
    Component Imports
    -------------------------------------------------------------------------- */

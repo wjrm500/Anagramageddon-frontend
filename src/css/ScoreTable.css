@@ -1,69 +1,89 @@
 /* ==========================================================================
-   Score Table - Player Leaderboard
+   Score Table - Grid Layout with Inner Borders Only
    ========================================================================== */
 
 #scoreTable {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   width: 100%;
   max-width: var(--grid-max-size);
-  border-collapse: separate;
-  border-spacing: 0;
-  background: var(--color-bg-elevated);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: var(--shadow-md);
+  flex-shrink: 0;
+  margin-bottom: var(--space-sm);
 }
 
-#scoreTable thead {
-  background: var(--color-bg-card);
+/* 2 players: single row */
+#scoreTable.players-2 {
+  grid-template-columns: 1fr 1fr;
 }
 
-#scoreTable th {
-  padding: var(--space-sm) var(--space-md);
-  font-size: var(--font-size-xs);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--color-text-muted);
+/* 3 players: 2 on top, 1 on bottom left */
+#scoreTable.players-3 {
+  grid-template-columns: 1fr 1fr;
+}
+
+/* 4 players: 2x2 grid */
+#scoreTable.players-4 {
+  grid-template-columns: 1fr 1fr;
+}
+
+.score-cell {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--font-size-sm);
   text-align: center;
+  min-width: 0;
+}
+
+/* Inner borders - right border on left column cells */
+.score-cell:nth-child(odd) {
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Inner borders - bottom border on top row cells (for 3+ players) */
+#scoreTable.players-3 .score-cell:nth-child(1),
+#scoreTable.players-3 .score-cell:nth-child(2),
+#scoreTable.players-4 .score-cell:nth-child(1),
+#scoreTable.players-4 .score-cell:nth-child(2) {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-#scoreTable td {
-  padding: var(--space-sm) var(--space-md);
-  font-size: var(--font-size-base);
-  text-align: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+/* 3 players: remove right border from bottom cell (it's alone) */
+#scoreTable.players-3 .score-cell:nth-child(3) {
+  border-right: none;
 }
 
-#scoreTable tbody tr:last-child td {
-  border-bottom: none;
-}
-
-#scoreTable tbody tr {
-  transition: background var(--transition-fast);
-}
-
-#scoreTable tbody tr:hover {
-  background: rgba(255, 255, 255, 0.03);
-}
-
-/* Player name column */
-#scoreTable td:first-child {
+/* Player name */
+.score-cell .player-name {
   font-weight: 600;
 }
 
-/* Score column */
-#scoreTable td:last-child {
+/* Score value */
+.score-cell .player-score {
   font-weight: 700;
-  font-size: var(--font-size-lg);
   font-variant-numeric: tabular-nums;
+  color: var(--color-text-primary);
 }
 
-/* Tablet and up */
+/* Add colon separator between name and score */
+.score-cell .player-name::after {
+  content: ':';
+  color: var(--color-text-muted);
+  margin-left: 1px;
+}
+
+/* Slightly larger on tablet and up */
 @media (min-width: 640px) {
-  #scoreTable th,
-  #scoreTable td {
-    padding: var(--space-md) var(--space-lg);
+  .score-cell {
+    padding: var(--space-sm) var(--space-md);
+    font-size: var(--font-size-base);
+    gap: var(--space-sm);
+  }
+
+  .score-cell .player-name {
+    max-width: 12ch;
   }
 }

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Grid - Letter Grid Layout
+   Grid - Letter Grid Layout (Flex-grow to fill available space)
    ========================================================================== */
 
 @import "Box.css";
@@ -7,41 +7,45 @@
 #grid {
   display: grid;
   grid-auto-flow: row;
-  gap: 3px;
+  gap: 2px;
   width: var(--grid-max-size);
   height: var(--grid-max-size);
-  padding: var(--space-sm);
+  max-height: 100%;
+  flex-shrink: 1;
+  min-height: 0;
+  margin-bottom: 10px;
+  padding: var(--space-xs);
   background: var(--color-bg-elevated);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
 }
 
 .row {
   display: grid;
   grid-auto-columns: 1fr;
   grid-auto-flow: column;
-  gap: 3px;
+  gap: 2px;
 }
 
 /* Slightly larger gap on bigger screens */
 @media (min-width: 640px) {
   #grid {
-    gap: 4px;
-    padding: var(--space-md);
+    gap: 3px;
+    padding: var(--space-sm);
   }
 
   .row {
-    gap: 4px;
+    gap: 3px;
   }
 }
 
 @media (min-width: 1024px) {
   #grid {
-    gap: 5px;
+    gap: 4px;
   }
 
   .row {
-    gap: 5px;
+    gap: 4px;
   }
 }

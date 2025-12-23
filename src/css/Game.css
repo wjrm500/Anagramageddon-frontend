@@ -8,16 +8,16 @@
 @import "Grid.css";
 @import "WordEntry.css";
 @import "ScoreTable.css";
-@import "ScoreNotification.css";
 
 #gameContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex: 1;
   width: 100%;
   max-width: var(--container-max);
-  gap: var(--space-md);
-  padding-bottom: var(--space-xl);
+  min-height: 0;
+  overflow: hidden;
 }
 
 /* Game status message for when game not available */
