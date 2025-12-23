@@ -21,7 +21,7 @@ const parseColor = (color) => {
   return color
 }
 
-const Box = ({ box, active, onClick }) => {
+const Box = ({ box, active, onClick, isOpponent }) => {
   const getBackgroundColor = useMemo(() => {
     if (!box.player) return ''
 
@@ -43,8 +43,9 @@ const Box = ({ box, active, onClick }) => {
     if (box.player) classes.push('playerBox')
     if (!active) classes.push('inactive')
     if (box.volatile) classes.push('shaking')
+    if (isOpponent) classes.push('opponentBox')
     return classes.join(' ')
-  }, [box.player, box.volatile, active])
+  }, [box.player, box.volatile, active, isOpponent])
 
   return (
     <div className="outerBox">

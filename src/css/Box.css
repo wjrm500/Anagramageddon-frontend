@@ -63,7 +63,21 @@
   box-shadow: var(--shadow-sm);
 }
 
-/* Volatile boxes - letters change randomly */
+/* Opponent box - clickable */
+.innerBox.opponentBox:not(.inactive) {
+  cursor: pointer;
+}
+
+.innerBox.opponentBox:not(.inactive):hover {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 10px var(--color-accent-glow);
+}
+
+.innerBox.opponentBox:not(.inactive):active {
+  transform: scale(0.95);
+}
+
+/* Volatile boxes - can be stolen back */
 .innerBox.shaking {
   animation: volatileShake 0.4s ease-in-out infinite;
 }

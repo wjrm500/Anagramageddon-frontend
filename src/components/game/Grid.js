@@ -19,10 +19,12 @@ const Grid = () => {
   const active = playerActive && requiredAction == ACTION_CLICK_BOX && winningPlayer == null
   const dispatch = useDispatch()
   const boxes = useSelector(state => state.boxes)
+  const currentPlayer = playerCollection.players[playerIndex]
   const boxComponents = []
   const rows = Array(gridSize).fill().map((_, rowIdx) => {
     const row = Array(gridSize).fill().map((_, colIdx) => {
       const box = boxes[rowIdx][colIdx]
+      const isOpponent = box.player && box.player !== currentPlayer
       const setTextFlash = (textFlash) => dispatch({type: SET_TEXT_FLASH, textFlash})
       const onClick = () => {
         if (!playerActive) return
@@ -37,9 +39,9 @@ const Grid = () => {
         } else {
           setTextFlash({content: "Can't go here", status: FLASH_ERROR})
         }
-        
+
       }
-      const boxComponent = <Box box={box} active={active} onClick={onClick}/>
+      const boxComponent = <Box box={box} active={active} onClick={onClick} isOpponent={isOpponent}/>
       boxComponents.push(boxComponent)
       return boxComponent
     })
