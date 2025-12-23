@@ -48,7 +48,7 @@ const Grid = () => {
     return <div className="row">{row}</div>
   })
   return (
-    <div id="grid">
+    <div id="grid" className={active ? "active" : "inactive"}>
       {rows}
     </div>
   )
