@@ -56,19 +56,9 @@
   border-right: none;
 }
 
-/* Active player highlight */
-.score-cell.active {
-  background: rgba(0, 212, 170, 0.1);
-  border-radius: var(--radius-sm);
-}
-
 /* Player name */
 .score-cell .player-name {
   font-weight: 600;
-  max-width: 10ch;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 /* Score value */

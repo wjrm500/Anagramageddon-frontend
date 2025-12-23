@@ -10,16 +10,14 @@ const ScoreTable = () => {
   const playerCollection = useSelector(state => state.playerCollection)
   const playerIndex = useSelector(state => state.playerIndex)
   const players = playerCollection.getPlayers()
-  const activePlayerIndex = playerCollection.getActiveIndex()
   const playerCount = players.length
 
   const cells = players.map((player, index) => {
-    const isActive = index === activePlayerIndex
     const isCurrentPlayer = index === playerIndex
     return (
       <div
         key={player.name}
-        className={`score-cell ${isActive ? 'active' : ''} ${isCurrentPlayer ? 'current' : ''}`}
+        className={`score-cell ${isCurrentPlayer ? 'current' : ''}`}
       >
         <span className="player-name" style={{color: player.getColor()}}>
           {truncateName(player.name)}

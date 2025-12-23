@@ -9,7 +9,7 @@
   justify-content: center;
   gap: var(--space-xs);
   padding: var(--space-xs) 0;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   font-size: var(--font-size-sm);
   line-height: 1.2;
   color: var(--color-text-secondary);
@@ -17,7 +17,6 @@
   width: 100%;
   flex-shrink: 0;
   white-space: nowrap;
-  overflow: hidden;
 }
 
 #instruction .turnIndicator {
@@ -31,9 +30,6 @@
 
 #instruction .playerName {
   font-weight: 700;
-  max-width: 8ch;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 #instruction .separator {
@@ -44,8 +40,6 @@
 #instruction .prompt {
   color: var(--color-text-secondary);
   flex-shrink: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 #instruction .timer {
