@@ -10,6 +10,7 @@ import Lobby from './setup/Lobby';
 export const WebSocketContext = createContext(null);
 export const GameIdContext = createContext(null);
 export const ConnectionStatusContext = createContext('disconnected');
+export const CloseConnectionContext = createContext(() => {});
 
 const WebSocketContainer = ({phase}) => {
   const navigate = useNavigate()
@@ -61,6 +62,11 @@ const WebSocketContainer = ({phase}) => {
         dispatch({type: SET_CREATOR_PLAYER_INDEX, creatorPlayerIndex: data.creatorPlayerIndex})
       }
     }
+  }
+
+  const closeConnection = () => {
+    intentionalCloseRef.current = true
+    ws.current?.close()
   }
 
   const connect = () => {
@@ -154,13 +160,15 @@ const WebSocketContainer = ({phase}) => {
     <WebSocketContext.Provider value={ws}>
       <GameIdContext.Provider value={gameId}>
         <ConnectionStatusContext.Provider value={connectionStatus}>
-          <div>
-            {
-              phase == Lobby
-              ? <Lobby wscMessageHandlers={wscMessageHandlers} webSocketOpen={webSocketOpen} gameOpen={gameOpen} />
-              : <Game webSocketOpen={webSocketOpen} gameOpen={gameOpen} />
-            }
-          </div>
+          <CloseConnectionContext.Provider value={closeConnection}>
+            <div>
+              {
+                phase == Lobby
+                ? <Lobby wscMessageHandlers={wscMessageHandlers} webSocketOpen={webSocketOpen} gameOpen={gameOpen} />
+                : <Game webSocketOpen={webSocketOpen} gameOpen={gameOpen} />
+              }
+            </div>
+          </CloseConnectionContext.Provider>
         </ConnectionStatusContext.Provider>
       </GameIdContext.Provider>
     </WebSocketContext.Provider>
