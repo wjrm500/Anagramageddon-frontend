@@ -8,11 +8,9 @@ const Help = () => {
       <Header />
       <div className="helpContent">
         <section className="helpSection">
-          <h2 className="helpTitle">How to Play</h2>
+          <h2 className="helpTitle">How to play</h2>
           <p className="helpText">
-            Players take turns to <strong>(A)</strong> select a letter from the grid, and <strong>(B)</strong> enter a word using their letters.
-            Each letter claimed must be adjacent to one you already own. Words must be valid English dictionary words
-            that can be formed from your letters. Score one point per letter in each word you enter.
+            Players take turns to <strong>(A)</strong> select a letter from the grid, and <strong>(B)</strong> enter a word using their letters. Each letter claimed must be adjacent to one you already own. Words must be valid English dictionary words that can be formed from your letters. Score one point per letter in each word you enter.
           </p>
         </section>
 
@@ -39,10 +37,9 @@ const Help = () => {
         </section>
 
         <section className="helpSection">
-          <h2 className="helpTitle">Volatile Boxes</h2>
+          <h2 className="helpTitle">Volatile boxes</h2>
           <p className="helpText">
-            When enabled, some claimed boxes become "volatile" (shown shaking). These can be stolen back by opponents,
-            adding an extra layer of strategy to the game.
+            When enabled, the letters inside boxes can change randomly. When a box's letter is about to change, it will start shaking.
           </p>
         </section>
       </div>
