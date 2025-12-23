@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { ACTION_CLICK_BOX, ACTION_ENTER_WORD } from '../../reducers/requiredAction'
 import Countdown from './Countdown'
@@ -11,8 +11,18 @@ const Instruction = () => {
   const activePlayer = playerCollection.getActivePlayer()
   const requiredAction = useSelector(state => state.requiredAction)
 
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 1024)
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 1024)
+    }
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
   const promptMap = new Map([
-    [ACTION_CLICK_BOX, "Tap a square"],
+    [ACTION_CLICK_BOX, isMobile ? "Tap a square" : "Click a square"],
     [ACTION_ENTER_WORD, "Enter a word"]
   ])
   const prompt = promptMap.get(requiredAction)
