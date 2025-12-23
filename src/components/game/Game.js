@@ -4,7 +4,6 @@ import { CHECK_WINNING_PLAYER } from '../../reducers/winningPlayer'
 import Header from '../Header'
 import Grid from './Grid'
 import Instruction from './Instruction'
-import ScoreNotification from './ScoreNotification'
 import ScoreTable from './ScoreTable'
 import TextFlash from './TextFlash'
 import WinnerBanner from './WinnerBanner'
@@ -17,7 +16,7 @@ const Game = ({webSocketOpen, gameOpen}) => {
   dispatch({type: CHECK_WINNING_PLAYER, winningScore: winningScore, playerCollection: playerCollection})
   const winningPlayer = useSelector(state => state.winningPlayer)
   return (
-    <div id="container">
+    <div id="container" className="game-view">
       <Header />
       {
         webSocketOpen && gameOpen != null
@@ -34,7 +33,6 @@ const Game = ({webSocketOpen, gameOpen}) => {
               <Grid />
               <WordEntry />
               <ScoreTable />
-              <ScoreNotification />
             </div>
           )
           : "Too late! This game has already started."

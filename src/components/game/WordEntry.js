@@ -56,13 +56,18 @@ const WordEntry = () => {
     }
   }
   return (
-    <div id="wordEntryContainer" className={active ? "active" : "inactive"}>
-        <div className="labelContainer">
-            <label>Enter a word</label>
-        </div>
-        <div className="inputContainer" onClick={onClick}>
-            <input ref={input => input && input.focus()} id="wordEntry" type="text" value={value} disabled={!active} autoComplete="off" onChange={onChange} onKeyDown={onKeyDown} />
-        </div>
+    <div id="wordEntryContainer" className={active ? "active" : "inactive"} onClick={onClick}>
+        <input
+          ref={input => input && input.focus()}
+          id="wordEntry"
+          type="text"
+          value={value}
+          disabled={!active}
+          autoComplete="off"
+          placeholder="Enter a word..."
+          onChange={onChange}
+          onKeyDown={onKeyDown}
+        />
     </div>
   )
 }

@@ -12,42 +12,32 @@ const Instruction = () => {
   const requiredAction = useSelector(state => state.requiredAction)
 
   const promptMap = new Map([
-    [ACTION_CLICK_BOX, "Tap a square next to yours"],
-    [ACTION_ENTER_WORD, "Enter a word using your letters"]
+    [ACTION_CLICK_BOX, "Tap a square"],
+    [ACTION_ENTER_WORD, "Enter a word"]
   ])
   const prompt = promptMap.get(requiredAction)
 
-  const whoseTurn = (
-    <span className="turnIndicator">
-      <span id="activePlayer" style={{color: activePlayer.getColor()}}>{activePlayer.name}</span>'s turn
-    </span>
-  )
-
-  const instruction = (
-    <div id="instruction">
-      <div className="turnLine">{whoseTurn}</div>
-      <div className="promptLine">{prompt}</div>
-      <div className="timerLine">
-        <Countdown /> seconds remaining
+  if (winningPlayer != null) {
+    return (
+      <div id="instruction" className="announcement">
+        <span className="winnerName" style={{color: winningPlayer.getColor()}}>{winningPlayer.name}</span> won!
       </div>
-    </div>
-  )
+    )
+  }
 
   return (
-    <>
-      {winningPlayer == null ? (
-        playerActive ? instruction : (
-          <div id="instruction">
-            <div className="turnLine">{whoseTurn}</div>
-            <div className="promptLine waitingText">Waiting for their move...</div>
-          </div>
-        )
-      ) : (
-        <div id="announcement">
-          <span style={{color: winningPlayer.getColor()}}>{winningPlayer.name}</span> won!
-        </div>
+    <div id="instruction">
+      <span className="bullet">●</span>
+      <span className="playerName" style={{color: activePlayer.getColor()}}>{activePlayer.name}</span>
+      <span className="separator">·</span>
+      <span className="prompt">{playerActive ? prompt : "Waiting..."}</span>
+      {playerActive && (
+        <>
+          <span className="separator">·</span>
+          <span className="timer"><Countdown />s</span>
+        </>
       )}
-    </>
+    </div>
   )
 }
 

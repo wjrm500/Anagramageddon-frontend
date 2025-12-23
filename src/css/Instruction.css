@@ -1,55 +1,62 @@
 /* ==========================================================================
-   Instruction - Turn Indicator & Timer
+   Instruction - Compact Single-Line Turn Indicator
    ========================================================================== */
 
 #instruction {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
   gap: var(--space-xs);
-  text-align: center;
-  padding: var(--space-md);
+  padding: var(--space-xs) var(--space-sm);
   font-size: var(--font-size-sm);
-  line-height: 1.5;
+  line-height: 1.2;
   color: var(--color-text-secondary);
   background: var(--color-bg-elevated);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   max-width: var(--grid-max-size);
   width: 100%;
+  flex-shrink: 0;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
-.turnLine {
-  font-size: var(--font-size-lg);
-  font-weight: 600;
-  color: var(--color-text-primary);
+#instruction .bullet {
+  color: var(--color-accent);
+  font-size: var(--font-size-xs);
+  flex-shrink: 0;
 }
 
-.turnIndicator {
-  display: inline;
-}
-
-#activePlayer {
+#instruction .playerName {
   font-weight: 700;
-  /* Color is set dynamically via inline style */
+  max-width: 8ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 1;
 }
 
-.promptLine {
-  font-size: var(--font-size-sm);
+#instruction .separator {
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+#instruction .prompt {
   color: var(--color-text-secondary);
+  flex-shrink: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.promptLine.waitingText {
-  font-style: italic;
-  color: var(--color-text-muted);
+#instruction .timer {
+  font-weight: 700;
+  color: var(--color-accent);
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
 }
 
-.timerLine {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-muted);
-}
-
-#timer {
-  display: inline-block;
+#instruction #countdown {
+  display: inline;
   min-width: 2ch;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
@@ -57,7 +64,7 @@
 }
 
 /* Warning state when time is low */
-#timer.warning {
+#instruction #countdown.warning {
   color: var(--color-warning);
   animation: timerPulse 0.5s ease-in-out infinite;
 }
@@ -67,49 +74,31 @@
   50% { opacity: 0.6; }
 }
 
-#announcement {
-  text-align: center;
-  padding: var(--space-md);
-  font-size: var(--font-size-xl);
+/* Announcement state (winner declared) */
+#instruction.announcement {
+  font-size: var(--font-size-base);
   font-weight: 700;
   color: var(--color-text-primary);
-  background: var(--color-bg-elevated);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-lg);
-  max-width: var(--grid-max-size);
-  width: 100%;
+  gap: var(--space-xs);
 }
 
-/* Tablet and up */
+#instruction.announcement .winnerName {
+  font-weight: 700;
+}
+
+/* Slightly larger on tablet and up */
 @media (min-width: 640px) {
   #instruction {
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: var(--space-md);
     font-size: var(--font-size-base);
-    padding: var(--space-md) var(--space-lg);
+    padding: var(--space-sm) var(--space-md);
+    gap: var(--space-sm);
   }
 
-  .turnLine,
-  .promptLine,
-  .timerLine {
-    font-size: var(--font-size-base);
+  #instruction .playerName {
+    max-width: 10ch;
   }
 
-  .turnLine::after {
-    content: '·';
-    margin-left: var(--space-md);
-    color: var(--color-text-muted);
-  }
-
-  .promptLine::after {
-    content: '·';
-    margin-left: var(--space-md);
-    color: var(--color-text-muted);
-  }
-
-  .promptLine.waitingText::after {
-    content: none;
+  #instruction.announcement {
+    font-size: var(--font-size-lg);
   }
 }

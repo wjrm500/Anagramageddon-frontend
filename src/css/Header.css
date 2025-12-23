@@ -20,6 +20,7 @@
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
+  flex-shrink: 0;
 }
 
 #headerText::after {
@@ -43,11 +44,27 @@
   transform: scale(0.98);
 }
 
+/* Compact header in game view */
+.game-view #headerText {
+  font-size: var(--font-size-2xl);
+  margin: var(--space-xs) 0;
+  padding: var(--space-xs) var(--space-sm);
+}
+
+.game-view #headerText::after {
+  display: none;
+}
+
 /* Smaller screens: reduce header size */
 @media (max-width: 400px) {
   #headerText {
     font-size: var(--font-size-2xl);
     letter-spacing: 0.02em;
     margin: var(--space-md) 0;
+  }
+
+  .game-view #headerText {
+    font-size: var(--font-size-xl);
+    margin: var(--space-xs) 0;
   }
 }

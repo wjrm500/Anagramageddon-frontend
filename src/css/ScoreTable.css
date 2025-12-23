@@ -1,69 +1,75 @@
 /* ==========================================================================
-   Score Table - Player Leaderboard
+   Score Table - Horizontal Player Score Row
    ========================================================================== */
 
 #scoreTable {
+  display: flex;
+  flex-direction: row;
   width: 100%;
   max-width: var(--grid-max-size);
-  border-collapse: separate;
-  border-spacing: 0;
   background: var(--color-bg-elevated);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   overflow: hidden;
-  box-shadow: var(--shadow-md);
+  flex-shrink: 0;
 }
 
-#scoreTable thead {
-  background: var(--color-bg-card);
-}
-
-#scoreTable th {
-  padding: var(--space-sm) var(--space-md);
-  font-size: var(--font-size-xs);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--color-text-muted);
+.score-cell {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--font-size-sm);
   text-align: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-#scoreTable td {
-  padding: var(--space-sm) var(--space-md);
-  font-size: var(--font-size-base);
-  text-align: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-#scoreTable tbody tr:last-child td {
-  border-bottom: none;
-}
-
-#scoreTable tbody tr {
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
   transition: background var(--transition-fast);
+  min-width: 0;
 }
 
-#scoreTable tbody tr:hover {
-  background: rgba(255, 255, 255, 0.03);
+.score-cell:last-child {
+  border-right: none;
 }
 
-/* Player name column */
-#scoreTable td:first-child {
+/* Active player highlight */
+.score-cell.active {
+  background: rgba(0, 212, 170, 0.15);
+}
+
+/* Player name */
+.score-cell .player-name {
   font-weight: 600;
+  max-width: 6ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-/* Score column */
-#scoreTable td:last-child {
+/* Score value */
+.score-cell .player-score {
   font-weight: 700;
-  font-size: var(--font-size-lg);
   font-variant-numeric: tabular-nums;
+  color: var(--color-text-primary);
 }
 
-/* Tablet and up */
+/* Add colon separator between name and score */
+.score-cell .player-name::after {
+  content: ':';
+  color: var(--color-text-muted);
+  margin-left: 1px;
+}
+
+/* Slightly larger on tablet and up */
 @media (min-width: 640px) {
-  #scoreTable th,
-  #scoreTable td {
-    padding: var(--space-md) var(--space-lg);
+  .score-cell {
+    padding: var(--space-sm) var(--space-md);
+    font-size: var(--font-size-base);
+    gap: var(--space-sm);
+  }
+
+  .score-cell .player-name {
+    max-width: 8ch;
   }
 }
