@@ -63,6 +63,8 @@
   white-space: nowrap;
   opacity: 1;
   transition: opacity var(--transition-base);
+  z-index: 10;
+  box-shadow: var(--shadow-md);
 }
 
 .alert-hidden {

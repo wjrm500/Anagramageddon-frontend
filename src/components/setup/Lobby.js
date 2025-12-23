@@ -101,7 +101,7 @@ const Lobby = ({wscMessageHandlers, webSocketOpen, gameOpen}) => {
         setShowLinkCopied(true)
         setTimeout(() => {
           setShowLinkCopied(false)
-        }, 50)
+        }, 2000)
       }
     )
   }
