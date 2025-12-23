@@ -24,6 +24,12 @@ const Game = ({webSocketOpen, gameOpen}) => {
   const navigate = useNavigate()
   const gameEndedSentRef = useRef(false)
 
+  // Lock body scroll to prevent iOS Safari keyboard from shifting layout
+  useEffect(() => {
+    document.body.classList.add('game-active')
+    return () => document.body.classList.remove('game-active')
+  }, [])
+
   useEffect(() => {
     if (winningPlayer != null && !gameEndedSentRef.current && ws.current?.readyState === WebSocket.OPEN) {
       ws.current.send(JSON.stringify({type: 'GAME_ENDED', data: {gameId}}))
