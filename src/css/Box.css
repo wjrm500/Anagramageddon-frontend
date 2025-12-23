@@ -27,8 +27,9 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Unclaimed box - available to click */
-.innerBox:not(.playerBox):not(.inactive) {
+/* Clickable boxes - unclaimed or opponent */
+.innerBox:not(.playerBox):not(.inactive),
+.innerBox.opponentBox:not(.inactive) {
   cursor: pointer;
 }
 
@@ -38,7 +39,8 @@
   box-shadow: 0 0 10px var(--color-accent-glow);
 }
 
-.innerBox:not(.playerBox):not(.inactive):active {
+.innerBox:not(.playerBox):not(.inactive):active,
+.innerBox.opponentBox:not(.inactive):active {
   transform: scale(0.95);
 }
 
@@ -51,16 +53,6 @@
 }
 
 .innerBox.inactive:hover {
-  background: var(--color-bg-card);
-  border-color: rgba(255, 255, 255, 0.08);
-  box-shadow: none;
-  transform: none;
-}
-
-/* Ensure playerBox inactive state overrides all hover effects */
-.innerBox.playerBox.inactive:hover {
-  border-color: transparent;
-  box-shadow: var(--shadow-sm);
   transform: none;
 }
 
@@ -72,18 +64,10 @@
   box-shadow: var(--shadow-sm);
 }
 
-/* Opponent box - clickable */
-.innerBox.opponentBox:not(.inactive) {
-  cursor: pointer;
-}
-
+/* Opponent box hover - no background change since already colored */
 .innerBox.opponentBox:not(.inactive):hover {
   border-color: var(--color-accent);
   box-shadow: 0 0 10px var(--color-accent-glow);
-}
-
-.innerBox.opponentBox:not(.inactive):active {
-  transform: scale(0.95);
 }
 
 /* Volatile boxes - can be stolen back */
