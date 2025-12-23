@@ -27,8 +27,9 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Unclaimed box - available to click */
-.innerBox:not(.playerBox):not(.inactive) {
+/* Clickable boxes - unclaimed or opponent */
+.innerBox:not(.playerBox):not(.inactive),
+.innerBox.opponentBox:not(.inactive) {
   cursor: pointer;
 }
 
@@ -38,7 +39,8 @@
   box-shadow: 0 0 10px var(--color-accent-glow);
 }
 
-.innerBox:not(.playerBox):not(.inactive):active {
+.innerBox:not(.playerBox):not(.inactive):active,
+.innerBox.opponentBox:not(.inactive):active {
   transform: scale(0.95);
 }
 
@@ -47,12 +49,11 @@
   color: var(--color-text-muted);
   border-color: rgba(255, 255, 255, 0.08);
   cursor: default;
+  pointer-events: none;
 }
 
 .innerBox.inactive:hover {
-  background: var(--color-bg-card);
-  border-color: rgba(255, 255, 255, 0.08);
-  box-shadow: none;
+  transform: none;
 }
 
 /* Player claimed box */
@@ -63,7 +64,13 @@
   box-shadow: var(--shadow-sm);
 }
 
-/* Volatile boxes - letters change randomly */
+/* Opponent box hover - no background change since already colored */
+.innerBox.opponentBox:not(.inactive):hover {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 10px var(--color-accent-glow);
+}
+
+/* Volatile boxes - can be stolen back */
 .innerBox.shaking {
   animation: volatileShake 0.4s ease-in-out infinite;
 }
