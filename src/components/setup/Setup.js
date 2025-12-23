@@ -9,7 +9,7 @@ const Setup = () => {
   const [gridSize, setGridSize] = useState(5)
   const [winningScore, setWinningScore] = useState(25)
   const [maxCountdownSeconds, setMaxCountdownSeconds] = useState(15)
-  const [volatileBoxes, setVolatileBoxes] = useState(1)
+  const [volatileBoxes, setVolatileBoxes] = useState(0)
   const [volatility, setVolatility] = useState(50)
   const onSubmit = async (evt) => {
     evt.preventDefault()
