@@ -7,6 +7,8 @@ import { INIT_COUNTDOWN } from '../../reducers/countdownSeconds';
 import { SET_GRID_SIZE } from '../../reducers/gridSize';
 import { SET_PLAYER_COLLECTION } from '../../reducers/playerCollection';
 import { SET_PLAYER_INDEX } from '../../reducers/playerIndex';
+import { ACTION_CLICK_BOX, SET_REQUIRED_ACTION } from '../../reducers/requiredAction';
+import { FLASH_NEUTRAL, SET_TEXT_FLASH } from '../../reducers/textFlash';
 import { SET_WINNING_SCORE } from '../../reducers/winningScore';
 import Header from '../Header';
 import { WebSocketContext } from '../WebSocketContainer';
@@ -43,6 +45,8 @@ const Lobby = ({wscMessageHandlers, webSocketOpen, gameOpen}) => {
       dispatch({type: SET_WINNING_SCORE, winningScore})
       dispatch({type: INIT_COUNTDOWN, maxCountdownSeconds})
       dispatch({type: SET_PLAYER_COLLECTION, playerCollection})
+      dispatch({type: SET_REQUIRED_ACTION, requiredAction: ACTION_CLICK_BOX})
+      dispatch({type: SET_TEXT_FLASH, textFlash: {content: "", status: FLASH_NEUTRAL}})
       navigate(`/${gameId}/play`)
     }
   }

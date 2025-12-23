@@ -38,6 +38,22 @@ const WebSocketContainer = ({phase}) => {
     "playerAdded": (data) => {
       // Store playerIndex for reconnection
       playerIndexRef.current = data.playerIndex
+    },
+    "gameNotFound": () => {
+      intentionalCloseRef.current = true
+      ws.current?.close()
+      alert("Game not found. It may have been deleted or the link is invalid.")
+      navigate("/")
+    },
+    "rejoinFailed": (data) => {
+      intentionalCloseRef.current = true
+      ws.current?.close()
+      alert(`Failed to rejoin game: ${data?.reason || 'Unknown error'}`)
+      navigate("/")
+    },
+    "rejoinSuccessful": (data) => {
+      // Rejoin was successful, state will be updated by other handlers
+      console.log("Successfully rejoined game")
     }
   }
 
@@ -69,7 +85,12 @@ const WebSocketContainer = ({phase}) => {
 
     ws.current.onmessage = (message) => {
       const data = JSON.parse(message.data)
-      wscMessageHandlers[data.type](data.data)
+      const handler = wscMessageHandlers[data.type]
+      if (handler) {
+        handler(data.data)
+      } else {
+        console.warn(`Unhandled message type: ${data.type}`)
+      }
     }
 
     ws.current.onclose = () => {
