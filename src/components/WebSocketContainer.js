@@ -111,7 +111,6 @@ const WebSocketContainer = ({phase}) => {
       // Check if this was an intentional close
       if (intentionalCloseRef.current) {
         setConnectionStatus('disconnected')
-        navigate("/")
         return
       }
 

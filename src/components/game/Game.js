@@ -1,14 +1,14 @@
 import React, { useContext, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { CHECK_WINNING_PLAYER } from '../../reducers/winningPlayer'
 import Header from '../Header'
-import { GameIdContext, WebSocketContext } from '../WebSocketContainer'
+import { CloseConnectionContext, GameIdContext, WebSocketContext } from '../WebSocketContainer'
 import Grid from './Grid'
 import Instruction from './Instruction'
 import LetterBank from './LetterBank'
 import ScoreTable from './ScoreTable'
 import TextFlash from './TextFlash'
-import WinnerBanner from './WinnerBanner'
 import WordEntry from './WordEntry'
 
 const Game = ({webSocketOpen, gameOpen}) => {
@@ -20,14 +20,18 @@ const Game = ({webSocketOpen, gameOpen}) => {
 
   const ws = useContext(WebSocketContext)
   const gameId = useContext(GameIdContext)
+  const closeConnection = useContext(CloseConnectionContext)
+  const navigate = useNavigate()
   const gameEndedSentRef = useRef(false)
 
   useEffect(() => {
     if (winningPlayer != null && !gameEndedSentRef.current && ws.current?.readyState === WebSocket.OPEN) {
       ws.current.send(JSON.stringify({type: 'GAME_ENDED', data: {gameId}}))
       gameEndedSentRef.current = true
+      closeConnection()
+      navigate('/end')
     }
-  }, [winningPlayer, ws, gameId])
+  }, [winningPlayer, ws, gameId, closeConnection, navigate])
   return (
     <div id="container" className="game-view">
       <Header />
@@ -37,11 +41,6 @@ const Game = ({webSocketOpen, gameOpen}) => {
           gameOpen ? (
             <div id="gameContainer">
               <TextFlash />
-              {
-                winningPlayer != null
-                ? <WinnerBanner />
-                : ""
-              }
               <Instruction />
               <Grid />
               <LetterBank />
