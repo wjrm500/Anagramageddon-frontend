@@ -6,6 +6,7 @@
   width: 100%;
   max-width: var(--grid-max-size);
   flex-shrink: 0;
+  margin-bottom: 5px;
 }
 
 #wordEntryContainer.inactive {
