@@ -25,10 +25,13 @@ const Instruction = () => {
     )
   }
 
+  const turnText = playerActive
+    ? <span className="turnText">Your turn</span>
+    : <><span className="playerName" style={{color: activePlayer.getColor()}}>{activePlayer.name}</span>'s turn</>
+
   return (
     <div id="instruction">
-      <span className="bullet">●</span>
-      <span className="playerName" style={{color: activePlayer.getColor()}}>{activePlayer.name}</span>
+      <span className="turnIndicator">{turnText}</span>
       <span className="separator">·</span>
       <span className="prompt">{playerActive ? prompt : "Waiting..."}</span>
       {playerActive && (
