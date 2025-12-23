@@ -1,14 +1,14 @@
 import React, { useContext } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { WebSocketContext } from '../WebSocketContainer'
+import { CloseConnectionContext } from '../WebSocketContainer'
 
 const WinnerBanner = () => {
-  const ws = useContext(WebSocketContext)
+  const closeConnection = useContext(CloseConnectionContext)
   const winningPlayer = useSelector(state => state.winningPlayer)
   const navigate = useNavigate()
   const onButtonClick = () => {
-    ws.current.close()
+    closeConnection()
     navigate("/")
   }
   return (
