@@ -10,7 +10,7 @@ const Help = () => {
         <section className="helpSection">
           <h2 className="helpTitle">How to play</h2>
           <p className="helpText">
-            Players take turns to <strong>(A)</strong> select a letter from the grid, and <strong>(B)</strong> enter a word using their letters. Each letter claimed must be adjacent to one you already own. Words must be valid English dictionary words that can be formed from your letters. Score one point per letter in each word you enter.
+            Players take turns to <strong>(A)</strong> select a letter from the grid, and <strong>(B)</strong> enter a word using their letters. Each letter claimed must be adjacent to one you already own. Words must be valid English dictionary words that can be formed from your letters. Score one point per letter in each word you enter. Win by reaching a target score faster than your opponents.
           </p>
         </section>
 
