@@ -2,6 +2,7 @@ import React, { createContext, useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom'
 import { SET_BOXES } from '../reducers/boxes';
+import { SET_CREATOR_PLAYER_INDEX } from '../reducers/creatorPlayerIndex';
 import { SET_PLAYER_COLLECTION } from '../reducers/playerCollection';
 import Game from './game/Game';
 import Lobby from './setup/Lobby';
@@ -34,6 +35,9 @@ const WebSocketContainer = ({phase}) => {
     "setPlayerCollection": (data) => {
       const playerCollection = data.playerCollection
       dispatch({type: SET_PLAYER_COLLECTION, playerCollection})
+      if (data.creatorPlayerIndex !== undefined) {
+        dispatch({type: SET_CREATOR_PLAYER_INDEX, creatorPlayerIndex: data.creatorPlayerIndex})
+      }
     },
     "playerAdded": (data) => {
       // Store playerIndex for reconnection
@@ -52,8 +56,10 @@ const WebSocketContainer = ({phase}) => {
       navigate("/")
     },
     "rejoinSuccessful": (data) => {
-      // Rejoin was successful, state will be updated by other handlers
       console.log("Successfully rejoined game")
+      if (data.creatorPlayerIndex !== undefined) {
+        dispatch({type: SET_CREATOR_PLAYER_INDEX, creatorPlayerIndex: data.creatorPlayerIndex})
+      }
     }
   }
 

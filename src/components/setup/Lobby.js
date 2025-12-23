@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { PlayerCollection } from '../../non-components/PlayerCollection';
 import { SET_BOXES } from '../../reducers/boxes';
 import { INIT_COUNTDOWN } from '../../reducers/countdownSeconds';
+import { SET_CREATOR_PLAYER_INDEX } from '../../reducers/creatorPlayerIndex';
 import { SET_GRID_SIZE } from '../../reducers/gridSize';
 import { SET_PLAYER_COLLECTION } from '../../reducers/playerCollection';
 import { SET_PLAYER_INDEX } from '../../reducers/playerIndex';
@@ -21,6 +22,8 @@ const Lobby = ({wscMessageHandlers, webSocketOpen, gameOpen}) => {
   const [nameError, setNameError] = useState("")
   const playerNameSubmitted = useRef(false)
   const playerCollection = useSelector(state => state.playerCollection)
+  const playerIndex = useSelector(state => state.playerIndex)
+  const creatorPlayerIndex = useSelector(state => state.creatorPlayerIndex)
   const [playerLimitReached, setPlayerLimitReached] = useState(false)
   const dispatch = useDispatch()
 
@@ -87,7 +90,7 @@ const Lobby = ({wscMessageHandlers, webSocketOpen, gameOpen}) => {
     ws.current.send(JSON.stringify({type: "ADD_PLAYER", data: {gameId, playerName: playerName.trim()}}))
   }
 
-  const onStartGameClick = () => ws.current.send(JSON.stringify({type: "START_GAME", data: {gameId}}))
+  const onStartGameClick = () => ws.current.send(JSON.stringify({type: "START_GAME", data: {gameId, playerIndex}}))
 
   const [showLinkCopied, setShowLinkCopied] = useState(false)
 
@@ -105,7 +108,7 @@ const Lobby = ({wscMessageHandlers, webSocketOpen, gameOpen}) => {
 
   const form = <div id="lobbyComponent">
     <div id="linkComponent">
-      <a href={window.location.href} style={{color: "blue", fontWeight: "bold", textDecoration: "none"}} onClick={onCopyLinkClick}>
+      <a href={window.location.href} style={{textDecoration: "none"}} onClick={onCopyLinkClick}>
         Click to copy lobby link
       </a>
       <span id="linkCopiedNotification" className={showLinkCopied ? "" : "alert-hidden"}>Link copied</span>
@@ -141,11 +144,13 @@ const Lobby = ({wscMessageHandlers, webSocketOpen, gameOpen}) => {
             </div>
             <ul id="playerList">
               {
-                playerCollection.getPlayerNames().map((name, idx) => {
-                  const color = PlayerCollection.playerColors[idx]
+                playerCollection.getPlayers().map((player, idx) => {
+                  const color = player.getColor()
+                  const isCreator = idx === creatorPlayerIndex
                   return (
-                    <li key={name} className="playerListItem" style={{color}}>
-                      {name}
+                    <li key={player.name} className="playerListItem" style={{color}}>
+                      {player.name}
+                      {isCreator && <span style={{color: 'var(--color-text-secondary)', fontWeight: '400', marginLeft: '0.25rem'}}>(creator)</span>}
                     </li>
                   )
                 })
@@ -157,9 +162,20 @@ const Lobby = ({wscMessageHandlers, webSocketOpen, gameOpen}) => {
     }
     {
       playerNameSubmitted.current && playerCollection.numPlayers() >= 2
-      ? <button id="startGameButton" onClick={onStartGameClick}>
-        Start game
-      </button>
+      ? (
+        playerIndex === creatorPlayerIndex
+        ? <button id="startGameButton" onClick={onStartGameClick}>
+          Start game
+        </button>
+        : <div style={{
+            marginTop: 'var(--space-lg)',
+            textAlign: 'center',
+            color: 'var(--color-text-secondary)',
+            fontSize: 'var(--font-size-base)'
+          }}>
+            Waiting for <span style={{color: playerCollection.getPlayers()[creatorPlayerIndex].getColor()}}>{playerCollection.getPlayerNames()[creatorPlayerIndex]}</span> to start the game...
+          </div>
+      )
       : ""
     }
   </div>
