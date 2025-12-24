@@ -60,6 +60,12 @@ const WordEntry = () => {
         })
     }
   }
+
+  // Only show word entry box when it's the player's turn and in word entry phase
+  if (!active) {
+    return null
+  }
+
   return (
     <div id="wordEntryContainer" className={active ? "active" : "inactive"} onClick={onClick}>
         <input
