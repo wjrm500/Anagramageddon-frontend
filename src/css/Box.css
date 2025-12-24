@@ -13,7 +13,7 @@
   justify-content: center;
   width: 100%;
   height: 100%;
-  font-size: clamp(0.75rem, 3vw, 1.25rem);
+  font-size: 1.5rem;
   font-weight: 700;
   text-transform: uppercase;
   color: var(--color-text-primary);
@@ -101,13 +101,12 @@
 /* Larger text on bigger screens */
 @media (min-width: 640px) {
   .innerBox {
-    font-size: clamp(0.875rem, 2.5vw, 1.5rem);
-    border-radius: var(--radius-md);
+    font-size: 1.75rem;
   }
 }
 
 @media (min-width: 1024px) {
   .innerBox {
-    font-size: 1.25rem;
+    font-size: 2rem;
   }
 }
