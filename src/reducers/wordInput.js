@@ -7,6 +7,8 @@ export const wordInputReducer = (state = '', action) => {
       return action.value.toUpperCase()
     case CLEAR_WORD_INPUT:
       return ''
+    case 'SWITCH_ACTIVE_PLAYER':
+      return ''
     default:
       return state
   }

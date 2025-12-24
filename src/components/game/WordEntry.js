@@ -22,8 +22,15 @@ const WordEntry = () => {
     activePlayerRef.current = activePlayer
   }, [activePlayer])
   const boxes = useSelector(state => state.boxes)
+  const wordInput = useSelector(state => state.wordInput)
   const dispatch = useDispatch()
   const [value, setValue] = useState("")
+
+  // Sync local state with Redux state to ensure input is cleared when turn ends
+  useEffect(() => {
+    setValue(wordInput)
+  }, [wordInput])
+
   const onClick = () => {
     if (!playerActive) return
     if (requiredAction == ACTION_CLICK_BOX) {
