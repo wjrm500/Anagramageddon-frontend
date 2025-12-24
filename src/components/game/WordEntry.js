@@ -60,6 +60,12 @@ const WordEntry = () => {
         })
     }
   }
+
+  // Hide word entry box during grid/letter select phase
+  if (playerActive && requiredAction == ACTION_CLICK_BOX) {
+    return null
+  }
+
   return (
     <div id="wordEntryContainer" className={active ? "active" : "inactive"} onClick={onClick}>
         <input
