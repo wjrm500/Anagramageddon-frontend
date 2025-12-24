@@ -1,10 +1,9 @@
 /* ==========================================================================
-   Score Table - Grid Layout with Inner Borders Only
+   Score Table - Matches Grid Corner Positions
    ========================================================================== */
 
 #scoreTable {
   display: grid;
-  grid-template-columns: 1fr 1fr;
   width: 100%;
   max-width: var(--grid-max-size);
   flex-shrink: 0;
@@ -16,14 +15,27 @@
   grid-template-columns: 1fr 1fr;
 }
 
-/* 3 players: 2 on top, 1 on bottom left */
-#scoreTable.players-3 {
-  grid-template-columns: 1fr 1fr;
+#scoreTable.players-2 .score-cell:first-child {
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* 4 players: 2x2 grid */
+/* 3-4 players: 2x2 grid */
+#scoreTable.players-3,
 #scoreTable.players-4 {
   grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+
+#scoreTable.players-3 .score-cell:nth-child(1),
+#scoreTable.players-3 .score-cell:nth-child(2),
+#scoreTable.players-4 .score-cell:nth-child(1),
+#scoreTable.players-4 .score-cell:nth-child(2) {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#scoreTable.players-3 .score-cell:nth-child(odd),
+#scoreTable.players-4 .score-cell:nth-child(odd) {
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .score-cell {
@@ -38,23 +50,7 @@
   min-width: 0;
 }
 
-/* Inner borders - right border on left column cells */
-.score-cell:nth-child(odd) {
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Inner borders - bottom border on top row cells (for 3+ players) */
-#scoreTable.players-3 .score-cell:nth-child(1),
-#scoreTable.players-3 .score-cell:nth-child(2),
-#scoreTable.players-4 .score-cell:nth-child(1),
-#scoreTable.players-4 .score-cell:nth-child(2) {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* 3 players: remove right border from bottom cell (it's alone) */
-#scoreTable.players-3 .score-cell:nth-child(3) {
-  border-right: none;
-}
+/* Empty cells just take space (no content to hide) */
 
 /* Player name */
 .score-cell .player-name {
@@ -68,7 +64,7 @@
   color: var(--color-text-primary);
 }
 
-/* Add colon separator between name and score */
+/* Colon separator between name and score */
 .score-cell .player-name::after {
   content: ':';
   color: var(--color-text-muted);
