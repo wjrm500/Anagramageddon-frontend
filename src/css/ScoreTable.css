@@ -45,7 +45,7 @@
   justify-content: center;
   gap: var(--space-xs);
   padding: var(--space-xs) var(--space-sm);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
   text-align: center;
   min-width: 0;
 }
@@ -75,7 +75,7 @@
 @media (min-width: 640px) {
   .score-cell {
     padding: var(--space-sm) var(--space-md);
-    font-size: var(--font-size-base);
+    font-size: var(--font-size-lg);
     gap: var(--space-sm);
   }
 
