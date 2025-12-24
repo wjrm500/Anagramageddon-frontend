@@ -3,8 +3,8 @@
    ========================================================================== */
 
 #headerText {
-  font-family: var(--font-family-display);
-  font-size: var(--font-size-3xl);
+  font-family: Impact, 'Arial Black', sans-serif;
+  font-size: 2rem;
   font-weight: 800;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -46,7 +46,7 @@
 
 /* Compact header in game view */
 .game-view #headerText {
-  font-size: var(--font-size-2xl);
+  font-size: 2rem;
   margin: var(--space-xs) 0;
   padding: var(--space-xs) var(--space-sm);
 }
@@ -58,13 +58,13 @@
 /* Smaller screens: reduce header size */
 @media (max-width: 400px) {
   #headerText {
-    font-size: var(--font-size-2xl);
+    font-size: 2rem;
     letter-spacing: 0.02em;
     margin: var(--space-md) 0;
   }
 
   .game-view #headerText {
-    font-size: var(--font-size-xl);
+    font-size: 2rem;
     margin: var(--space-xs) 0;
   }
 }
