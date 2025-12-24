@@ -61,8 +61,8 @@ const WordEntry = () => {
     }
   }
 
-  // Hide word entry box during grid/letter select phase
-  if (playerActive && requiredAction == ACTION_CLICK_BOX) {
+  // Only show word entry box when it's the player's turn and in word entry phase
+  if (!active) {
     return null
   }
 
