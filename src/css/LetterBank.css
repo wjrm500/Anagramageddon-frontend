@@ -22,19 +22,19 @@
 .letterBankTiles {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: 6px;
   justify-content: flex-start;
   align-items: center;
-  min-height: 28px;
+  min-height: 40px;
 }
 
 .letterBankTile {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
-  font-size: 0.7rem;
+  width: 40px;
+  height: 40px;
+  font-size: 1rem;
   font-weight: 700;
   text-transform: uppercase;
   color: white;
@@ -58,27 +58,27 @@
   }
 
   .letterBankTiles {
-    gap: 5px;
-    min-height: 32px;
+    gap: 7px;
+    min-height: 44px;
   }
 
   .letterBankTile {
-    width: 32px;
-    height: 32px;
-    font-size: 0.75rem;
+    width: 44px;
+    height: 44px;
+    font-size: 1.1rem;
   }
 }
 
 /* Desktop - larger tiles */
 @media (min-width: 1024px) {
   .letterBankTiles {
-    gap: 6px;
-    min-height: 36px;
+    gap: 8px;
+    min-height: 48px;
   }
 
   .letterBankTile {
-    width: 36px;
-    height: 36px;
-    font-size: 0.8rem;
+    width: 48px;
+    height: 48px;
+    font-size: 1.2rem;
   }
 }
