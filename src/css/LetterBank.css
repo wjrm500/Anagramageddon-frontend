@@ -43,6 +43,12 @@
   box-shadow: var(--shadow-sm);
   user-select: none;
   -webkit-user-select: none;
+  transition: opacity var(--transition-fast), filter var(--transition-fast);
+}
+
+.letterBankTile.used {
+  opacity: 0.3;
+  filter: grayscale(50%);
 }
 
 /* Tablet - slightly larger tiles */
