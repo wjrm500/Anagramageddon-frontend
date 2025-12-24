@@ -58,7 +58,7 @@ const WordEntry = () => {
   return (
     <div id="wordEntryContainer" className={active ? "active" : "inactive"} onClick={onClick}>
         <input
-          ref={input => input && input.focus()}
+          ref={input => input && input.focus({ preventScroll: true })}
           id="wordEntry"
           type="text"
           value={value}
