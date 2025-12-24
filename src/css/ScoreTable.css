@@ -62,7 +62,7 @@
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   color: var(--color-text-primary);
-  font-size: var(--font-size-xl);
+  font-size: 1.25rem;
 }
 
 /* Colon separator between name and score */
@@ -85,6 +85,6 @@
   }
 
   .score-cell .player-score {
-    font-size: var(--font-size-2xl);
+    font-size: 1.5rem;
   }
 }
