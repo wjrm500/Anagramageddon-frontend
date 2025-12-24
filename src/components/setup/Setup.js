@@ -14,7 +14,7 @@ const Setup = () => {
   const [volatility, setVolatility] = useState(50)
   const onSubmit = async (evt) => {
     evt.preventDefault()
-    if (isNaN(gridSize) || gridSize < 5 || gridSize > 15) {
+    if (isNaN(gridSize) || gridSize < 5 || gridSize > 10) {
       alert("Invalid grid size")
     } else if (isNaN(winningScore) || winningScore < gridSize || winningScore > gridSize * 10) {
       alert("Invalid winning score")
@@ -43,14 +43,14 @@ const Setup = () => {
         <form id="setupForm" onSubmit={onSubmit}>
           <div className="formComponent">
             <label>
-              Grid size (5 - 15)
+              Grid size (5 - 10)
               <HelpTooltip text="The number of rows and columns on the board (e.g., 5 means a 5×5 grid)." />
             </label>
             <input type="number"
                   value={!isNaN(gridSize) ? gridSize : ""}
                   onChange={(e) => setGridSize(parseInt(e.target.value))}
                   min="5"
-                  max="15" />
+                  max="10" />
           </div>
           <div className="formComponent">
             <label>
