@@ -9,6 +9,7 @@ import { requiredActionReducer } from './requiredAction'
 import { textFlashReducer } from './textFlash'
 import { winningPlayerReducer } from './winningPlayer'
 import { winningScoreReducer } from './winningScore'
+import { wordInputReducer } from './wordInput'
 
 export const rootReducer = combineReducers({
   boxes: boxesReducer,
@@ -20,5 +21,6 @@ export const rootReducer = combineReducers({
   requiredAction: requiredActionReducer,
   textFlash: textFlashReducer,
   winningPlayer: winningPlayerReducer,
-  winningScore: winningScoreReducer
+  winningScore: winningScoreReducer,
+  wordInput: wordInputReducer
 })

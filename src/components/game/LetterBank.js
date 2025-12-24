@@ -25,6 +25,7 @@ const LetterBank = () => {
   const requiredAction = useSelector(state => state.requiredAction)
   const winningPlayer = useSelector(state => state.winningPlayer)
   const boxes = useSelector(state => state.boxes)
+  const wordInput = useSelector(state => state.wordInput)
 
   const playerActive = playerCollection.isActiveIndex(playerIndex)
   const currentPlayer = playerCollection.players[playerIndex]
@@ -37,6 +38,25 @@ const LetterBank = () => {
       return box ? box.letter : null
     }).filter(Boolean)
   }, [currentPlayer, boxes])
+
+  // Compute which letter indices are "used" by the current input
+  const usedIndices = useMemo(() => {
+    if (!wordInput || !letters.length) return new Set()
+    const used = new Set()
+    const typedLetters = wordInput.split('')
+    const availableIndices = letters.map((_, i) => i)
+
+    for (const typedLetter of typedLetters) {
+      // Find the first available letter that matches
+      const matchIndex = availableIndices.find(
+        i => !used.has(i) && letters[i] === typedLetter
+      )
+      if (matchIndex !== undefined) {
+        used.add(matchIndex)
+      }
+    }
+    return used
+  }, [wordInput, letters])
 
   const backgroundColor = useMemo(() => {
     if (!currentPlayer) return ''
@@ -56,7 +76,7 @@ const LetterBank = () => {
         {letters.map((letter, index) => (
           <div
             key={index}
-            className="letterBankTile"
+            className={`letterBankTile${usedIndices.has(index) ? ' used' : ''}`}
             style={{ backgroundColor }}
           >
             {letter}

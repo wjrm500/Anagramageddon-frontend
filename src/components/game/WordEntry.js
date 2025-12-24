@@ -4,6 +4,7 @@ import { APPLY_COUNTDOWN_PENALTY, RESET_COUNTDOWN } from '../../reducers/countdo
 import { ENTER_WORD } from '../../reducers/playerCollection'
 import { ACTION_CLICK_BOX, ACTION_ENTER_WORD, SET_REQUIRED_ACTION } from '../../reducers/requiredAction'
 import { FLASH_ERROR, FLASH_SCORE, SET_TEXT_FLASH } from '../../reducers/textFlash'
+import { SET_WORD_INPUT } from '../../reducers/wordInput'
 import { validateWord } from '../../utilities/validateWord'
 import { GameIdContext, WebSocketContext } from '../WebSocketContainer'
 
@@ -31,6 +32,7 @@ const WordEntry = () => {
   }
   const onChange = (e) => {
     setValue(e.target.value)
+    dispatch({type: SET_WORD_INPUT, value: e.target.value})
   }
   const onKeyDown = (e) => {
     if (e.key == "Enter") {
@@ -52,7 +54,10 @@ const WordEntry = () => {
           dispatch({type: SET_TEXT_FLASH, textFlash: {content: error, status: FLASH_ERROR}})
           dispatch({type: APPLY_COUNTDOWN_PENALTY})
         })
-        .finally(() => setValue(""))
+        .finally(() => {
+          setValue("")
+          dispatch({type: SET_WORD_INPUT, value: ""})
+        })
     }
   }
   return (
