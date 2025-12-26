@@ -8,6 +8,7 @@
 }
 
 .innerBox {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -27,9 +28,18 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Clickable boxes - unclaimed or opponent */
-.innerBox:not(.playerBox):not(.inactive),
-.innerBox.opponentBox:not(.inactive) {
+/* Lock indicator - positioned in top-right corner */
+.lockIndicator {
+  position: absolute;
+  top: 2px;
+  right: 3px;
+  font-size: 0.6rem;
+  line-height: 1;
+  letter-spacing: -2px;
+}
+
+/* Clickable boxes - unclaimed, opponent, or own (for locking) */
+.innerBox:not(.inactive) {
   cursor: pointer;
 }
 
@@ -39,8 +49,7 @@
   box-shadow: 0 0 10px var(--color-accent-glow);
 }
 
-.innerBox:not(.playerBox):not(.inactive):active,
-.innerBox.opponentBox:not(.inactive):active {
+.innerBox:not(.inactive):active {
   transform: scale(0.95);
 }
 
@@ -68,6 +77,12 @@
 .innerBox.opponentBox:not(.inactive):hover {
   border-color: var(--color-accent);
   box-shadow: 0 0 10px var(--color-accent-glow);
+}
+
+/* Own box hover - subtle glow to indicate lockability */
+.innerBox.playerBox:not(.opponentBox):not(.inactive):hover {
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
 }
 
 /* Volatile boxes - can be stolen back */
@@ -103,10 +118,16 @@
   .innerBox {
     font-size: 1.75rem;
   }
+  .lockIndicator {
+    font-size: 0.7rem;
+  }
 }
 
 @media (min-width: 1024px) {
   .innerBox {
     font-size: 2rem;
+  }
+  .lockIndicator {
+    font-size: 0.8rem;
   }
 }

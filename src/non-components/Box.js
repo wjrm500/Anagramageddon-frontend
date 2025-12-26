@@ -1,10 +1,11 @@
 export class Box {
   constructor(props) {
-    const {coords, letter, player, volatile} = props
+    const {coords, letter, player, volatile, locks} = props
     this.coords = {x: coords.x, y: coords.y}
     this.letter = letter
     this.player = player
     this.volatile = volatile
+    this.locks = locks ?? 0
   }
 
   getX = () => this.coords.x
@@ -18,5 +19,22 @@ export class Box {
     }
     this.player = player
     player.addBox(boxDatum)
+    this.locks = 0
+  }
+
+  addLock = () => {
+    if (this.locks < 3) {
+      this.locks++
+      return true
+    }
+    return false
+  }
+
+  removeLock = () => {
+    if (this.locks > 0) {
+      this.locks--
+      return true
+    }
+    return false
   }
 }

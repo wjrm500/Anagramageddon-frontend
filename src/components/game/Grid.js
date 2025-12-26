@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { CLICK_BOX } from '../../reducers/boxes'
+import { CLICK_BOX, ADD_LOCK, REMOVE_LOCK } from '../../reducers/boxes'
 import { ACTION_CLICK_BOX, ACTION_ENTER_WORD, SET_REQUIRED_ACTION } from '../../reducers/requiredAction'
 import { FLASH_ERROR, SET_TEXT_FLASH } from '../../reducers/textFlash'
 import { GameIdContext, WebSocketContext } from '../WebSocketContainer'
@@ -34,7 +34,15 @@ const Grid = () => {
         }
         if (activePlayer.canAddBox(box)) {
           dispatch({type: SET_REQUIRED_ACTION, requiredAction: ACTION_ENTER_WORD})
-          dispatch({type: CLICK_BOX, activePlayer, coords: {x: rowIdx, y: colIdx}})
+          // Determine action type for local state update
+          const isOwnBox = box.player && box.player.name === activePlayer.name
+          if (isOwnBox) {
+            dispatch({type: ADD_LOCK, coords: {x: rowIdx, y: colIdx}})
+          } else if (box.locks > 0) {
+            dispatch({type: REMOVE_LOCK, coords: {x: rowIdx, y: colIdx}})
+          } else {
+            dispatch({type: CLICK_BOX, activePlayer, coords: {x: rowIdx, y: colIdx}})
+          }
           ws.current.send(JSON.stringify({type: "CLICK_BOX", data: {gameId, x: rowIdx, y: colIdx}}))
         } else {
           setTextFlash({content: "Can't go here", status: FLASH_ERROR})

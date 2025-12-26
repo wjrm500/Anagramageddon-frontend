@@ -9,6 +9,7 @@ Anagramageddon is a real-time multiplayer territory-control word game for 2-4 pl
 ### Key Mechanics:
 
 - Stealing: you can claim squares owned by opponents, taking their letters
+- Locking: click your own square to add a lock (up to 3). Locked squares can't be stolen until each lock is removed by an opponent clicking it on their turn
 - Time pressure: each turn has a countdown (5-30 seconds configurable)
 - Volatile boxes (optional): random squares shake and change letters periodically
 - Letter frequency: letters spawn based on English frequency distribution (E most common, Z rarest)

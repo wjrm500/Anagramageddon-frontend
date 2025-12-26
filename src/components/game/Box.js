@@ -47,6 +47,10 @@ const Box = ({ box, active, onClick, isOpponent }) => {
     return classes.join(' ')
   }, [box.player, box.volatile, active, isOpponent])
 
+  const lockIndicator = box.locks > 0 ? (
+    <span className="lockIndicator">{'🔒'.repeat(box.locks)}</span>
+  ) : null
+
   return (
     <div className="outerBox">
       <div
@@ -57,6 +61,7 @@ const Box = ({ box, active, onClick, isOpponent }) => {
         }}
         onClick={onClick}
       >
+        {lockIndicator}
         {box.letter}
       </div>
     </div>

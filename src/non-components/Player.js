@@ -24,8 +24,9 @@ export class Player {
   }
 
   canAddBox(box) {
+    // Allow clicking own box to add locks (if not at max)
     if (box.player && box.player.name == this.name) {
-      return false
+      return box.locks < 3
     }
     for (let boxDatum of this.boxData) {
       if (Math.abs(boxDatum[0] - box.getX()) <= 1 && Math.abs(boxDatum[1] - box.getY()) <= 1) {

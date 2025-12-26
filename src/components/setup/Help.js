@@ -22,6 +22,10 @@ const Help = () => {
               <span>You can steal letters from opponents</span>
             </li>
             <li>
+              <span className="helpIcon">🔒</span>
+              <span>Click your own letter to add a lock (max 3). Opponents must remove each lock before they can steal it</span>
+            </li>
+            <li>
               <span className="helpIcon">🚫</span>
               <span>You cannot enter the same word twice</span>
             </li>
