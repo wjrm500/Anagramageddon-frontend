@@ -18,7 +18,7 @@ const Setup = () => {
       alert("Invalid grid size")
     } else if (isNaN(winningScore) || winningScore < gridSize || winningScore > gridSize * 10) {
       alert("Invalid winning score")
-    } else if (isNaN(maxCountdownSeconds) || maxCountdownSeconds < 5 || maxCountdownSeconds > 30) {
+    } else if (isNaN(maxCountdownSeconds) || maxCountdownSeconds < 5 || maxCountdownSeconds > 300) {
       alert("Invalid turn time limit")
     } else if (isNaN(volatility) || volatility < 1 || volatility > 100) {
       alert("Invalid volatility %")
@@ -65,14 +65,14 @@ const Setup = () => {
           </div>
           <div className="formComponent">
             <label>
-              Turn time limit (5 - 30)
+              Turn time limit (5 - 300)
               <HelpTooltip text="Seconds you have to submit a word before your turn is skipped." />
             </label>
             <input type="number"
                   value={!isNaN(maxCountdownSeconds) ? maxCountdownSeconds : ""}
                   onChange={(e) => setMaxCountdownSeconds(parseInt(e.target.value))}
                   min="5"
-                  max="30" />
+                  max="300" />
           </div>
           <div className="formComponent">
             <label>
