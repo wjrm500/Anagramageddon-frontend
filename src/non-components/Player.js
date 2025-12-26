@@ -1,12 +1,13 @@
 export class Player {
   constructor(props) {
-    const {name, color, score, boxData, wordsUsed, turnsTaken} = props
+    const {name, color, score, boxData, wordsUsed, turnsTaken, removed} = props
     this.name = name
     this.color = color
     this.score = score ?? 0
     this.boxData = boxData ?? []
     this.wordsUsed = wordsUsed ?? []
     this.turnsTaken = turnsTaken ?? 0
+    this.removed = removed ?? false
   }
 
   getColor() {

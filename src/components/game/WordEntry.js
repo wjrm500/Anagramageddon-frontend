@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { APPLY_COUNTDOWN_PENALTY, RESET_COUNTDOWN } from '../../reducers/countdownSeconds'
-import { ENTER_WORD } from '../../reducers/playerCollection'
+import { ADD_SCORE_TO_ACTIVE_PLAYER, ENTER_WORD } from '../../reducers/playerCollection'
 import { ACTION_CLICK_BOX, ACTION_ENTER_WORD, SET_REQUIRED_ACTION } from '../../reducers/requiredAction'
 import { FLASH_ERROR, FLASH_SCORE, SET_TEXT_FLASH } from '../../reducers/textFlash'
 import { SET_WORD_INPUT } from '../../reducers/wordInput'
@@ -49,8 +49,8 @@ const WordEntry = () => {
           if (activePlayer == activePlayerRef.current) { // Prevents issue whereby Countdown sends "Switch active player" event to server after keydown event but before this callback is run
             dispatch({type: SET_REQUIRED_ACTION, requiredAction: ACTION_CLICK_BOX})
             dispatch({type: SET_TEXT_FLASH, textFlash: {content: "+" + word.length, status: FLASH_SCORE}})
-            // Dispatch locally to increases responsiveness
-            dispatch({type: ENTER_WORD, word})
+            // Only update score locally - server will send correct activeIndex
+            dispatch({type: ADD_SCORE_TO_ACTIVE_PLAYER, word})
             dispatch({type: RESET_COUNTDOWN})
             ws.current.send(JSON.stringify(({type: ENTER_WORD, data: {gameId, word}})))
           } else {

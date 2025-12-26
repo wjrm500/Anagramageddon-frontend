@@ -47,10 +47,20 @@ export class PlayerCollection {
 
   switchActivePlayer() {
     this.players[this.activeIndex].turnsTaken += 1
-    this.activeIndex = this.activeIndex == this.players.length - 1 ? 0 : this.activeIndex + 1
+    // Find next non-removed player
+    let attempts = 0
+    const numPlayers = this.players.length
+    do {
+      this.activeIndex = this.activeIndex == numPlayers - 1 ? 0 : this.activeIndex + 1
+      attempts++
+    } while (this.players[this.activeIndex].removed && attempts < numPlayers)
   }
 
   isActiveIndex(playerIndex) {
     return playerIndex == this.activeIndex
+  }
+
+  countActivePlayers() {
+    return this.players.filter(player => !player.removed).length
   }
 }

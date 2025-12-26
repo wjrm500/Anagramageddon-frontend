@@ -1,16 +1,18 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PlayerCollection } from '../../non-components/PlayerCollection';
 import { SET_BOXES } from '../../reducers/boxes';
 import { INIT_COUNTDOWN } from '../../reducers/countdownSeconds';
 import { SET_CREATOR_PLAYER_INDEX } from '../../reducers/creatorPlayerIndex';
+import { UPDATE_LOBBY_GRACE_PERIOD } from '../../reducers/disconnectedLobbyPlayers';
 import { SET_GRID_SIZE } from '../../reducers/gridSize';
 import { SET_PLAYER_COLLECTION } from '../../reducers/playerCollection';
 import { SET_PLAYER_INDEX } from '../../reducers/playerIndex';
 import { ACTION_CLICK_BOX, SET_REQUIRED_ACTION } from '../../reducers/requiredAction';
 import { FLASH_NEUTRAL, SET_TEXT_FLASH } from '../../reducers/textFlash';
 import { SET_WINNING_SCORE } from '../../reducers/winningScore';
+import DebugDisconnectButtons from '../DebugDisconnectButtons';
 import Header from '../Header';
 import { WebSocketContext } from '../WebSocketContainer';
 
@@ -20,21 +22,35 @@ const Lobby = ({wscMessageHandlers, webSocketOpen, gameOpen}) => {
   const {gameId} = useParams()
   const [playerName, setPlayerName] = useState("")
   const [nameError, setNameError] = useState("")
-  const playerNameSubmitted = useRef(false)
   const playerCollection = useSelector(state => state.playerCollection)
   const playerIndex = useSelector(state => state.playerIndex)
   const creatorPlayerIndex = useSelector(state => state.creatorPlayerIndex)
+  const disconnectedLobbyPlayers = useSelector(state => state.disconnectedLobbyPlayers)
   const [playerLimitReached, setPlayerLimitReached] = useState(false)
   const dispatch = useDispatch()
+
+  // Countdown timer for disconnected lobby players
+  useEffect(() => {
+    const disconnectedPlayerIndices = Object.keys(disconnectedLobbyPlayers)
+    if (disconnectedPlayerIndices.length === 0) return
+
+    const interval = setInterval(() => {
+      disconnectedPlayerIndices.forEach((idx) => {
+        dispatch({type: UPDATE_LOBBY_GRACE_PERIOD, playerIndex: parseInt(idx)})
+      })
+    }, 1000)
+
+    return () => clearInterval(interval)
+  }, [disconnectedLobbyPlayers, dispatch])
 
   const lobbyMessageHandlers = {
     "connectionClosed": (data) => {
       alert("Connection closed unexpectedly by another client")
     },
     "playerAdded": (data) => {
-      playerNameSubmitted.current = true
-      const playerIndex = data.playerIndex
-      dispatch({type: SET_PLAYER_INDEX, playerIndex})
+      dispatch({type: SET_PLAYER_INDEX, playerIndex: data.playerIndex})
+      // Also call the WSC handler to store playerIndex for reconnection
+      wscMessageHandlers.playerAdded(data)
     },
     "playerLimitReached": (data) => {
       setPlayerLimitReached(true)
@@ -67,7 +83,9 @@ const Lobby = ({wscMessageHandlers, webSocketOpen, gameOpen}) => {
     }
   }, [ws.current])
 
-  const inputDisabled = playerNameSubmitted.current || playerCollection.numPlayers() >= 4
+  const hasJoined = playerIndex !== null
+  const inputDisabled = hasJoined || playerCollection.numPlayers() >= 4
+  const displayName = hasJoined ? (playerCollection.getPlayerByIdx(playerIndex)?.name ?? playerName) : playerName
 
   const validatePlayerName = (name) => {
     const trimmedName = name.trim()
@@ -115,7 +133,7 @@ const Lobby = ({wscMessageHandlers, webSocketOpen, gameOpen}) => {
     </div>
     <div style={{width: "100%", marginBottom: "var(--space-lg)"}}>
       <div id="formComponent" style={{marginBottom: "0"}}>
-        <input type="text" onChange={(e) => setPlayerName(e.target.value)} disabled={inputDisabled} onKeyDown={(e) => e.key == "Enter" ? onAddNameClick() : ""} placeholder="Enter name here" />
+        <input type="text" value={displayName} onChange={(e) => setPlayerName(e.target.value)} disabled={inputDisabled} onKeyDown={(e) => e.key == "Enter" ? onAddNameClick() : ""} placeholder="Enter name here" />
         <button onClick={onAddNameClick} disabled={inputDisabled}>
           Join
         </button>
@@ -147,27 +165,45 @@ const Lobby = ({wscMessageHandlers, webSocketOpen, gameOpen}) => {
                 playerCollection.getPlayers().map((player, idx) => {
                   const color = player.getColor()
                   const isCreator = idx === creatorPlayerIndex
+                  const isDisconnected = disconnectedLobbyPlayers[idx] !== undefined
                   return (
-                    <li key={player.name} className="playerListItem" style={{color}}>
+                    <li key={player.name} className="playerListItem" style={{color, opacity: isDisconnected ? 0.5 : 1}}>
                       {player.name}
                       {isCreator && <span style={{color: 'var(--color-text-secondary)', fontWeight: '400', marginLeft: '0.25rem'}}>(creator)</span>}
+                      {isDisconnected && <span style={{color: 'var(--color-warning, #f59e0b)', fontWeight: '400', marginLeft: '0.25rem'}}>(disconnected)</span>}
                     </li>
                   )
                 })
               }
             </ul>
+            {Object.keys(disconnectedLobbyPlayers).length > 0 && (
+              <div style={{
+                marginTop: 'var(--space-sm)',
+                padding: 'var(--space-sm) var(--space-md)',
+                backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                borderRadius: 'var(--radius-md)',
+                fontSize: 'var(--font-size-sm)'
+              }}>
+                {Object.entries(disconnectedLobbyPlayers).map(([idx, info]) => (
+                  <div key={idx} style={{color: 'var(--color-warning, #f59e0b)'}}>
+                    {info.playerName} will be removed in {info.remainingSeconds}s
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )
         : ""
     }
     {
-      playerNameSubmitted.current && playerCollection.numPlayers() >= 2
+      hasJoined && playerCollection.numPlayers() >= 2
       ? (
         playerIndex === creatorPlayerIndex
         ? <button id="startGameButton" onClick={onStartGameClick}>
           Start game
         </button>
-        : <div style={{
+        : creatorPlayerIndex !== null && playerCollection.getPlayers()[creatorPlayerIndex] ? (
+          <div style={{
             marginTop: 'var(--space-lg)',
             textAlign: 'center',
             color: 'var(--color-text-secondary)',
@@ -175,6 +211,7 @@ const Lobby = ({wscMessageHandlers, webSocketOpen, gameOpen}) => {
           }}>
             Waiting for <span style={{color: playerCollection.getPlayers()[creatorPlayerIndex].getColor()}}>{playerCollection.getPlayerNames()[creatorPlayerIndex]}</span> to start the game...
           </div>
+        ) : null
       )
       : ""
     }
@@ -195,7 +232,8 @@ const Lobby = ({wscMessageHandlers, webSocketOpen, gameOpen}) => {
         )
         : ""
       }
-    </div>    
+      <DebugDisconnectButtons />
+    </div>
   )
 }
 

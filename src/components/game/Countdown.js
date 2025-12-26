@@ -10,8 +10,20 @@ const Countdown = () => {
   const ws = useContext(WebSocketContext)
   const gameId = useContext(GameIdContext)
   const countdownSeconds = useSelector(state => state.countdownSeconds)
+  const playerCollection = useSelector(state => state.playerCollection)
+  const playerIndex = useSelector(state => state.playerIndex)
   const dispatch = useDispatch()
+
+  // Track active player changes to ensure countdown runs only for the current active player's turn
+  const isActivePlayer = playerCollection.isActiveIndex(playerIndex)
+  const activePlayerIndex = playerCollection.getActiveIndex()
+
   useEffect(() => {
+    // Only run countdown if this is the active player
+    if (!isActivePlayer) {
+      return
+    }
+
     const interval = setInterval(() => {
       if (countdownSeconds.current > 0) {
         dispatch({type: DECREMENT_COUNTDOWN})
@@ -22,7 +34,8 @@ const Countdown = () => {
       }
     }, 1000)
     return () => clearInterval(interval)
-  }, [countdownSeconds.current])
+  }, [countdownSeconds.current, isActivePlayer, activePlayerIndex, dispatch, ws, gameId])
+
   return (
     <span id="countdown">
       {countdownSeconds.current}

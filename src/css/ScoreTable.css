@@ -72,6 +72,15 @@
   margin-left: 1px;
 }
 
+/* Removed player styling */
+.score-cell.removed {
+  opacity: 0.5;
+}
+
+.score-cell.removed .player-score {
+  color: var(--color-text-muted, #666);
+}
+
 /* Slightly larger on tablet and up */
 @media (min-width: 640px) {
   .score-cell {

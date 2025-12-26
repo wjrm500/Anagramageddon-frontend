@@ -8,9 +8,20 @@ const EndGame = () => {
   const navigate = useNavigate()
   const winningPlayer = useSelector(state => state.winningPlayer)
   const playerCollection = useSelector(state => state.playerCollection)
+  const endedByAbandonment = useSelector(state => state.endedByAbandonment)
 
   const players = playerCollection ? playerCollection.getPlayers() : []
-  const sortedPlayers = [...players].sort((a, b) => b.score - a.score)
+
+  // Separate active players from removed players
+  const activePlayers = players.filter(p => !p.removed)
+  const removedPlayers = players.filter(p => p.removed)
+
+  // Sort active players by score (descending), removed players stay at the bottom
+  const sortedActivePlayers = [...activePlayers].sort((a, b) => b.score - a.score)
+  const sortedPlayers = [...sortedActivePlayers, ...removedPlayers]
+
+  // Determine winner label
+  const winnerLabel = endedByAbandonment ? 'wins by abandonment' : 'wins!'
 
   return (
     <div id="container">
@@ -23,22 +34,29 @@ const EndGame = () => {
               <span className="winnerName" style={{color: winningPlayer.getColor()}}>
                 {winningPlayer.name}
               </span>
-              <span className="winnerLabel">wins!</span>
+              <span className="winnerLabel">{winnerLabel}</span>
             </div>
           )}
         </section>
 
         <section className="endGameSection">
           <div className="finalScoreTable">
-            {sortedPlayers.map((player, index) => (
-              <div key={player.name} className="finalScoreRow">
-                <span className="playerRank">{index + 1}</span>
-                <span className="playerName" style={{color: player.getColor()}}>
-                  {player.name}
-                </span>
-                <span className="playerFinalScore">{player.score}</span>
-              </div>
-            ))}
+            {sortedPlayers.map((player, index) => {
+              const isRemoved = player.removed
+              const rowClasses = ['finalScoreRow', isRemoved ? 'removed' : ''].filter(Boolean).join(' ')
+              // Only show rank for active players
+              const rank = isRemoved ? '-' : (sortedActivePlayers.indexOf(player) + 1)
+
+              return (
+                <div key={player.name} className={rowClasses}>
+                  <span className="playerRank">{rank}</span>
+                  <span className="playerName" style={{color: isRemoved ? '#666' : player.getColor()}}>
+                    {player.name}
+                  </span>
+                  <span className="playerFinalScore">{isRemoved ? 0 : player.score}</span>
+                </div>
+              )
+            })}
           </div>
         </section>
 

@@ -12,17 +12,23 @@ const ScoreTable = () => {
   const players = playerCollection.getPlayers()
   const playerCount = players.length
 
-  const renderCell = (player, idx) => (
-    <div
-      key={player.name}
-      className={`score-cell ${idx === playerIndex ? 'current' : ''}`}
-    >
-      <span className="player-name" style={{color: player.getColor()}}>
-        {truncateName(player.name)}
-      </span>
-      <span className="player-score">{player.score}</span>
-    </div>
-  )
+  const renderCell = (player, idx) => {
+    const isRemoved = player.removed
+    const cellClasses = [
+      'score-cell',
+      idx === playerIndex ? 'current' : '',
+      isRemoved ? 'removed' : ''
+    ].filter(Boolean).join(' ')
+
+    return (
+      <div key={player.name} className={cellClasses}>
+        <span className="player-name" style={{color: isRemoved ? '#666' : player.getColor()}}>
+          {truncateName(player.name)}
+        </span>
+        <span className="player-score">{isRemoved ? 0 : player.score}</span>
+      </div>
+    )
+  }
 
   // 2 players: single row, player 0 left, player 1 right
   if (playerCount === 2) {

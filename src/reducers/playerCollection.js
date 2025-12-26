@@ -7,6 +7,7 @@ export const SWITCH_ACTIVE_PLAYER = 'SWITCH_ACTIVE_PLAYER'
 
 // Redux actions
 export const SET_PLAYER_COLLECTION = 'SET_PLAYER_COLLECTION'
+export const ADD_SCORE_TO_ACTIVE_PLAYER = 'ADD_SCORE_TO_ACTIVE_PLAYER'
 
 const createPlayerCollection = (playerCollection) => { // Otherwise components won't re-render owing to reference equality check
   const players = playerCollection.players
@@ -25,6 +26,11 @@ export const playerCollectionReducer = (playerCollection = new PlayerCollection(
       const activePlayer = playerCollection.getActivePlayer()
       activePlayer.enterWord(action.word)
       playerCollection.switchActivePlayer()
+      return createPlayerCollection(playerCollection)
+    case ADD_SCORE_TO_ACTIVE_PLAYER:
+      // Only update score, don't switch player - server will send correct activeIndex
+      const player = playerCollection.getActivePlayer()
+      player.enterWord(action.word)
       return createPlayerCollection(playerCollection)
     case SET_PLAYER_COLLECTION:
       return createPlayerCollection(action.playerCollection)

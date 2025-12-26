@@ -1,7 +1,7 @@
 import React from 'react'
 import { applyMiddleware, createStore } from 'redux'
 import { Provider } from 'react-redux'
-import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, useParams } from 'react-router-dom';
 import thunk from 'redux-thunk'
 
 import { rootReducer } from '../reducers/rootReducer'
@@ -15,6 +15,12 @@ import EndGame from './EndGame';
 
 const store = createStore(rootReducer, applyMiddleware(thunk))
 
+// Wrapper that adds key={gameId} to force remount when navigating between games
+const WebSocketContainerWithKey = ({phase}) => {
+  const {gameId} = useParams()
+  return <WebSocketContainer key={gameId} phase={phase} />
+}
+
 const Container = () => {
   return (
     <Provider store={store}>
@@ -24,8 +30,8 @@ const Container = () => {
           <Route exact path="/setup" element={<Setup />} />
           <Route exact path="/help" element={<Help />} />
           <Route exact path="/end" element={<EndGame />} />
-          <Route path="/:gameId/lobby" element={<WebSocketContainer phase={Lobby} />} />
-          <Route path="/:gameId/play" element={<WebSocketContainer phase={Game} />} />
+          <Route path="/:gameId/lobby" element={<WebSocketContainerWithKey phase={Lobby} />} />
+          <Route path="/:gameId/play" element={<WebSocketContainerWithKey phase={Game} />} />
         </Routes>
       </Router>
     </Provider>

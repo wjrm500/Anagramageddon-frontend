@@ -89,6 +89,15 @@
   color: var(--color-text-primary);
 }
 
+/* Removed player styling */
+.finalScoreRow.removed {
+  opacity: 0.5;
+}
+
+.finalScoreRow.removed .playerFinalScore {
+  color: var(--color-text-muted);
+}
+
 .endGameContent .menuButton {
   margin-top: var(--space-md);
 }
