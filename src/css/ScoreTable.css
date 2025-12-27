@@ -2,6 +2,13 @@
    Score Table - Matches Grid Corner Positions
    ========================================================================== */
 
+.winning-score-info {
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--space-xs);
+}
+
 #scoreTable {
   display: grid;
   width: 100%;
