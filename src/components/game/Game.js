@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { CLEAR_DISCONNECTED_PLAYERS } from '../../reducers/disconnectedPlayers'
 import { SET_ENDED_BY_ABANDONMENT } from '../../reducers/endedByAbandonment'
-import { CHECK_WINNING_PLAYER } from '../../reducers/winningPlayer'
+import { SET_PREVIOUS_GAME_ID } from '../../reducers/gameSettings'
 import Header from '../Header'
 import DebugDisconnectButtons from '../DebugDisconnectButtons'
 import { CloseConnectionContext, GameIdContext, WebSocketContext } from '../WebSocketContainer'
@@ -16,7 +16,6 @@ import TextFlash from './TextFlash'
 import WordEntry from './WordEntry'
 
 const Game = ({webSocketOpen, gameOpen}) => {
-  const winningScore = useSelector(state => state.winningScore)
   const playerCollection = useSelector(state => state.playerCollection)
   const dispatch = useDispatch()
   const winningPlayer = useSelector(state => state.winningPlayer)
@@ -28,13 +27,8 @@ const Game = ({webSocketOpen, gameOpen}) => {
   const navigate = useNavigate()
   const gameEndedSentRef = useRef(false)
 
-  // Check for winning player whenever score or playerCollection changes
-  // Skip if winner already set (e.g., by abandonment) to avoid overwriting with null
-  useEffect(() => {
-    if (!winningPlayer) {
-      dispatch({type: CHECK_WINNING_PLAYER, winningScore, playerCollection})
-    }
-  }, [winningScore, playerCollection, winningPlayer, dispatch])
+  // Winner check is now handled by WebSocketContainer when receiving server state
+  // This prevents premature winner detection based on local optimistic updates
 
   // Lock body scroll to prevent iOS Safari keyboard from shifting layout
   useEffect(() => {
@@ -48,6 +42,7 @@ const Game = ({webSocketOpen, gameOpen}) => {
       // Game ended normally (not by abandonment)
       dispatch({type: CLEAR_DISCONNECTED_PLAYERS})
       dispatch({type: SET_ENDED_BY_ABANDONMENT, endedByAbandonment: false})
+      dispatch({type: SET_PREVIOUS_GAME_ID, gameId})
       ws.current.send(JSON.stringify({type: 'GAME_ENDED', data: {gameId}}))
       gameEndedSentRef.current = true
       closeConnection(true) // Pass true to preserve state for end screen

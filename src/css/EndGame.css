@@ -38,7 +38,6 @@
 .winnerName {
   font-size: var(--font-size-3xl);
   font-weight: 800;
-  text-shadow: 0 0 20px var(--color-accent-glow);
 }
 
 .winnerLabel {
@@ -70,10 +69,6 @@
   flex-shrink: 0;
 }
 
-.finalScoreRow:first-child .playerRank {
-  color: var(--color-accent);
-}
-
 .playerName {
   flex: 1;
   font-weight: 600;
@@ -98,8 +93,69 @@
   color: var(--color-text-muted);
 }
 
-.endGameContent .menuButton {
-  margin-top: var(--space-md);
+.endGameButtons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  width: 100%;
+}
+
+.rematchButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 280px;
+  padding: var(--space-md) var(--space-xl);
+  margin: var(--space-sm) 0;
+  background: linear-gradient(135deg, var(--color-accent) 0%, #4ecdc4 100%);
+  color: var(--color-bg);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.rematchButton:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--color-accent-hover) 0%, #5fd4cc 100%);
+  box-shadow: 0 0 30px var(--color-accent-glow);
+  transform: translateY(-2px);
+}
+
+.rematchButton:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+.rematchButton:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
+.rematchButtonText {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+}
+
+.rematchButtonSubtext {
+  font-size: var(--font-size-sm);
+  font-weight: 400;
+  opacity: 0.9;
+  margin-top: var(--space-xs);
+}
+
+.rematchError {
+  color: #dc2626;
+  font-size: var(--font-size-sm);
+  text-align: center;
+}
+
+.endGameButtons .menuButton {
+  margin-top: var(--space-sm);
 }
 
 /* Tablet and up */
@@ -115,5 +171,15 @@
 
   .finalScoreRow {
     padding: var(--space-md) var(--space-lg);
+  }
+
+  .rematchButton {
+    max-width: 320px;
+    padding: var(--space-lg) var(--space-2xl);
+    font-size: var(--font-size-xl);
+  }
+
+  .rematchButtonText {
+    font-size: var(--font-size-xl);
   }
 }

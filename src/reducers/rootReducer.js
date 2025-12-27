@@ -6,6 +6,7 @@ import { creatorPlayerIndexReducer } from './creatorPlayerIndex'
 import { disconnectedLobbyPlayersReducer } from './disconnectedLobbyPlayers'
 import { disconnectedPlayersReducer } from './disconnectedPlayers'
 import { endedByAbandonmentReducer } from './endedByAbandonment'
+import { gameSettingsReducer } from './gameSettings'
 import { gridSizeReducer } from './gridSize'
 import { playerCollectionReducer } from './playerCollection'
 import { playerIndexReducer } from './playerIndex'
@@ -26,6 +27,7 @@ const appReducer = combineReducers({
   disconnectedLobbyPlayers: disconnectedLobbyPlayersReducer,
   disconnectedPlayers: disconnectedPlayersReducer,
   endedByAbandonment: endedByAbandonmentReducer,
+  gameSettings: gameSettingsReducer,
   gridSize: gridSizeReducer,
   playerCollection: playerCollectionReducer,
   playerIndex: playerIndexReducer,

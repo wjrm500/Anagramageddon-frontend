@@ -12,6 +12,7 @@ import { SET_PLAYER_INDEX } from '../../reducers/playerIndex';
 import { ACTION_CLICK_BOX, SET_REQUIRED_ACTION } from '../../reducers/requiredAction';
 import { FLASH_NEUTRAL, SET_TEXT_FLASH } from '../../reducers/textFlash';
 import { SET_WINNING_SCORE } from '../../reducers/winningScore';
+import { SET_GAME_SETTINGS } from '../../reducers/gameSettings';
 import DebugDisconnectButtons from '../DebugDisconnectButtons';
 import Header from '../Header';
 import { WebSocketContext } from '../WebSocketContainer';
@@ -62,7 +63,7 @@ const Lobby = ({wscMessageHandlers, webSocketOpen, gameOpen}) => {
       setNameError(data.message)
     },
     "startGame": (data) => {
-      const {boxes, gridSize, winningScore, maxCountdownSeconds, playerCollection} = data
+      const {boxes, gridSize, winningScore, maxCountdownSeconds, playerCollection, volatileBoxes, volatility} = data
       dispatch({type: SET_BOXES, boxes})
       dispatch({type: SET_GRID_SIZE, gridSize})
       dispatch({type: SET_WINNING_SCORE, winningScore})
@@ -70,6 +71,7 @@ const Lobby = ({wscMessageHandlers, webSocketOpen, gameOpen}) => {
       dispatch({type: SET_PLAYER_COLLECTION, playerCollection})
       dispatch({type: SET_REQUIRED_ACTION, requiredAction: ACTION_CLICK_BOX})
       dispatch({type: SET_TEXT_FLASH, textFlash: {content: "", status: FLASH_NEUTRAL}})
+      dispatch({type: SET_GAME_SETTINGS, settings: {gridSize, winningScore, maxCountdownSeconds, volatileBoxes, volatility}})
       navigate(`/${gameId}/play`)
     }
   }

@@ -8,11 +8,13 @@ import { SET_CREATOR_PLAYER_INDEX } from '../reducers/creatorPlayerIndex';
 import { CLEAR_DISCONNECTED_LOBBY_PLAYERS, LOBBY_PLAYER_DISCONNECTED, LOBBY_PLAYER_RECONNECTED, LOBBY_PLAYER_REMOVED, SET_DISCONNECTED_LOBBY_PLAYERS, SHIFT_LOBBY_PLAYER_INDICES } from '../reducers/disconnectedLobbyPlayers';
 import { CLEAR_DISCONNECTED_PLAYERS, PLAYER_DISCONNECTED, PLAYER_RECONNECTED, PLAYER_REMOVED, SET_DISCONNECTED_PLAYERS } from '../reducers/disconnectedPlayers';
 import { SET_ENDED_BY_ABANDONMENT } from '../reducers/endedByAbandonment';
+import { SET_PREVIOUS_GAME_ID } from '../reducers/gameSettings';
 import { SET_PLAYER_COLLECTION } from '../reducers/playerCollection';
 import { SET_PLAYER_INDEX } from '../reducers/playerIndex';
 import { SET_REQUIRED_ACTION } from '../reducers/requiredAction';
 import { RESET_GAME_STATE } from '../reducers/rootReducer';
 import { SET_WINNING_PLAYER } from '../reducers/winningPlayer';
+import checkWinningPlayerThunk from '../thunks/checkWinningPlayerThunk';
 import { Player } from '../non-components/Player';
 import Game from './game/Game';
 import Lobby from './setup/Lobby';
@@ -86,6 +88,8 @@ const WebSocketContainer = ({phase}) => {
       if (playerIndexRef.current !== null && playerCollection.activeIndex === playerIndexRef.current) {
         dispatch({type: RESET_COUNTDOWN})
       }
+      // Check for winning player after receiving server state (not on local updates)
+      dispatch(checkWinningPlayerThunk())
     },
     "playerAdded": (data) => {
       playerIndexRef.current = data.playerIndex
@@ -211,6 +215,7 @@ const WebSocketContainer = ({phase}) => {
       dispatch({type: SET_BOXES, boxes})
       dispatch({type: SET_ENDED_BY_ABANDONMENT, endedByAbandonment: true})
       dispatch({type: CLEAR_DISCONNECTED_PLAYERS})
+      dispatch({type: SET_PREVIOUS_GAME_ID, gameId})
 
       if (typeof winnerPlayerIndex === 'number' && playerCollection && playerCollection.players) {
         const winnerData = playerCollection.players[winnerPlayerIndex]
