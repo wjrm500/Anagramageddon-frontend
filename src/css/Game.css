@@ -8,6 +8,7 @@
 @import "LetterBank.css";
 @import "WordEntry.css";
 @import "ScoreTable.css";
+@import "ActionFeed.css";
 
 #gameContainer {
   display: flex;

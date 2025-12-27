@@ -7,6 +7,7 @@ import { CHECK_WINNING_PLAYER } from '../../reducers/winningPlayer'
 import Header from '../Header'
 import DebugDisconnectButtons from '../DebugDisconnectButtons'
 import { CloseConnectionContext, GameIdContext, WebSocketContext } from '../WebSocketContainer'
+import ActionFeed from './ActionFeed'
 import Grid from './Grid'
 import Instruction from './Instruction'
 import LetterBank from './LetterBank'
@@ -71,6 +72,7 @@ const Game = ({webSocketOpen, gameOpen}) => {
             <LetterBank />
             <WordEntry />
             <ScoreTable />
+            <ActionFeed />
             <DebugDisconnectButtons />
           </div>
         ) : showTooLate ? (

@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux'
+import { actionFeedReducer } from './actionFeed'
 import { boxesReducer } from './boxes'
 import { countdownSecondsReducer } from './countdownSeconds'
 import { creatorPlayerIndexReducer } from './creatorPlayerIndex'
@@ -18,6 +19,7 @@ import { wordInputReducer } from './wordInput'
 export const RESET_GAME_STATE = 'RESET_GAME_STATE'
 
 const appReducer = combineReducers({
+  actionFeed: actionFeedReducer,
   boxes: boxesReducer,
   countdownSeconds: countdownSecondsReducer,
   creatorPlayerIndex: creatorPlayerIndexReducer,

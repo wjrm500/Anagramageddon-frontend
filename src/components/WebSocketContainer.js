@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom'
+import { ADD_ACTION_FEED_ENTRY } from '../reducers/actionFeed';
 import { SET_BOXES } from '../reducers/boxes';
 import { INIT_COUNTDOWN, RESET_COUNTDOWN } from '../reducers/countdownSeconds';
 import { SET_CREATOR_PLAYER_INDEX } from '../reducers/creatorPlayerIndex';
@@ -9,6 +10,7 @@ import { CLEAR_DISCONNECTED_PLAYERS, PLAYER_DISCONNECTED, PLAYER_RECONNECTED, PL
 import { SET_ENDED_BY_ABANDONMENT } from '../reducers/endedByAbandonment';
 import { SET_PLAYER_COLLECTION } from '../reducers/playerCollection';
 import { SET_PLAYER_INDEX } from '../reducers/playerIndex';
+import { SET_REQUIRED_ACTION } from '../reducers/requiredAction';
 import { RESET_GAME_STATE } from '../reducers/rootReducer';
 import { SET_WINNING_PLAYER } from '../reducers/winningPlayer';
 import { Player } from '../non-components/Player';
@@ -229,6 +231,19 @@ const WebSocketContainer = ({phase}) => {
       ws.current?.close()
       clearStoredPlayerIndex(gameId)
       dispatch({type: RESET_GAME_STATE})
+    },
+    "setRequiredAction": (data) => {
+      const { requiredAction } = data
+      // Map server action strings to frontend constants
+      const actionMap = {
+        'Click box': 'Click box',
+        'Enter word': 'Enter word'
+      }
+      dispatch({type: SET_REQUIRED_ACTION, requiredAction: actionMap[requiredAction] || requiredAction})
+    },
+    "wordPlayed": (data) => {
+      const { playerName, playerColor, word, points } = data
+      dispatch({type: ADD_ACTION_FEED_ENTRY, entry: { playerName, playerColor, word, points }})
     }
   }
 

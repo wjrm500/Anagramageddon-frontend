@@ -38,11 +38,17 @@ const Instruction = () => {
     return () => clearInterval(interval)
   }, [disconnectedPlayers, dispatch])
 
-  const promptMap = new Map([
+  const activePromptMap = new Map([
     [ACTION_CLICK_BOX, isMobile ? "Tap a square" : "Click a square"],
     [ACTION_ENTER_WORD, "Enter a word"]
   ])
-  const prompt = promptMap.get(requiredAction)
+  const waitingPromptMap = new Map([
+    [ACTION_CLICK_BOX, "Selecting a square..."],
+    [ACTION_ENTER_WORD, "Entering a word..."]
+  ])
+  const prompt = playerActive
+    ? activePromptMap.get(requiredAction)
+    : waitingPromptMap.get(requiredAction)
 
   if (winningPlayer != null) {
     return (
@@ -71,13 +77,9 @@ const Instruction = () => {
       <div className="turnLine">
         <span className="turnIndicator">{turnText}</span>
         <span className="separator">·</span>
-        <span className="prompt">{playerActive ? prompt : "Waiting..."}</span>
-        {playerActive && (
-          <>
-            <span className="separator">·</span>
-            <span className="timer"><Countdown />s</span>
-          </>
-        )}
+        <span className="prompt">{prompt}</span>
+        <span className="separator">·</span>
+        <span className="timer"><Countdown />s</span>
       </div>
       {disconnectedPlayerIndices.length > 0 && (
         <div className="disconnectionNotifications">

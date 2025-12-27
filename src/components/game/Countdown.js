@@ -19,15 +19,13 @@ const Countdown = () => {
   const activePlayerIndex = playerCollection.getActiveIndex()
 
   useEffect(() => {
-    // Only run countdown if this is the active player
-    if (!isActivePlayer) {
-      return
-    }
-
+    // All players run the countdown timer locally for display purposes
+    // Only the active player triggers the switch when time runs out
     const interval = setInterval(() => {
       if (countdownSeconds.current > 0) {
         dispatch({type: DECREMENT_COUNTDOWN})
-      } else {
+      } else if (isActivePlayer) {
+        // Only the active player triggers the turn switch
         dispatch(switchActivePlayerThunk(ws.current, gameId))
         dispatch({type: SET_REQUIRED_ACTION, requiredAction: ACTION_CLICK_BOX})
         dispatch({type: SET_WORD_INPUT, value: ""})
